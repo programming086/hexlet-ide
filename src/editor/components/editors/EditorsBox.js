@@ -109,6 +109,13 @@ var EditorsBox = React.createClass({
   getEditorMode: function(fileName) {
     var modes = {
       "js": "javascript",
+      "go": "go",
+      "rs": "rust",
+      "json": {name: "javascript", mode: "json"},
+      "java": "java",
+      "class": "clike",
+      "jar": "clike",
+      "go": "go",
       "clj": "clojure",
       "erl": "erlang",
       "html": "htmlmixed",
