@@ -14,6 +14,12 @@ require("codemirror/mode/ruby/ruby");
 require("codemirror/mode/clike/clike");
 require("codemirror/mode/jade/jade");
 require("codemirror/mode/yaml/yaml");
+require("codemirror/mode/clojure/clojure");
+require("codemirror/mode/scheme/scheme");
+require("codemirror/mode/erlang/erlang");
+require("codemirror/mode/xml/xml");
+require("codemirror/mode/htmlmixed/htmlmixed");
+require("codemirror/mode/css/css");
 
 require("codemirror/addon/hint/show-hint");
 require("codemirror/addon/hint/javascript-hint");
