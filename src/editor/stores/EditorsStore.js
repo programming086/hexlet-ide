@@ -13,8 +13,11 @@ var EditorsStore = BaseStore.extend({
     return editors;
   },
 
-  getAllDirty: function() {
-    return _.filter(editors, "dirty");
+  getAllUnsaved: function() {
+    "use strict";
+    return _.filter(editors, function(editor) {
+      return editor.lastSavingAt < editor.lastModifiedAt;
+    });
   },
 
   getAllUnsaved: function() {
