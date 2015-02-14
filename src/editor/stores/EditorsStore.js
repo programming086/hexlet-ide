@@ -1,5 +1,6 @@
 /* global require module */
 var _ = require("lodash");
+var moment = require("moment");
 
 var AppDispatcher = require("editor/dispatcher/AppDispatcher");
 var BaseStore = require("./BaseStore");
@@ -16,6 +17,13 @@ var EditorsStore = BaseStore.extend({
     return _.filter(editors, "dirty");
   },
 
+  getAllUnsaved: function() {
+    "use strict";
+    return _.filter(editors, function(editor) {
+      return editor.lastSavingAt < editor.lastModifiedAt;
+    });
+  },
+
   getCurrent: function() {
     return _.find(editors, { current: true });
   }
@@ -29,7 +37,7 @@ AppDispatcher.registerHandler(ActionTypes.TREE_OPEN_FILE, function(payload) {
 
   var editor = _.find(editors, {id: item.id});
   if (!editor) {
-    editors.push({id: item.id, dirty: false, name: item.name, current: true, content: content});
+    editors.push({id: item.id, dirty: false, name: item.name, current: true, content: content, lastEditedAt: +moment(), lastSavingAt: +moment()});
   } else {
     editor.current = true;
   }
@@ -41,6 +49,14 @@ AppDispatcher.registerHandler(ActionTypes.EDITORS_EDIT_CURRENT, function(payload
   var editor = _.find(editors, {id: payload.id});
   editor.content = payload.content;
   editor.dirty = true;
+  editor.lastModifiedAt = +moment();
+
+  EditorsStore.emitChange();
+});
+
+AppDispatcher.registerHandler(ActionTypes.EDITORS_SAVING_CURRENT, function(payload) {
+  var editor = _.find(editors, {id: payload.id});
+  editor.lastSavingAt = +moment();
 
   EditorsStore.emitChange();
 });
