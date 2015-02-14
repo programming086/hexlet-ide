@@ -28,7 +28,8 @@
     "socket.io": "*",
     "tree-model": "*",
     "morgan": "*",
-    "when": "^3.4.6"
+    "when": "^3.4.6",
+    "moment": "*"
   },
   "devDependencies": {
     "chai": "~1.9.2",

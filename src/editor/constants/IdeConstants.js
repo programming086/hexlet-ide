@@ -26,6 +26,7 @@ module.exports = {
 
     EDITORS_CLOSE: null,
     EDITORS_MAKE_CURRENT: null,
+    EDITORS_SAVING_CURRENT: null,
     EDITORS_SAVE_CURRENT: null,
     EDITORS_EDIT_CURRENT: null,
     // EDITORS_FLUSH_CONTENT: null

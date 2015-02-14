@@ -59,7 +59,7 @@ HexletIdeWidget.prototype.bindEvents = function() {
 
 HexletIdeWidget.prototype.runAutosave = function() {
   this.autosaveTimer = setInterval(function() {
-    var editors = EditorsStore.getAllDirty();
+    var editors = EditorsStore.getAllUnsaved();
     editors.forEach(EditorsActions.save);
   }, Config.autosaveInterval);
 }
