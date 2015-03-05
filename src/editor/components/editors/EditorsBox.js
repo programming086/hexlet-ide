@@ -134,6 +134,11 @@ var EditorsBox = React.createClass({
       "txt": "text",
       "yml": "yaml",
       "yaml": "yaml",
+      "hs": "haskell",
+      "lhs": "haskell",
+      "pl": "perl",
+      "scala": {name: "clike", mode: "scala"},
+
       "": "text"
     };
 

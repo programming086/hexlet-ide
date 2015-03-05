@@ -22,6 +22,8 @@ require("codemirror/mode/htmlmixed/htmlmixed");
 require("codemirror/mode/css/css");
 require("codemirror/mode/rust/rust");
 require("codemirror/mode/go/go");
+require("codemirror/mode/haskell/haskell");
+require("codemirror/mode/perl/perl");
 
 require("codemirror/addon/hint/show-hint");
 require("codemirror/addon/hint/javascript-hint");
