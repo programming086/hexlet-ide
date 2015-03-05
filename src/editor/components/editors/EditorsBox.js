@@ -137,6 +137,7 @@ var EditorsBox = React.createClass({
       "hs": "haskell",
       "lhs": "haskell",
       "pl": "perl",
+      "php": "php",
       "scala": {name: "clike", mode: "scala"},
 
       "": "text"

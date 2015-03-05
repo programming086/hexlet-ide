@@ -24,6 +24,7 @@ require("codemirror/mode/rust/rust");
 require("codemirror/mode/go/go");
 require("codemirror/mode/haskell/haskell");
 require("codemirror/mode/perl/perl");
+require("codemirror/mode/php/php");
 
 require("codemirror/addon/hint/show-hint");
 require("codemirror/addon/hint/javascript-hint");
