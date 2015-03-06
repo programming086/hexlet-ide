@@ -7,7 +7,7 @@ var AppDispatcher = require("editor/dispatcher/AppDispatcher");
 var ActionTypes = require("editor/constants/IdeConstants").ActionTypes;
 var BaseStore = require("./BaseStore");
 
-var tree = new TreeModel();
+var tree = new TreeModel(shared.treeOptions);
 var root;
 
 var TreeStore = BaseStore.extend({
