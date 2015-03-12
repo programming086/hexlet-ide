@@ -64,10 +64,9 @@ AppDispatcher.registerHandler(ActionTypes.TERMINALS_CLOSE_TERMINAL, function(pay
 });
 
 AppDispatcher.registerHandler(ActionTypes.IDE_RESIZE_SPLIT, function(payload) {
-  // _.each(terminals, function(t) {
-  //   t.terminal.fit();
-  // });
-  // TerminalsStore.emitChange();
+  _.each(terminals, function(t) {
+    t.terminal.fit();
+  });
 });
 
 module.exports = TerminalsStore;

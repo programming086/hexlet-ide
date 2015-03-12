@@ -117,7 +117,12 @@
 }
 
 .terminals-box {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
     & .nav {
+        min-height: 25px;
+        max-height: 25px;
         a {
             cursor: pointer;
             padding: 2px 10px;
@@ -134,10 +139,10 @@
         }
     }
 
-    & .terminal {
-        width: 100%;
-        height: 100%;
-    }
+//     & .terminal {
+//         width: 100%;
+//         height: 100%;
+//     }
 
     & .terminal-frame {
         visibility: hidden;
@@ -148,7 +153,16 @@
     }
 
     & .tab-content {
-        height: 95%;
+        display: flex;
+
+        & .tab-pane {
+            width: 100%;
+            display: flex;
+
+            & .terminal {
+                width: 100%;
+            }
+        }
     }
 }
 

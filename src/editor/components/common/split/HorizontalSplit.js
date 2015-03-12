@@ -46,7 +46,6 @@ var HorizontalSplit = React.createClass({
   },
 
   onMoveSplit: function(num, y) {
-    console.log("DRAG MOVE");
     var node = this.getDOMNode();
     var rect = node.getBoundingClientRect();
 

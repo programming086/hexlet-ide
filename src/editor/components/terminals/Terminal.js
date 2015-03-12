@@ -4,12 +4,8 @@ var TerminalsActions = require('editor/actions/TerminalsActions');
 export default React.createClass({
   render() {
     return (
-      <div className="row max-height">
-        <div className="col-xs-12 max-height">
-          <iframe className="terminal-frame" name="terminalFrame" ref="terminalFrame" />
-          <div className="max-height" ref="terminal"></div>
+        <div className={this.props.className} ref="terminal">
         </div>
-      </div>
     );
   },
 
@@ -46,8 +42,8 @@ export default React.createClass({
 
     terminal.terminal.open(this.refs.terminal.getDOMNode());
 
-    this.refs.terminalFrame.onresize = function(){
-      this.terminalResize();
-    }.bind(this);
+    // this.refs.terminalFrame.onresize = function(){
+    //   this.terminalResize();
+    // }.bind(this);
   }
 });
