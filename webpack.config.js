@@ -47,7 +47,8 @@ module.exports = function() {
         loader: "style!css"
       }, {
         test: /\.js$/,
-        loader: "jsx-loader?harmony"
+        exclude: /(node_modules|bower_components)/,
+        loader: "babel-loader?experimental&optional=runtime&optional=reactCompat"
       }, {
         test: /\.less$/,
         loader: "style!css!less"

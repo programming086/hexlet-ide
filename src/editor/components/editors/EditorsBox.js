@@ -8,7 +8,6 @@ var Editor = require("./Editor");
 
 var EditorsStore = require("editor/stores/EditorsStore");
 var EditorsActions = require("editor/actions/EditorsActions");
-var ModalActions = require("editor/actions/ModalActions");
 
 var EditorsBox = React.createClass({
   mixins: [ WatchStoreMixin(EditorsStore) ],
@@ -37,19 +36,19 @@ var EditorsBox = React.createClass({
   handleCloseTab: function(editor, e) {
     e.stopPropagation();
     e.preventDefault();
-    if (editor.dirty) {
-      ModalActions.showModal({
-        title: "Close unsaved tab",
-        onApply: function() {
-          EditorsActions.closeEditor(editor);
-        },
-        content: function() {
-          return <p>are you sure? (unsaved data will be lost)</p>;
-        }
-      });
-    } else {
+    // if (editor.dirty) {
+    //   ModalActions.showModal({
+    //     title: "Close unsaved tab",
+    //     onApply: function() {
+    //       EditorsActions.closeEditor(editor);
+    //     },
+    //     content: function() {
+    //       return <p>are you sure? (unsaved data will be lost)</p>;
+    //     }
+    //   });
+    // } else {
       EditorsActions.closeEditor(editor);
-    }
+    // }
   },
 
   render: function() {
@@ -115,7 +114,6 @@ var EditorsBox = React.createClass({
       "java": "java",
       "class": "clike",
       "jar": "clike",
-      "go": "go",
       "clj": "clojure",
       "erl": "erlang",
       "html": "htmlmixed",
@@ -130,7 +128,6 @@ var EditorsBox = React.createClass({
       "rb": "ruby",
       "c": "clike",
       "c++": "clike",
-      "java": "clike",
       "txt": "text",
       "yml": "yaml",
       "yaml": "yaml",

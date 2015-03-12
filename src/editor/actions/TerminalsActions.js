@@ -1,12 +1,12 @@
 /* global require module */
+var _ = require("lodash");
 
 var AppDispatcher = require("editor/dispatcher/AppDispatcher");
 var IdeConstants = require("editor/constants/IdeConstants");
 var ActionTypes = IdeConstants.ActionTypes;
 var TerminalsStore = require("editor/stores/TerminalsStore");
 
-var rpc = require("editor/rpc");
-var _ = require("lodash");
+var rpc = require("editor/lib/RpcClient");
 
 var TerminalsActions = {
   createTerminal: function(params) {
@@ -18,7 +18,7 @@ var TerminalsActions = {
     });
 
     var options = _.merge({ id: id}, params);
-    rpc.terminal.create(options);
+    rpc.getClient().terminal.create(options);
   },
 
   createDefaultTerminal: function(params) {
@@ -30,12 +30,12 @@ var TerminalsActions = {
     });
 
     var options = _.merge({ id: id}, params);
-    rpc.terminal.createDefault(options);
+    rpc.getClient().terminal.createDefault(options);
   },
 
   reconnectTerminals: function() {
     _.each(TerminalsStore.getAll(), function(terminal) {
-      rpc.terminal.reconnect({ id: terminal.id });
+      rpc.getClient().terminal.reconnect({ id: terminal.id });
     });
   },
 
@@ -48,17 +48,17 @@ var TerminalsActions = {
     });
 
     var options = _.merge({ id: id }, params);
-    rpc.terminal.create(options).then(function() {
-      rpc.terminal.update({ id: id, data: cmd + "\n" });
+    rpc.getClient().terminal.create(options).then(function() {
+      rpc.getClient().terminal.update({ id: id, data: cmd + "\n" });
     });
   },
 
   runCommand: function(terminal, cmd) {
-    rpc.terminal.update({ id: terminal.id, data: cmd + "\n" });
+    rpc.getClient().terminal.update({ id: terminal.id, data: cmd + "\n" });
   },
 
   startUpdateTerminal: function(msg) {
-    rpc.terminal.update(msg);
+    rpc.getClient().terminal.update(msg);
   },
 
   finishUpdateTerminal: function(msg) {
@@ -77,7 +77,7 @@ var TerminalsActions = {
   },
 
   closeTerminal: function(terminal) {
-    rpc.terminal.destroy({id: terminal.id }).then(function() {
+    rpc.getClient().terminal.destroy({id: terminal.id }).then(function() {
       AppDispatcher.dispatch({
         actionType: ActionTypes.TERMINALS_CLOSE_TERMINAL,
         id: terminal.id
@@ -86,7 +86,7 @@ var TerminalsActions = {
   },
 
   resize: function(msg) {
-    rpc.terminal.resize(msg);
+    rpc.getClient().terminal.resize(msg);
   }
 };
 

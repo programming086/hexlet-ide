@@ -9,6 +9,7 @@ module.exports = {
     IDE_LOADED: null,
     IDE_CONNECTED: null,
     IDE_DISCONNECTED: null,
+    IDE_SHOW_README: null,
 
     TREE_LOAD: null,
     TREE_RELOAD: null,
@@ -21,8 +22,8 @@ module.exports = {
     TREE_REMOVE: null,
     TREE_RENAME: null,
 
-    MODAL_CLOSE: null,
-    MODAL_OPEN: null,
+    POPUP_CLOSE: null,
+    POPUP_OPEN: null,
 
     EDITORS_CLOSE: null,
     EDITORS_MAKE_CURRENT: null,

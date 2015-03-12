@@ -9,25 +9,17 @@ var ActionTypes = require("editor/constants/IdeConstants").ActionTypes;
 var editors = [];
 
 var EditorsStore = BaseStore.extend({
-  getAll: function() {
+  getAll() {
     return editors;
   },
 
-  getAllUnsaved: function() {
-    "use strict";
+  getAllUnsaved() {
     return _.filter(editors, function(editor) {
       return editor.lastSavingAt < editor.lastModifiedAt;
     });
   },
 
-  getAllUnsaved: function() {
-    "use strict";
-    return _.filter(editors, function(editor) {
-      return editor.lastSavingAt < editor.lastModifiedAt;
-    });
-  },
-
-  getCurrent: function() {
+  getCurrent() {
     return _.find(editors, { current: true });
   }
 });

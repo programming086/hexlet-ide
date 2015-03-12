@@ -5,6 +5,8 @@ var IdeConstants = require("editor/constants/IdeConstants");
 var IdeStore = require("editor/stores/IdeStore");
 var ActionTypes = IdeConstants.ActionTypes;
 
+var rpc = require("editor/lib/RpcClient");
+
 var IdeActions = {
   globalClick: function() {
     "use strict";
@@ -50,6 +52,17 @@ var IdeActions = {
     AppDispatcher.dispatch({
       actionType: ActionTypes.IDE_DISCONNECTED
     });
+  },
+
+  showReadme() {
+    rpc.getClient().fs.read("./README.md").then(function(result) {
+      AppDispatcher.dispatch({
+        actionType: ActionTypes.IDE_SHOW_README,
+        content: result,
+        title: "README.md"
+      });
+    });
+
   }
 };
 

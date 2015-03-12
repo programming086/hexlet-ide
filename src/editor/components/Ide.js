@@ -4,11 +4,11 @@ var TreeBox = require("editor/components/tree/TreeBox");
 var EditorsBox = require("editor/components/editors/EditorsBox");
 var TerminalsBox = require("editor/components/terminals/TerminalsBox");
 var ContextMenu = require("editor/components/common/ContextMenu");
-var Modal = require("editor/components/common/Modal");
 var Loader = require("editor/components/common/Loader");
 var RunnerBox = require("editor/components/RunnerBox");
 var ActionsBox = require("editor/components/ActionsBox");
 var StatusBox = require("editor/components/StatusBox");
+var PopupBox = require("editor/components/PopupBox");
 
 var IdeActions = require("editor/actions/IdeActions");
 var WatchStoreMixin = require("editor/mixins/WatchStore");
@@ -31,8 +31,8 @@ var Ide = React.createClass({
 
     return (
       <div className="ide-inner">
+        <PopupBox />
         <ContextMenu />
-        <Modal />
         <div className="well well-sm max-height" onClick={this.handleGlobalClick}>
           <div className="max-height row">
             <div className="col-xs-3 max-height nopadding">
