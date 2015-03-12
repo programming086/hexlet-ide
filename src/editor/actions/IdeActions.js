@@ -3,19 +3,20 @@
 var AppDispatcher = require("editor/dispatcher/AppDispatcher");
 var IdeConstants = require("editor/constants/IdeConstants");
 var IdeStore = require("editor/stores/IdeStore");
+var TreeStore = require("editor/stores/TreeStore");
 var ActionTypes = IdeConstants.ActionTypes;
 
 var rpc = require("editor/lib/RpcClient");
 
 var IdeActions = {
-  globalClick: function() {
+  globalClick() {
     "use strict";
     AppDispatcher.dispatch({
       actionType: ActionTypes.IDE_GLOBAL_CLICK
     });
   },
 
-  toggleFullscreen: function() {
+  toggleFullscreen() {
     "use strict";
 
     var fullscreen = !IdeStore.getState().fullscreen;
@@ -30,7 +31,7 @@ var IdeActions = {
     });
   },
 
-  loadCompleted: function() {
+  loadCompleted() {
     "use strict";
 
     AppDispatcher.dispatch({
@@ -38,7 +39,7 @@ var IdeActions = {
     });
   },
 
-  connect: function() {
+  connect() {
     "use strict";
 
     AppDispatcher.dispatch({
@@ -46,7 +47,7 @@ var IdeActions = {
     });
   },
 
-  disconnect: function() {
+  disconnect() {
     "use strict";
 
     AppDispatcher.dispatch({
@@ -55,14 +56,34 @@ var IdeActions = {
   },
 
   showReadme() {
-    rpc.getClient().fs.read("./README.md").then(function(result) {
+    var item = TreeStore.getFileByName("README.md");
+    rpc.getClient().fs.read(item.path).then(function(result) {
       AppDispatcher.dispatch({
         actionType: ActionTypes.IDE_SHOW_README,
         content: result,
         title: "README.md"
       });
     });
+  },
 
+  run() {
+    AppDispatcher.dispatch({ actionType: ActionTypes.IDE_RUN });
+    return rpc.getClient().run.exec("make test")
+  },
+
+  runProgress(data) {
+    AppDispatcher.dispatch({
+      actionType: ActionTypes.IDE_RUN_PROGRESS,
+      chunk: data
+    });
+  },
+
+  runFinished(data) {
+    AppDispatcher.dispatch({
+      actionType: ActionTypes.IDE_RUN_FINISH,
+      code: data.code,
+      signal: data.signal
+    });
   }
 };
 

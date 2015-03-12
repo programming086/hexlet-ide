@@ -10,6 +10,9 @@ module.exports = {
     IDE_CONNECTED: null,
     IDE_DISCONNECTED: null,
     IDE_SHOW_README: null,
+    IDE_RUN: null,
+    IDE_RUN_PROGRESS: null,
+    IDE_RUN_FINISH: null,
 
     TREE_LOAD: null,
     TREE_RELOAD: null,

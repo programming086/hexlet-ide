@@ -10,6 +10,7 @@ var RemoveFolder  = require("editor/components/popup/RemoveFolder");
 var RemoveFile = require("editor/components/popup/RemoveFile");
 var Rename = require("editor/components/popup/Rename");
 var MarkdownView = require("editor/components/popup/MarkdownView");
+var RunView = require("editor/components/popup/RunView");
 
 export default React.createClass({
   mixins: [WatchStoreMixin(PopupStore)],
@@ -30,9 +31,7 @@ export default React.createClass({
       <div>
         <div className="modal-backdrop fade in"></div>
         <div className="modal fade in" style={{ display: "block" }}>
-          <div className="modal-dialog">
-            {this.renderCurrentModal()}
-          </div>
+          {this.renderCurrentModal()}
         </div>
       </div>
     );
@@ -46,6 +45,7 @@ export default React.createClass({
       case "remove_file": return <RemoveFile options={this.state.options} onClose={this.onClose} />;
       case "rename": return <Rename options={this.state.options} onClose={this.onClose} />;
       case "markdown_view": return <MarkdownView options={this.state.options} onClose={this.onClose} />;
+      case "run_view": return <RunView options={this.state.options} onClose={this.onClose} />;
       default: throw "Bad modal type!";
     }
   },

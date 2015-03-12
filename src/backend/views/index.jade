@@ -25,7 +25,7 @@ html
           var cmd = data.cmd;
 
           if (cmd == "ideMakeTest") {
-            widget.exec("make test").done(function(response) {
+            widget.run().done(function(response) {
               var result = {
                 cmd: cmd,
                 response: response

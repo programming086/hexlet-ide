@@ -78,4 +78,10 @@ AppDispatcher.registerHandler(ActionTypes.IDE_SHOW_README, function(payload) {
   PopupStore.emitChange();
 });
 
+AppDispatcher.registerHandler(ActionTypes.IDE_RUN, function(payload) {
+  state = open(state, "run_view");
+
+  PopupStore.emitChange();
+});
+
 module.exports = PopupStore;

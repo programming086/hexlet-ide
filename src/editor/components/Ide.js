@@ -33,7 +33,7 @@ var Ide = React.createClass({
       <div className="ide-inner">
         <PopupBox />
         <ContextMenu />
-        <div className="well well-sm max-height" onClick={this.handleGlobalClick}>
+        <div className="max-height" onClick={this.handleGlobalClick}>
           <div className="max-height row">
             <div className="col-xs-3 max-height nopadding">
               <div className="row">
@@ -42,11 +42,6 @@ var Ide = React.createClass({
                   <StatusBox />
                 </div>
                 <div className="col-xs-10">
-                  <div className="row">
-                    <div className="col-xs-12 file-tree-box">
-                      <RunnerBox cmd={this.props.cmd}/>
-                    </div>
-                  </div>
                   <TreeBox />
                 </div>
               </div>

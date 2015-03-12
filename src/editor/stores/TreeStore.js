@@ -11,16 +11,23 @@ var tree = new TreeModel(shared.treeOptions);
 var root;
 
 var TreeStore = BaseStore.extend({
-  getRoot: function() {
+  getRoot() {
     return root !== undefined ? root.model : root;
   },
 
-  getPathById: function(id) {
-    var node = root.first(function(node) { return node.model.id === id; });
+  getFileByName(name) {
+    let node = root.first((node) => {
+      return node.model.type == "file" && node.model.name == name;
+    });
+    return node.model;
+  },
+
+  getPathById(id) {
+    let node = root.first(function(node) { return node.model.id === id; });
     return node.getPath().map(function(node){ return node.model.name; }).join("/");
   },
 
-  getFilesForPath: function(id) {
+  getFilesForPath(id) {
     var parentNode = root.first(function(node) { return node.model.id === id; });
     if (parentNode.model.type === "file") {
       return [parentNode.model.id];

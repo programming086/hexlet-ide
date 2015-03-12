@@ -48,6 +48,14 @@ export default class HexletIdeWidget {
     rpcClient.socket.on("disconnect", () => {
       IdeActions.disconnect();
     });
+
+    rpcClient.socket.on("run.progress", (data) => {
+      IdeActions.runProgress(data);
+    });
+
+    rpcClient.socket.on("run.finish", (data) => {
+      IdeActions.runFinished(data);
+    });
   }
 
   runAutosave() {
@@ -61,15 +69,19 @@ export default class HexletIdeWidget {
     return React.render(<Ide cmd={this.cmd} />, this.domElement);
   }
 
-  runCommand(cmd) {
-    TerminalsActions.runCommandInNewTerminal(cmd, Config.terminal);
-  }
+//   runCommand(cmd) {
+//     TerminalsActions.runCommandInNewTerminal(cmd, Config.terminal);
+//   }
 
-  exec() {
-    return this.rpc.run.exec(cmd);
-  }
+//   exec() {
+//     return RpcClient.getClient().run.exec(cmd);
+//   }
 
   showReadme() {
-    IdeActions.showReadme();
+    return IdeActions.showReadme();
+  }
+
+  run() {
+    return IdeActions.run();
   }
 }
