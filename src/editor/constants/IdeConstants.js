@@ -13,6 +13,7 @@ module.exports = {
     IDE_RUN: null,
     IDE_RUN_PROGRESS: null,
     IDE_RUN_FINISH: null,
+    IDE_RESIZE_SPLIT: null,
 
     TREE_LOAD: null,
     TREE_RELOAD: null,

@@ -84,6 +84,12 @@ var IdeActions = {
       code: data.code,
       signal: data.signal
     });
+  },
+
+  resizeSplit() {
+    AppDispatcher.dispatch({
+      actionType: ActionTypes.IDE_RESIZE_SPLIT
+    });
   }
 };
 

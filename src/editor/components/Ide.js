@@ -14,6 +14,10 @@ var IdeActions = require("editor/actions/IdeActions");
 var WatchStoreMixin = require("editor/mixins/WatchStore");
 var IdeStore = require("editor/stores/IdeStore");
 
+var Panel = require("./common/split/Panel");
+var VerticalSplit = require("./common/split/VerticalSplit");
+var HorizontalSplit = require("./common/split/HorizontalSplit");
+
 var Ide = React.createClass({
   mixins: [WatchStoreMixin(IdeStore)],
   getFluxState: function() {
@@ -34,24 +38,25 @@ var Ide = React.createClass({
         <PopupBox />
         <ContextMenu />
         <div className="max-height" onClick={this.handleGlobalClick}>
-          <div className="max-height row">
-            <div className="col-xs-3 max-height nopadding">
-              <div className="row">
-                <div className="col-xs-2">
-                  <ActionsBox />
-                  <StatusBox />
-                </div>
-                <div className="col-xs-10">
-                  <TreeBox />
-                </div>
-              </div>
-            </div>
-            <div className="col-xs-9 max-height nopadding nooverflow">
-              <EditorsBox />
-              <TerminalsBox />
-            </div>
-
-          </div>
+          <VerticalSplit className="ide-split">
+            {/* <Panel className="left-panel">
+              <ActionsBox />
+              <StatusBox />
+            </Panel> */ }
+            <Panel className="left-panel">
+              <TreeBox />
+            </Panel>
+            <Panel className="right-panel">
+              <HorizontalSplit className="editor-split">
+                <Panel className="top-panel">
+                  <EditorsBox />
+                </Panel>
+                <Panel className="bottom-panel">
+                  <TerminalsBox />
+                </Panel>
+              </HorizontalSplit>
+            </Panel>
+          </VerticalSplit>
         </div>
       </div>
     );
