@@ -1,0 +1,41 @@
+.CodeMirror {
+    height: auto;
+    width: 100%;
+}
+
+.editors-box {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    & .nav {
+        min-height: 25px;
+        max-height: 25px;
+        a {
+            & * {
+                cursor: pointer;
+            }
+            padding: 2px 10px;
+            border-radius: 4px 4px 0 0;
+
+            .close {
+                margin-left: 5px;
+                font-size: 18px;
+                opacity: 0;
+            }
+            &:hover .close {
+                opacity: .4;
+            }
+        }
+    }
+
+    & .file-content {
+        display: flex;
+
+        & .editor.active {
+            width: 100%;
+            display: flex;
+        }
+    }
+}
+
+
