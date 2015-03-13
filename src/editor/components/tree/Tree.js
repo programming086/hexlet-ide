@@ -42,12 +42,6 @@ const Tree = React.createClass({
       "glyphicon-folder-close": !isOpened
     });
 
-    const caretIconClasses = cx({
-      "glyphicon": true,
-      "glyphicon-triangle-bottom": isOpened,
-      "glyphicon-triangle-right": !isOpened
-    })
-
     const childrenClasses = cx({
       "tree-branch-children": true,
       "hide": !isOpened
@@ -59,7 +53,6 @@ const Tree = React.createClass({
         onClick={this.handleToggleFolderState.bind(this, tree)}>
         <div className="tree-branch-header">
           <a href="#" className="tree-branch-name" data-name={tree.name}>
-            <span className={caretIconClasses}></span>
             <span className={folderIconClasses} data-name={tree.name}></span>
             <span className="tree-label" data-name={tree.name}>{tree.name}</span>
           </a>
