@@ -84,4 +84,16 @@ AppDispatcher.registerHandler(ActionTypes.IDE_RUN, function(payload) {
   PopupStore.emitChange();
 });
 
+AppDispatcher.registerHandler(ActionTypes.IDE_DISCONNECTED, function(payload) {
+  state = open(state, "reconnect_view");
+
+  PopupStore.emitChange();
+});
+
+AppDispatcher.registerHandler(ActionTypes.IDE_CONNECTED, function(payload) {
+  state = close(state);
+
+  PopupStore.emitChange();
+});
+
 module.exports = PopupStore;

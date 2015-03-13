@@ -11,6 +11,7 @@ var RemoveFile = require("editor/components/popup/RemoveFile");
 var Rename = require("editor/components/popup/Rename");
 var MarkdownView = require("editor/components/popup/MarkdownView");
 var RunView = require("editor/components/popup/RunView");
+var ReconnectView = require("editor/components/popup/ReconnectView");
 
 export default React.createClass({
   mixins: [WatchStoreMixin(PopupStore)],
@@ -46,6 +47,7 @@ export default React.createClass({
       case "rename": return <Rename options={this.state.options} onClose={this.onClose} />;
       case "markdown_view": return <MarkdownView options={this.state.options} onClose={this.onClose} />;
       case "run_view": return <RunView options={this.state.options} onClose={this.onClose} />;
+      case "reconnect_view": return <ReconnectView options={this.state.options} onClose={this.onClose} />;
       default: throw "Bad modal type!";
     }
   },
