@@ -26,7 +26,7 @@ var TerminalsBox = React.createClass({
       });
 
       return <li key={"tab_" + id} className={tabClasses}>
-        <a href="#" onClick={this.selectTerminal.bind(this, terminal)}>
+        <a href="#" onClick={this.selectTerminal.bind(this, terminal)} className={tabClasses}>
           <span>{"Terminal " + id}</span>
           <button type="button" className="close" onClick={this.closeTerminal.bind(this, terminal)}>
             <span aria-hidden="true">&times;</span>
@@ -48,7 +48,9 @@ var TerminalsBox = React.createClass({
       });
 
       return (
-          <Terminal terminal={terminal} key={terminal.id} className={classes} />
+          <div className={classes} key={terminal.id}>
+            <Terminal terminal={terminal} className={classes} />
+          </div>
       );
     });
   },

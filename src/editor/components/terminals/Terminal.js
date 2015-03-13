@@ -13,6 +13,12 @@ export default React.createClass({
     terminal.terminal.fit();
   },
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.terminal.current) {
+      this.terminalResize();
+    }
+  },
+
   shouldComponentUpdate() {
     return false;
   },
@@ -40,9 +46,5 @@ export default React.createClass({
     });
 
     terminal.terminal.open(this.refs.terminal.getDOMNode());
-
-    // this.refs.terminalFrame.onresize = function(){
-    //   this.terminalResize();
-    // }.bind(this);
   }
 });

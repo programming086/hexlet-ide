@@ -1,3 +1,55 @@
+.file-tree-box.fuelux {
+    background: #222830;
+
+    h3 {
+        margin: 0;
+        color: #dadfe6;
+        font-size: 18px;
+        margin-left: 10px;
+        padding-top: 10px;
+    }
+
+    .tree {
+        border: 0;
+        overflow: scroll;
+        height: 100%;
+        color: #dadfe6;
+        padding: 0;
+
+        .tree-branch-header {
+            border-radius: 0;
+            &:hover {
+                background: #dadfe6;
+                .glyphicon {
+                    color: #000000;
+                }
+                .tree-label {
+                    color: #000000;
+                }
+            }
+        }
+
+        .tree-branch .tree-branch-children {
+            margin-left: 0;
+            padding-left: 14px;
+        }
+
+        .tree-item {
+            border-radius: 0;
+            margin-left: 0;
+            padding-left: 24px;
+            &:hover {
+                background: #dadfe6;
+                .glyphicon {
+                    color: #000000;
+                }
+                .tree-label {
+                    color: #000000;
+                }
+            }
+        }
+    }
+}
 .icon-folder, .icon-file { margin-right: 0.75em; }
 
 .file-tree-box > .row {
@@ -5,11 +57,3 @@
 }
 .file-tree-box > .row > div {
 }
-
-.fuelux .tree {
-    border-radius: 0;
-    border: 1px solid #ddd;
-    overflow: scroll;
-    height: 100%;
-}
-
