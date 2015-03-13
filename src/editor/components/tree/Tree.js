@@ -6,7 +6,8 @@ var TreeStore = require("editor/stores/TreeStore");
 var Leaf = require("./Leaf");
 
 var Tree = React.createClass({
-  handleToggleFolderState: function(tree) {
+  handleToggleFolderState: function(tree, e) {
+    e.stopPropagation();
     TreeActions.toggleFolderState(tree);
   },
 
@@ -47,14 +48,14 @@ var Tree = React.createClass({
 
     return (
       <li className={treeBranchClasses} data-template="treebranch" data-name={tree.name}
-        onContextMenu={this.handleContextMenu.bind(this, tree)} role="treeitem" aria-expanded="false">
+        onContextMenu={this.handleContextMenu.bind(this, tree)} role="treeitem" aria-expanded="false"
+        onClick={this.handleToggleFolderState.bind(this, tree)}>
         <div className="tree-branch-header">
-          <button className="tree-branch-name" data-name={tree.name}
-            onClick={this.handleToggleFolderState.bind(this, tree)}>
+          <a href="#" className="tree-branch-name" data-name={tree.name}>
             <span className="glyphicon icon-caret glyphicon-play"></span>
             <span className={folderIconClasses} data-name={tree.name}> </span>
             <span className="tree-label" data-name={tree.name}>{tree.name}</span>
-          </button>
+          </a>
         </div>
 
         {tree.children !== undefined ?

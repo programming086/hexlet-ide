@@ -16,16 +16,31 @@
         color: #dadfe6;
         padding: 0;
 
-        .tree-branch-header {
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+
+        .tree-branch-header, .tree-item {
+            cursor: pointer;
             border-radius: 0;
             &:hover {
                 background: #dadfe6;
-                .glyphicon {
-                    color: #000000;
+                .tree-branch-name, .tree-item-name {
+                    text-decoration: none;
+                    .glyphicon {
+                        color: #000000;
+                    }
+                    .tree-label {
+                        color: #000000;
+                    }
                 }
-                .tree-label {
-                    color: #000000;
-                }
+            }
+
+            .tree-branch-name, .tree-item-name {
+                color: #dadfe6;
             }
         }
 
@@ -35,18 +50,8 @@
         }
 
         .tree-item {
-            border-radius: 0;
             margin-left: 0;
             padding-left: 24px;
-            &:hover {
-                background: #dadfe6;
-                .glyphicon {
-                    color: #000000;
-                }
-                .tree-label {
-                    color: #000000;
-                }
-            }
         }
     }
 }
