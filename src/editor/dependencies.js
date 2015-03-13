@@ -6,9 +6,7 @@
 import $ from "jquery";
 import jQuery from "jquery";
 
-// var $ = jQuery = require("jquery");
 require("bootstrap/dist/css/bootstrap.css");
-require("fuelux/dist/css/fuelux.css");
 require("codemirror/lib/codemirror.css");
 require("codemirror/theme/solarized.css");
 require("xterm.js/src/xterm.css");

@@ -1,4 +1,4 @@
-.file-tree-box.fuelux {
+.file-tree-box {
     background: #222830;
 
     h3 {
@@ -9,12 +9,16 @@
         padding-top: 10px;
     }
 
+    ul {
+        list-style: none;
+        padding-left: 10px;
+    }
+
     .tree {
         border: 0;
         overflow: scroll;
         height: 100%;
         color: #dadfe6;
-        padding: 0;
 
         -webkit-touch-callout: none;
         -webkit-user-select: none;
@@ -22,6 +26,11 @@
         -moz-user-select: none;
         -ms-user-select: none;
         user-select: none;
+
+        .glyphicon {
+            margin-right: 0.6em;
+        }
+
 
         .tree-branch-header, .tree-item {
             cursor: pointer;
@@ -55,7 +64,6 @@
         }
     }
 }
-.icon-folder, .icon-file { margin-right: 0.75em; }
 
 .file-tree-box > .row {
     display: table;
