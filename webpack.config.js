@@ -48,7 +48,7 @@ module.exports = function() {
       }, {
         test: /\.js$/,
         exclude: /(node_modules|bower_components)/,
-        loader: "babel-loader?experimental&optional=runtime&optional=reactCompat"
+        loader: "babel-loader?experimental&optional=runtime"
       }, {
         test: /\.less$/,
         loader: "style!css!less"
