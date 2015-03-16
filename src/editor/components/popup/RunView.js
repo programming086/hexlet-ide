@@ -1,6 +1,7 @@
 var React = require("react/addons");
 var RunViewStore = require("editor/stores/RunViewStore");
 var WatchStoreMixin = require("editor/mixins/WatchStore");
+var IdeActions = require("editor/actions/IdeActions");
 
 var cx = React.addons.classSet;
 
