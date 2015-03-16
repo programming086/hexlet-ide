@@ -1,0 +1,67 @@
+.file-tree-box {
+    background: #222830;
+
+    h3 {
+        margin: 0;
+        color: #dadfe6;
+        font-size: 18px;
+        margin-left: 10px;
+        padding-top: 10px;
+    }
+
+    ul {
+        list-style: none;
+        padding-left: 10px;
+    }
+
+    .tree {
+        border: 0;
+        overflow: scroll;
+        height: 100%;
+        color: #dadfe6;
+
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+
+        .glyphicon {
+            margin-right: 0.6em;
+        }
+
+
+        .tree-branch-header, .tree-item {
+            padding-left: 14px;
+            cursor: pointer;
+            border-radius: 0;
+            &:hover {
+                background: #dadfe6;
+                .tree-branch-name, .tree-item-name {
+                    text-decoration: none;
+                    .glyphicon {
+                        color: #000000;
+                    }
+                    .tree-label {
+                        color: #000000;
+                    }
+                }
+            }
+
+            .tree-branch-name, .tree-item-name {
+                color: #dadfe6;
+            }
+        }
+
+        .tree-branch, .tree-item {
+            margin-left: 0;
+        }
+    }
+}
+
+.file-tree-box > .row {
+    display: table;
+}
+.file-tree-box > .row > div {
+}

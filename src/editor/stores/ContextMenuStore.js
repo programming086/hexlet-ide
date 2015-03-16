@@ -44,7 +44,7 @@ AppDispatcher.registerHandler(ActionTypes.IDE_GLOBAL_CLICK, function() {
   ContextMenuStore.emitChange();
 });
 
-AppDispatcher.registerHandler(ActionTypes.MODAL_OPEN, function() {
+AppDispatcher.registerHandler(ActionTypes.POPUP_OPEN, function() {
   state.isVisible = false;
   ContextMenuStore.emitChange();
 });

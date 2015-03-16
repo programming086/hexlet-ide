@@ -8,7 +8,6 @@ var Editor = require("./Editor");
 
 var EditorsStore = require("editor/stores/EditorsStore");
 var EditorsActions = require("editor/actions/EditorsActions");
-var ModalActions = require("editor/actions/ModalActions");
 
 var EditorsBox = React.createClass({
   mixins: [ WatchStoreMixin(EditorsStore) ],
@@ -37,19 +36,19 @@ var EditorsBox = React.createClass({
   handleCloseTab: function(editor, e) {
     e.stopPropagation();
     e.preventDefault();
-    if (editor.dirty) {
-      ModalActions.showModal({
-        title: "Close unsaved tab",
-        onApply: function() {
-          EditorsActions.closeEditor(editor);
-        },
-        content: function() {
-          return <p>are you sure? (unsaved data will be lost)</p>;
-        }
-      });
-    } else {
+    // if (editor.dirty) {
+    //   ModalActions.showModal({
+    //     title: "Close unsaved tab",
+    //     onApply: function() {
+    //       EditorsActions.closeEditor(editor);
+    //     },
+    //     content: function() {
+    //       return <p>are you sure? (unsaved data will be lost)</p>;
+    //     }
+    //   });
+    // } else {
       EditorsActions.closeEditor(editor);
-    }
+    // }
   },
 
   render: function() {
@@ -64,7 +63,7 @@ var EditorsBox = React.createClass({
       });
 
       return (<li key={"editor_" + editor.id} className={classes} role="presentation">
-        <a href="#" onClick={this.selectEditor.bind(this, editor)}>
+        <a href="#" onClick={this.selectEditor.bind(this, editor)} className={classes}>
           <span>
             {editor.name} {editor.dirty ? "*" : ""}
           </span>
@@ -83,22 +82,22 @@ var EditorsBox = React.createClass({
           <ul className="nav nav-tabs" role="tablist">
             {items}
           </ul>
-          <div className="tab-content max-height file-content">
+          <div className="tab-content file-content">
             {editors.map(function(editor) {
               var mode = this.getEditorMode(editor.name);
               var classes = cx({
                 "tab-pane": true,
                 "fade active in": editor.current,
-                "max-height": true
+                "editor": true
               });
 
               return (
-                <div className={classes} key={editor.id}>
                   <Editor mode={mode}
+                    className={classes}
+                    key={editor.id}
                     focus={editor.current}
                     onChangeValue={this.handleChangeEditorValue.bind(this, editor)}
                     initContent={editor.content} />
-                </div>
                 );
             }, this)}
           </div>
@@ -115,7 +114,6 @@ var EditorsBox = React.createClass({
       "java": "java",
       "class": "clike",
       "jar": "clike",
-      "go": "go",
       "clj": "clojure",
       "erl": "erlang",
       "html": "htmlmixed",
@@ -130,7 +128,6 @@ var EditorsBox = React.createClass({
       "rb": "ruby",
       "c": "clike",
       "c++": "clike",
-      "java": "clike",
       "txt": "text",
       "yml": "yaml",
       "yaml": "yaml",

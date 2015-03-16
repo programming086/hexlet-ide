@@ -47,12 +47,13 @@ module.exports = function() {
         loader: "style!css"
       }, {
         test: /\.js$/,
-        loader: "jsx-loader?harmony"
+        exclude: /(node_modules|bower_components)/,
+        loader: "babel-loader?experimental&optional=runtime"
       }, {
         test: /\.less$/,
         loader: "style!css!less"
       }, {
-        test: /\.(png|svg|woff|eot|ttf|otf)$/,
+        test: /\.(png|svg|woff|woff2|eot|ttf|otf)$/,
         loader: "url?limit=100000"
       }]
     }

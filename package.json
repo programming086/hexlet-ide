@@ -23,15 +23,18 @@
     "fs-extra": "^0.11.1",
     "jade": "*",
     "lodash": "*",
+    "markdown": "^0.5.0",
+    "moment": "*",
+    "morgan": "*",
     "pty.js": "git://github.com/chjj/pty.js",
     "rimraf": "*",
     "socket.io": "*",
     "tree-model": "*",
-    "morgan": "*",
-    "when": "^3.4.6",
-    "moment": "*"
+    "when": "^3.4.6"
   },
   "devDependencies": {
+    "babel-runtime": "^4.7.8",
+    "babel-loader": "^4.1.0",
     "chai": "~1.9.2",
     "codemirror": "*",
     "css-loader": "*",

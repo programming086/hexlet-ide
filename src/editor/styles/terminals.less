@@ -1,0 +1,56 @@
+.terminals-box {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    & .nav {
+        border: 0;
+        background: #222830;
+        min-height: 27px;
+        max-height: 27px;
+        a {
+            border: 0;
+            border-radius: 0;
+            &.active, &.active:focus {
+                background: #3B414D;
+                border: 0;
+                color: #dadfe6;
+            }
+            &.active:hover, &:hover {
+                border: 0;
+                color: #dadfe6;
+                background: #3B414D;
+            }
+
+            & * {
+                cursor: pointer;
+            }
+
+            color: #dadfe6;
+            padding: 3px 12px;
+
+            .close {
+                margin-left: 5px;
+                font-size: 18px;
+                opacity: 0;
+                color: red;
+                text-shadow: none;
+            }
+            &:hover .close {
+                opacity: 1;
+            }
+        }
+    }
+
+
+    & .tab-content {
+        display: flex;
+
+        & .terminal {
+            width: 100%;
+            &.active {
+                display: flex;
+            }
+        }
+    }
+}
+

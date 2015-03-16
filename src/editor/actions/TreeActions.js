@@ -2,17 +2,18 @@
 
 var path = require("path");
 
-var rpc = require("editor/rpc");
 var AppDispatcher = require("editor/dispatcher/AppDispatcher");
 var IdeConstants = require("editor/constants/IdeConstants");
 var TreeStore = require("editor/stores/TreeStore");
+
+var rpc = require("editor/lib/RpcClient");
 
 var ActionTypes = IdeConstants.ActionTypes;
 
 
 var TreeActions = {
   loadTree: function() {
-    rpc.fs.tree().then(function(result) {
+    rpc.getClient().fs.tree().then(function(result) {
       // FIXME check result
       AppDispatcher.dispatch({
         actionType: ActionTypes.TREE_LOAD,
@@ -24,7 +25,7 @@ var TreeActions = {
   toggleFolderState: function(tree) {
     "use strict";
     if (tree.state === "closed") {
-      rpc.fs.tree(tree.path).then(function(result) {
+      rpc.getClient().fs.tree(tree.path).then(function(result) {
         AppDispatcher.dispatch({
           actionType: ActionTypes.TREE_OPEN_FOLDER,
           id: tree.id,
@@ -42,7 +43,7 @@ var TreeActions = {
   openFile: function(item) {
     "use strict";
 
-    rpc.fs.read(item.path).then(function(result) {
+    rpc.getClient().fs.read(item.path).then(function(result) {
       AppDispatcher.dispatch({
         actionType: ActionTypes.TREE_OPEN_FILE,
         item: item,
@@ -53,7 +54,7 @@ var TreeActions = {
 
   createFolder: function(parentId, name) {
     var parentFolder = TreeStore.getPathById(parentId);
-    rpc.fs.mkdir(path.join(parentFolder, name)).then(function(result) {
+    rpc.getClient().fs.mkdir(path.join(parentFolder, name)).then(function(result) {
       if (result) {
         AppDispatcher.dispatch({
           actionType: ActionTypes.TREE_CREATE_FOLDER,
@@ -67,7 +68,7 @@ var TreeActions = {
   remove: function(id) {
     var folderPath = TreeStore.getPathById(id);
     var files = TreeStore.getFilesForPath(id);
-    rpc.fs.unlink(folderPath).then(function(result) {
+    rpc.getClient().fs.unlink(folderPath).then(function(result) {
       // FIXME check result
       AppDispatcher.dispatch({
         actionType: ActionTypes.TREE_REMOVE,
@@ -79,7 +80,7 @@ var TreeActions = {
 
   createFile: function(parentId, name) {
     var parentFolder = TreeStore.getPathById(parentId);
-    rpc.fs.touch(path.join(parentFolder, name)).then(function(result) {
+    rpc.getClient().fs.touch(path.join(parentFolder, name)).then(function(result) {
       if (result) {
         AppDispatcher.dispatch({
           actionType: ActionTypes.TREE_CREATE_FILE,
@@ -92,7 +93,7 @@ var TreeActions = {
 
   rename: function(parentId, name) {
     var parentPath = TreeStore.getPathById(parentId);
-    rpc.fs.rename(parentPath, name).then(function(result) {
+    rpc.getClient().fs.rename(parentPath, name).then(function(result) {
       if (result) {
         AppDispatcher.dispatch({
           actionType: ActionTypes.TREE_RENAME,

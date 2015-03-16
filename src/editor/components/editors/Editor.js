@@ -1,26 +1,14 @@
 var React = require("react/addons");
 var CodeMirror = require("codemirror");
 
-var Editor = React.createClass({
-  render: function() {
-    return (
-      <div className="row max-height">
-        <div className="col-md-12 max-height">
-          <div className="max-height" ref="editor"></div>
-        </div>
-      </div>
-    );
-  },
-
-  componentDidMount: function() {
-    var $this = this;
-    var element = this.refs.editor;
-    var myCodeMirror = CodeMirror(element.getDOMNode(), {
+export default React.createClass({
+  componentDidMount() {
+    let myCodeMirror = CodeMirror(this.refs.editor.getDOMNode(), {
       lineNumbers: true,
       tabSize: 2,
       extraKeys: {
         Tab: function(cm) {
-          var spaces = Array(cm.getOption("indentUnit") + 1).join(" ");
+          let spaces = Array(cm.getOption("indentUnit") + 1).join(" ");
           cm.replaceSelection(spaces);
         },
         "Shift-Tab": "autocomplete"
@@ -28,17 +16,18 @@ var Editor = React.createClass({
       value: this.props.initContent,
       mode: this.props.mode,
       theme: "solarized dark",
-      indentWithTabs: false
+      indentWithTabs: false,
+      viewportMargin: Infinity
     });
 
-    console.log(CodeMirror.mimeModes);
-
-    myCodeMirror.on("change", function(CodeMirror, object) {
-      $this.props.onChangeValue(myCodeMirror.getValue());
+    myCodeMirror.on("change", (CodeMirror, object) => {
+      this.props.onChangeValue(myCodeMirror.getValue());
     });
 
     this.setState({myCodeMirror: myCodeMirror});
+  },
+
+  render() {
+    return ( <div className={this.props.className} ref="editor"></div>);
   }
 });
-
-module.exports = Editor;

@@ -10,6 +10,7 @@ var AppDispatcher = objectAssign(new Dispatcher(), {
     }
     this.register(function(payload) {
       if (payload.actionType === actionType) {
+        console.log("Call action: " + actionType + " with payload: ", payload);
         callback(payload);
       }
     });

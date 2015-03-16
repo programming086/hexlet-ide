@@ -3,32 +3,35 @@
 var AppDispatcher = require("editor/dispatcher/AppDispatcher");
 var IdeConstants = require("editor/constants/IdeConstants");
 var IdeStore = require("editor/stores/IdeStore");
+var TreeStore = require("editor/stores/TreeStore");
 var ActionTypes = IdeConstants.ActionTypes;
 
+var rpc = require("editor/lib/RpcClient");
+
 var IdeActions = {
-  globalClick: function() {
+  globalClick() {
     "use strict";
     AppDispatcher.dispatch({
       actionType: ActionTypes.IDE_GLOBAL_CLICK
     });
   },
 
-  toggleFullscreen: function() {
-    "use strict";
+  // toggleFullscreen() {
+  //   "use strict";
 
-    var fullscreen = !IdeStore.getState().fullscreen;
-    var cmd = fullscreen ? "ideFullscreen" : "ideEmbedded";
-    var message = { cmd: cmd };
+  //   var fullscreen = !IdeStore.getState().fullscreen;
+  //   var cmd = fullscreen ? "ideFullscreen" : "ideEmbedded";
+  //   var message = { cmd: cmd };
 
-    window.parent.postMessage(message, "*");
+  //   window.parent.postMessage(message, "*");
 
-    AppDispatcher.dispatch({
-      actionType: ActionTypes.IDE_TOGGLE_FULL_SCREEN,
-      fullscreen: fullscreen
-    });
-  },
+  //   AppDispatcher.dispatch({
+  //     actionType: ActionTypes.IDE_TOGGLE_FULL_SCREEN,
+  //     fullscreen: fullscreen
+  //   });
+  // },
 
-  loadCompleted: function() {
+  loadCompleted() {
     "use strict";
 
     AppDispatcher.dispatch({
@@ -36,19 +39,65 @@ var IdeActions = {
     });
   },
 
-  connect: function() {
+  connect() {
     "use strict";
 
+    var msg = { cmd: "ide:connect" };
+    window.parent.postMessage(msg, "*");
     AppDispatcher.dispatch({
       actionType: ActionTypes.IDE_CONNECTED
     });
   },
 
-  disconnect: function() {
+  disconnect() {
     "use strict";
 
+    var msg = { cmd: "ide:disconnect" };
+    window.parent.postMessage(msg, "*");
     AppDispatcher.dispatch({
       actionType: ActionTypes.IDE_DISCONNECTED
+    });
+  },
+
+  showReadme(text) {
+    AppDispatcher.dispatch({
+      actionType: ActionTypes.IDE_SHOW_README,
+      content: text,
+      title: "README.md"
+    });
+  },
+
+  run() {
+    AppDispatcher.dispatch({ actionType: ActionTypes.IDE_RUN });
+    return rpc.getClient().run.exec("make test")
+  },
+
+  runProgress(data) {
+    AppDispatcher.dispatch({
+      actionType: ActionTypes.IDE_RUN_PROGRESS,
+      chunk: data
+    });
+  },
+
+  runFinished(data) {
+    AppDispatcher.dispatch({
+      actionType: ActionTypes.IDE_RUN_FINISH,
+      code: data.code,
+      signal: data.signal
+    });
+  },
+
+  resizeSplit() {
+    AppDispatcher.dispatch({
+      actionType: ActionTypes.IDE_RESIZE_SPLIT
+    });
+  },
+
+  submitResult() {
+    var msg = { cmd: "ide:submit" };
+    window.parent.postMessage(msg, "*");
+    AppDispatcher.dispatch({
+      actionType: ActionTypes.IDE_SUBMIT_RESULT
     });
   }
 };

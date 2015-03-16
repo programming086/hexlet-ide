@@ -36,18 +36,22 @@ AppDispatcher.registerHandler(ActionTypes.TERMINALS_CREATE_TERMINAL, function(pa
     })
   };
   _.each(terminals, function(t) { t.current = false; });
-  terminals[payload.id].current = true;
+  const currentTerminal = terminals[payload.id];
+  currentTerminal.current = true;
+
   TerminalsStore.emitChange();
 });
 
 AppDispatcher.registerHandler(ActionTypes.TERMINALS_UPDATE_TERMINAL, function(payload) {
-  var terminal = terminals[payload.id];
+  const terminal = terminals[payload.id];
   terminal.terminal.write(payload.data);
 });
 
 AppDispatcher.registerHandler(ActionTypes.TERMINALS_SELECT_TERMINAL, function(payload) {
   _.each(terminals, function(t) { t.current = false; });
-  terminals[payload.id].current = true;
+  const currentTerminal = terminals[payload.id];
+  currentTerminal.current = true;
+
   TerminalsStore.emitChange();
 });
 
@@ -61,6 +65,10 @@ AppDispatcher.registerHandler(ActionTypes.TERMINALS_CLOSE_TERMINAL, function(pay
     }
   }
   TerminalsStore.emitChange();
+});
+
+AppDispatcher.registerHandler(ActionTypes.IDE_RESIZE_SPLIT, function(payload) {
+  var t = TerminalsStore.getCurrent();
 });
 
 module.exports = TerminalsStore;

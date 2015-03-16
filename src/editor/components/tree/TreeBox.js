@@ -5,11 +5,9 @@ var WatchStoreMixin = require("editor/mixins/WatchStore");
 var Tree = require("./Tree");
 var TreeStore = require("editor/stores/TreeStore");
 
+var PopupActions = require("editor/actions/PopupActions");
 var TreeActions = require("editor/actions/TreeActions");
 var ContextMenuActions = require("editor/actions/ContextMenuActions");
-var ModalActions = require("editor/actions/ModalActions");
-
-var ActionTypes = require("editor/constants/IdeConstants").ActionTypes;
 
 var TreeBox = React.createClass({
   mixins: [ WatchStoreMixin(TreeStore) ],
@@ -21,67 +19,23 @@ var TreeBox = React.createClass({
   },
 
   handleOpenCreateFolderModal: function(parentId) {
-    ModalActions.showModal({
-      title: "Create folder",
-      onApply: function(modal) {
-        TreeActions.createFolder(parentId, modal.refs.nameInput.getDOMNode().value);
-      },
-      content: function() {
-        return (
-          <input type="text" className="form-control" name="folderName" ref="nameInput" autoFocus={true} />
-        );
-      }
-    });
-  },
-
-  handleOpenRenameModal: function(item) {
-    ModalActions.showModal({
-      title: "Rename",
-      onApply: function(modal) {
-        TreeActions.rename(item.id, modal.refs.nameInput.getDOMNode().value);
-      },
-      content: function() {
-        return (
-          <input type="text" className="form-control" name="folderName" ref="nameInput" defaultValue={item.name} autoFocus={true} />
-        );
-      }
-    });
-  },
-
-  handleOpenRemoveFolderModal: function(id) {
-    ModalActions.showModal({
-      title: "Remove folder",
-      onApply: function(modal) {
-        TreeActions.remove(id);
-      },
-      content: function() {
-        return <p>Are you sure?</p>;
-      }
-    });
+    PopupActions.open("create_folder", { parentId: parentId });
   },
 
   handleOpenCreateFileModal: function(parentId) {
-    ModalActions.showModal({
-      title: "Create file",
-      onApply: function(modal) {
-        TreeActions.createFile(parentId, modal.refs.nameInput.getDOMNode().value);
-      },
-      content: function() {
-        return <input type="text" className="form-control" name="folderName" ref="nameInput" autoFocus={true} />
-      }
-    });
+    PopupActions.open("create_file", { parentId: parentId });
   },
 
-  handleOpenRemoveFileModal: function(id) {
-    ModalActions.showModal({
-      title: "Remove file",
-      onApply: function(modal) {
-        TreeActions.remove(id);
-      },
-      content: function() {
-        return <p>Are you sure?</p>;
-      }
-    });
+  handleOpenRenameModal: function(item) {
+    PopupActions.open("rename", { item: item });
+  },
+
+  handleOpenRemoveFolderModal: function(item) {
+    PopupActions.open("remove_folder", { item: item });
+  },
+
+  handleOpenRemoveFileModal: function(item) {
+    PopupActions.open("remove_file", { item: item });
   },
 
   getContextMenuItems: function(item) {
@@ -94,14 +48,14 @@ var TreeBox = React.createClass({
       ]);
 
       contextMenuChildren.push([
-        {onClick: this.handleOpenRemoveFolderModal.bind(this, item.id), title: "Remove folder"},
+        {onClick: this.handleOpenRemoveFolderModal.bind(this, item), title: "Remove folder"},
         {onClick: this.handleOpenRenameModal.bind(this, item), title: "Rename"}
       ]);
     }
 
     if (item.type === "file") {
       contextMenuChildren.push([
-        {onClick: this.handleOpenRemoveFileModal.bind(this, item.id), title: "Remove file"},
+        {onClick: this.handleOpenRemoveFileModal.bind(this, item), title: "Remove file"},
         {onClick: this.handleOpenRenameModal.bind(this, item), title: "Rename"}
       ]);
     }
@@ -122,7 +76,8 @@ var TreeBox = React.createClass({
 
   render: function() {
     return (
-      <div className="fuelux">
+      <div className="fuelux file-tree-box">
+        <h3>Folders</h3>
         {this.state.tree ?
         <ul className="tree" role="tree">
           <Tree key={"tree_" + this.state.tree.id} tree={this.state.tree} handleContextMenu={this.handleContextMenu} />

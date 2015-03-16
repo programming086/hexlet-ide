@@ -1,28 +1,29 @@
 var React = require("react/addons");
 var TerminalsActions = require('editor/actions/TerminalsActions');
 
-var Terminal = React.createClass({
-  render: function() {
+export default React.createClass({
+  render() {
     return (
-      <div className="row max-height">
-        <div className="col-xs-12 max-height">
-          <iframe className="terminal-frame" name="terminalFrame"/>
-          <div className="max-height" ref="terminal"></div>
-        </div>
-      </div>
+        <div className={this.props.className} ref="terminal"></div>
     );
   },
 
-  terminalResize: function () {
+  terminalResize() {
     var terminal = this.props.terminal;
     terminal.terminal.fit();
   },
 
-  shouldComponentUpdate: function() {
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.terminal.current) {
+      this.terminalResize();
+    }
+  },
+
+  shouldComponentUpdate() {
     return false;
   },
 
-  componentDidMount: function() {
+  componentDidMount() {
     var terminal = this.props.terminal;
 
     terminal.terminal.on("data", function(data) {
@@ -32,9 +33,9 @@ var Terminal = React.createClass({
       });
     });
 
-    terminal.terminal.on("open", function() {
+    terminal.terminal.on("open", () => {
       this.terminalResize();
-    }.bind(this));
+    });
 
     terminal.terminal.on("resize", function(data) {
       TerminalsActions.resize({
@@ -45,12 +46,5 @@ var Terminal = React.createClass({
     });
 
     terminal.terminal.open(this.refs.terminal.getDOMNode());
-
-    terminalFrame.onresize = function(){
-      this.terminalResize();
-    }.bind(this);
   }
 });
-
-
-module.exports = Terminal;

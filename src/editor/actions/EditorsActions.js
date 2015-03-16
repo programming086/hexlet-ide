@@ -4,7 +4,7 @@ var AppDispatcher = require("editor/dispatcher/AppDispatcher");
 var IdeConstants = require("editor/constants/IdeConstants");
 var ActionTypes = IdeConstants.ActionTypes;
 var TreeStore = require("editor/stores/TreeStore");
-var rpc = require("editor/rpc");
+var rpc = require("editor/lib/RpcClient");
 
 module.exports = {
   // flushTabContent: function(id, content) {
@@ -40,7 +40,7 @@ module.exports = {
       id: editor.id
     });
 
-    rpc.fs.write(path, editor.content).then(function() {
+    rpc.getClient().fs.write(path, editor.content).then(function() {
       AppDispatcher.dispatch({
         actionType: ActionTypes.EDITORS_SAVE_CURRENT,
         id: editor.id

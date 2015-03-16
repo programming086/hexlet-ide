@@ -4,17 +4,14 @@ var AppDispatcher = require("editor/dispatcher/AppDispatcher");
 var ActionTypes = require("editor/constants/IdeConstants").ActionTypes;
 
 module.exports = {
-  showModal: function(options) {
-    "use strict";
+  open(type, options) {
     AppDispatcher.dispatch({
-      actionType: ActionTypes.MODAL_OPEN,
+      actionType: ActionTypes.POPUP_OPEN,
+      type: type,
       options: options
     });
   },
-  close: function() {
-    "use strict";
-    AppDispatcher.dispatch({
-      actionType: ActionTypes.MODAL_CLOSE
-    });
+  close() {
+    AppDispatcher.dispatch({ actionType: ActionTypes.POPUP_CLOSE });
   }
 };

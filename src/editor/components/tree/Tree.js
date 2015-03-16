@@ -1,65 +1,66 @@
-var _ = require("lodash");
-var React = require("react/addons");
+import _ from "lodash";
+import React from "react/addons";
 
-var TreeActions = require("editor/actions/TreeActions");
-var TreeStore = require("editor/stores/TreeStore");
-var Leaf = require("./Leaf");
+import TreeActions from "editor/actions/TreeActions";
+import TreeStore from "editor/stores/TreeStore";
+import Leaf from "./Leaf";
 
-var Tree = React.createClass({
-  handleToggleFolderState: function(tree) {
+const cx = React.addons.classSet;
+
+const Tree = React.createClass({
+  handleToggleFolderState(tree, e) {
+    e.stopPropagation();
     TreeActions.toggleFolderState(tree);
   },
 
-  handleContextMenu: function(tree, e) {
+  handleContextMenu(tree, e) {
     this.props.handleContextMenu(e, tree);
   },
 
-  getChildren: function(tree) {
+  getChildren(tree) {
     return _.sortBy(tree.children, ["type", "name"]);
   },
 
-  render: function() {
+  render() {
     var { tree, ...other } = this.props;
 
     if (undefined === tree) {
       return null;
     }
 
-    var cx = React.addons.classSet;
 
-    var treeBranchClasses = cx({
-      "tree-open": "opened" == tree.state,
-      "tree-branch": true
+    const isOpened = "opened" == tree.state;
+
+    const treeBranchClasses = cx({
+      "tree-branch": true,
+      "tree-open": isOpened
     });
 
-    var folderIconClasses = cx({
+    const folderIconClasses = cx({
       "glyphicon": true,
-      "icon-folder": true,
-      "glyphicon-folder-open": "opened" == tree.state,
-      "glyphicon-folder-close": "closed" == tree.state,
-
+      "glyphicon-folder-open": isOpened,
+      "glyphicon-folder-close": !isOpened
     });
 
-    var childrenClasses = cx({
-      "hide": "closed" == tree.state,
-      "tree-branch-children": true
+    const childrenClasses = cx({
+      "tree-branch-children": true,
+      "hide": !isOpened
     });
 
     return (
       <li className={treeBranchClasses} data-template="treebranch" data-name={tree.name}
-        onContextMenu={this.handleContextMenu.bind(this, tree)} role="treeitem" aria-expanded="false">
+        onContextMenu={this.handleContextMenu.bind(this, tree)} role="treeitem" aria-expanded="false"
+        onClick={this.handleToggleFolderState.bind(this, tree)}>
         <div className="tree-branch-header">
-          <button className="tree-branch-name" data-name={tree.name}
-            onClick={this.handleToggleFolderState.bind(this, tree)}>
-            <span className="glyphicon icon-caret glyphicon-play"></span>
-            <span className={folderIconClasses} data-name={tree.name}> </span>
+          <a href="#" className="tree-branch-name" data-name={tree.name}>
+            <span className={folderIconClasses} data-name={tree.name}></span>
             <span className="tree-label" data-name={tree.name}>{tree.name}</span>
-          </button>
+          </a>
         </div>
 
         {tree.children !== undefined ?
           <ul className={childrenClasses} role="group">
-            {this.getChildren(tree).map(function(item) {
+            {this.getChildren(tree).map((item) => {
               switch(item.type) {
                 case "directory":
                   return <Tree {...other} key={"tree_" + item.id} tree={item} />
@@ -70,7 +71,7 @@ var Tree = React.createClass({
                 default:
                   throw "xxx"
               }
-            }, this)}
+            })}
           </ul>
           : null}
         </li>
@@ -78,4 +79,4 @@ var Tree = React.createClass({
   }
 });
 
-module.exports = Tree;
+export default Tree;
