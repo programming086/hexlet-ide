@@ -83,7 +83,7 @@ export default class HexletIdeWidget {
 
   run() {
     return IdeActions.run();
-  },
+  }
 
 
   handleWindowMessage(e) {
