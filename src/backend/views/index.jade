@@ -4,23 +4,6 @@ html
     script(src="https://cdnjs.cloudflare.com/ajax/libs/es5-shim/4.0.3/es5-shim.js")
     script(type='text/javascript' src="assets/main.js")
   body
-    nav.navbar.navbar-default.navbar-fixed-top
-      .container-fluid
-        .navbar-header
-          a.navbar-brand(href='#') Hexlet
-        ul.nav.navbar-nav
-          li
-            a(href='#' id="run-btn") Run
-          li
-            a(href='#' id="readme-btn") Readme
-        ul.nav.navbar-nav.navbar-right
-          li
-            a(href='#') WEB
-          li
-            a(href='#') ?
-          li
-            a(href='#') Status
-
     #hexlet-ide.hexlet-ide
 
     script.
@@ -36,25 +19,4 @@ html
           cmd: "make test"
         });
 
-        document.querySelector("#run-btn").addEventListener("click", function() {
-            widget.run();
-        });
-
-        document.querySelector("#readme-btn").addEventListener("click", function() {
-            widget.showReadme();
-        });
-
-        window.addEventListener("message", function(event) {
-          var data = event.data;
-          var cmd = data.cmd;
-
-          if (cmd == "ideMakeTest") {
-            widget.run().done(function(response) {
-              var result = {
-                cmd: cmd,
-                response: response
-              };
-              event.source.postMessage(result, event.origin);
-            });
-          }
-        });
+        window.addEventListener("message", widget.handleWindowMessage.bind(widget));

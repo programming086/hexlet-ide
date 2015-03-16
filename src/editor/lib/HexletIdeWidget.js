@@ -83,5 +83,28 @@ export default class HexletIdeWidget {
 
   run() {
     return IdeActions.run();
+  },
+
+
+  handleWindowMessage(e) {
+    var data = e.data;
+    var cmd = data.cmd;
+
+    switch(cmd) {
+      case "ide:run":
+        return this.run().done((response) => {
+          var result = {
+            cmd: cmd,
+            response: response
+          };
+          e.source.postMessage(result, e.origin);
+        });
+
+      case "ide:readme":
+        return this.showReadme();
+
+      default:
+        return null;
+    }
   }
 }
