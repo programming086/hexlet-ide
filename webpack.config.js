@@ -44,7 +44,7 @@ module.exports = function() {
     module: {
       loaders: [{
         test: /\.css$/,
-        loader: "style!css"
+        loader: "style!css!autoprefixer-loader"
       }, {
         test: /\.js$/,
         exclude: /(node_modules|bower_components)/,
