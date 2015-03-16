@@ -77,8 +77,8 @@ export default class HexletIdeWidget {
 //     return RpcClient.getClient().run.exec(cmd);
 //   }
 
-  showReadme() {
-    return IdeActions.showReadme();
+  showReadme(readmeText) {
+    return IdeActions.showReadme(readmeText);
   }
 
   run() {
@@ -87,8 +87,8 @@ export default class HexletIdeWidget {
 
 
   handleWindowMessage(e) {
-    var data = e.data;
-    var cmd = data.cmd;
+    var cmd = e.data.cmd;
+    var data = e.data.data;
 
     switch(cmd) {
       case "ide:run":
@@ -101,7 +101,7 @@ export default class HexletIdeWidget {
         });
 
       case "ide:readme":
-        return this.showReadme();
+        return this.showReadme(data.readme);
 
       default:
         return null;

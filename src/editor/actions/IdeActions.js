@@ -16,20 +16,20 @@ var IdeActions = {
     });
   },
 
-  toggleFullscreen() {
-    "use strict";
+  // toggleFullscreen() {
+  //   "use strict";
 
-    var fullscreen = !IdeStore.getState().fullscreen;
-    var cmd = fullscreen ? "ideFullscreen" : "ideEmbedded";
-    var message = { cmd: cmd };
+  //   var fullscreen = !IdeStore.getState().fullscreen;
+  //   var cmd = fullscreen ? "ideFullscreen" : "ideEmbedded";
+  //   var message = { cmd: cmd };
 
-    window.parent.postMessage(message, "*");
+  //   window.parent.postMessage(message, "*");
 
-    AppDispatcher.dispatch({
-      actionType: ActionTypes.IDE_TOGGLE_FULL_SCREEN,
-      fullscreen: fullscreen
-    });
-  },
+  //   AppDispatcher.dispatch({
+  //     actionType: ActionTypes.IDE_TOGGLE_FULL_SCREEN,
+  //     fullscreen: fullscreen
+  //   });
+  // },
 
   loadCompleted() {
     "use strict";
@@ -55,15 +55,15 @@ var IdeActions = {
     });
   },
 
-  showReadme() {
-    var item = TreeStore.getFileByName("README.md");
-    rpc.getClient().fs.read(item.path).then(function(result) {
-      AppDispatcher.dispatch({
-        actionType: ActionTypes.IDE_SHOW_README,
-        content: result,
-        title: "README.md"
-      });
+  showReadme(text) {
+    // var item = TreeStore.getFileByName("README.md");
+    // rpc.getClient().fs.read(item.path).then(function(result) {
+    AppDispatcher.dispatch({
+      actionType: ActionTypes.IDE_SHOW_README,
+      content: text,
+      title: "README.md"
     });
+    // });
   },
 
   run() {
@@ -89,6 +89,14 @@ var IdeActions = {
   resizeSplit() {
     AppDispatcher.dispatch({
       actionType: ActionTypes.IDE_RESIZE_SPLIT
+    });
+  },
+
+  submitResult() {
+    var msg = { cmd: "ide:submit" };
+    window.parent.postMessage(msg, "*");
+    AppDispatcher.dispatch({
+      actionType: ActionTypes.IDE_SUBMIT_RESULT
     });
   }
 };

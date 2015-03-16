@@ -2,12 +2,17 @@ var React = require("react/addons");
 var RunViewStore = require("editor/stores/RunViewStore");
 var WatchStoreMixin = require("editor/mixins/WatchStore");
 
+var cx = React.addons.classSet;
+
 export default React.createClass({
   mixins: [WatchStoreMixin(RunViewStore)],
 
   getFluxState() {
     return {
-      content: RunViewStore.getContent()
+      content: RunViewStore.getContent(),
+      isFinished: RunViewStore.isFinished(),
+      isSuccess: RunViewStore.isSuccess(),
+      code: RunViewStore.getCode()
     };
   },
 
@@ -15,23 +20,44 @@ export default React.createClass({
     return this.state.content;
   },
 
+  getStatusText() {
+    if (!this.state.isFinished) {
+      return "progress";
+    }
+    return this.state.isSuccess ? "puccess" : "fail";
+  },
+
+  getHeaderClasses() {
+    return cx({
+      "modal-header": true,
+      "alert-success": this.state.isFinished && this.state.isSuccess,
+      "alert-danger": this.state.isFinished && !this.state.isSuccess,
+    });
+  },
+
   handleClose() {
     this.props.onClose();
+  },
+
+  handleSubmit() {
+    IdeActions.submitResult();
   },
 
   render() {
     return (
      <div className="modal-dialog width-900">
        <div className="modal-content">
-         <div className="modal-header">
-           <button className="close" onClick={this.handleClose} aria-label="Close"><span aria-hidden="true">&times;</span></button>
-           <h4 className="modal-title">Run result</h4>
+         <div className={this.getHeaderClasses()}>
+           <h4 className="modal-title">Run result ({this.getStatusText()})</h4>
          </div>
          <div className="modal-body">
           <pre dangerouslySetInnerHTML={{ __html: this.getContent() }}></pre>
          </div>
          <div className="modal-footer">
-           <button data-name="Cancel" type="button" className="btn btn-default" onClick={this.handleClose}>Cancel</button>
+            { this.state.isFinished && this.state.isSuccess ?
+             <button data-name="Submit" type="button" className="btn btn-primary" onClick={this.handleSubmit}>Submit</button>
+             : ""}
+             <button data-name="Close" type="button" className="btn btn-default" onClick={this.handleClose}>Close</button>
          </div>
        </div>
       </div>
