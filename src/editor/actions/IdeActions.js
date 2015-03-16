@@ -42,6 +42,8 @@ var IdeActions = {
   connect() {
     "use strict";
 
+    var msg = { cmd: "ide:connect" };
+    window.parent.postMessage(msg, "*");
     AppDispatcher.dispatch({
       actionType: ActionTypes.IDE_CONNECTED
     });
@@ -50,20 +52,19 @@ var IdeActions = {
   disconnect() {
     "use strict";
 
+    var msg = { cmd: "ide:disconnect" };
+    window.parent.postMessage(msg, "*");
     AppDispatcher.dispatch({
       actionType: ActionTypes.IDE_DISCONNECTED
     });
   },
 
   showReadme(text) {
-    // var item = TreeStore.getFileByName("README.md");
-    // rpc.getClient().fs.read(item.path).then(function(result) {
     AppDispatcher.dispatch({
       actionType: ActionTypes.IDE_SHOW_README,
       content: text,
       title: "README.md"
     });
-    // });
   },
 
   run() {
