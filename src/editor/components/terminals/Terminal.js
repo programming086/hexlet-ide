@@ -26,6 +26,9 @@ export default React.createClass({
   componentDidMount() {
     var terminal = this.props.terminal;
 
+    terminal.terminal.removeAllListeners("data");
+    terminal.terminal.removeAllListeners("open");
+
     terminal.terminal.on("data", function(data) {
       TerminalsActions.startUpdateTerminal({
         id: terminal.id,
