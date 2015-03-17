@@ -38,7 +38,7 @@ var Ide = React.createClass({
   },
 
   renderNormalMode() {
-    return <div className="max-height" onClick={this.handleGlobalClick}>
+    return <div className="splits-container" onClick={this.handleGlobalClick}>
       <VerticalSplit className="ide-split">
         <Panel className="left-panel">
           <TreeBox />
@@ -58,7 +58,7 @@ var Ide = React.createClass({
   },
 
   renderTerminalMode() {
-    return <div className="max-height" onClick={this.handleGlobalClick}>
+    return <div className="splits-container" onClick={this.handleGlobalClick}>
       <TerminalsBox />
     </div>
   },
