@@ -51,7 +51,7 @@ module.exports = function() {
         loader: "babel-loader?experimental&optional=runtime"
       }, {
         test: /\.less$/,
-        loader: "style!css!less"
+        loader: "style!css!autoprefixer!less"
       }, {
         test: /\.(png|svg|woff|woff2|eot|ttf|otf)$/,
         loader: "url?limit=100000"

@@ -9,9 +9,9 @@
     flex-direction: column;
     & .nav {
         border: 0;
-        background: #222830;
-        min-height: 27px;
-        max-height: 27px;
+        background: @editor-tab-menu-bg;
+        min-height: @editor-tab-menu-height;
+        max-height: @editor-tab-menu-height;
         a {
             border: 0;
             border-radius: 0;
@@ -48,6 +48,8 @@
 
     & .file-content {
         display: flex;
+        overflow-y: hidden;
+        // height: calc(100% - @editor-tab-menu-height);
 
         & .editor.active {
             width: 100%;
