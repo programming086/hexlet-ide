@@ -87,9 +87,11 @@ var TreeBox = React.createClass({
       <div className="fuelux file-tree-box">
         <h3>Folders</h3>
         {this.state.tree ?
-        <ul className="tree" role="tree">
-          <Tree key={"tree_" + this.state.tree.id} tree={this.state.tree} handleContextMenu={this.handleContextMenu} />
-        </ul>
+        <div className="tree">
+          <ul role="tree">
+            <Tree key={"tree_" + this.state.tree.id} tree={this.state.tree} handleContextMenu={this.handleContextMenu} />
+          </ul>
+        </div>
         : null}
       </div>
     );
