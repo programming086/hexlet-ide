@@ -51,7 +51,7 @@ export default React.createClass({
          <div className={this.getHeaderClasses()}>
            <h4 className="modal-title">Run result ({this.getStatusText()})</h4>
          </div>
-         <div className="modal-body">
+         <div className="modal-body scrollable">
           <pre dangerouslySetInnerHTML={{ __html: this.getContent() }}></pre>
          </div>
          <div className="modal-footer">
