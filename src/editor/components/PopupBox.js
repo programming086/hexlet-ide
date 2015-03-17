@@ -31,7 +31,6 @@ export default React.createClass({
     return (
       <div>
         <div className="modal fade in" style={{ display: "block" }}>
-          <div className="modal-backdrop fade in"></div>
           {this.renderCurrentModal()}
         </div>
       </div>
