@@ -25,7 +25,7 @@ export default React.createClass({
     if (!this.state.isFinished) {
       return "progress";
     }
-    return this.state.isSuccess ? "puccess" : "fail";
+    return this.state.isSuccess ? "success" : "fail";
   },
 
   getHeaderClasses() {
