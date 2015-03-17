@@ -12,35 +12,43 @@ var ContextMenuActions = require("editor/actions/ContextMenuActions");
 var TreeBox = React.createClass({
   mixins: [ WatchStoreMixin(TreeStore) ],
 
-  getFluxState: function() {
+  getFluxState() {
     return {
       tree: TreeStore.getRoot(),
     };
   },
 
-  handleOpenCreateFolderModal: function(parentId) {
+  handleOpenCreateFolderModal(parentId) {
     PopupActions.open("create_folder", { parentId: parentId });
   },
 
-  handleOpenCreateFileModal: function(parentId) {
+  handleOpenCreateFileModal(parentId) {
     PopupActions.open("create_file", { parentId: parentId });
   },
 
-  handleOpenRenameModal: function(item) {
+  handleOpenRenameModal(item) {
     PopupActions.open("rename", { item: item });
   },
 
-  handleOpenRemoveFolderModal: function(item) {
+  handleOpenRemoveFolderModal(item) {
     PopupActions.open("remove_folder", { item: item });
   },
 
-  handleOpenRemoveFileModal: function(item) {
+  handleOpenRemoveFileModal(item) {
     PopupActions.open("remove_file", { item: item });
   },
 
-  getContextMenuItems: function(item) {
+  handleRefreshTree() {
+    TreeActions.loadTree();
+    ContextMenuActions.hideContextMenu();
+  },
+
+  getContextMenuItems(item) {
     var contextMenuChildren = [];
 
+    contextMenuChildren.push([
+        {onClick: this.handleRefreshTree.bind(this), title: "Refresh tree"},
+    ]);
     if (item.type === "directory") {
       contextMenuChildren.push([
         {onClick: this.handleOpenCreateFolderModal.bind(this, item.id), title: "New folder"},
@@ -63,7 +71,7 @@ var TreeBox = React.createClass({
     return contextMenuChildren;
   },
 
-  handleContextMenu: function(e, item) {
+  handleContextMenu(e, item) {
     e.preventDefault();
     e.stopPropagation();
     var coords = {
@@ -74,7 +82,7 @@ var TreeBox = React.createClass({
     ContextMenuActions.showContextMenu(coords, items);
   },
 
-  render: function() {
+  render() {
     return (
       <div className="fuelux file-tree-box">
         <h3>Folders</h3>

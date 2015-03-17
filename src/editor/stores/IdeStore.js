@@ -5,7 +5,7 @@ var ActionTypes = require("editor/constants/IdeConstants").ActionTypes;
 
 var state = {
   loaded: false,
-  fullscreen: false,
+  displayMode: "normal", // "normal" | "terminal"
   connected: false
 };
 
@@ -34,12 +34,20 @@ AppDispatcher.registerHandler(ActionTypes.IDE_DISCONNECTED, function() {
   "use strict";
 
   state.connected = false;
+  IdeStore.emitChange();
 });
 
 AppDispatcher.registerHandler(ActionTypes.IDE_CONNECTED, function() {
   "use strict";
 
   state.connected = true;
+  IdeStore.emitChange();
+});
+
+AppDispatcher.registerHandler(ActionTypes.IDE_SWITCH_DISPLAY_MODE, function(payload) {
+  "use strict";
+  state.displayMode = payload.displayMode;
+  IdeStore.emitChange();
 });
 
 module.exports = IdeStore;

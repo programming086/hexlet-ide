@@ -14,6 +14,7 @@ module.exports = {
     IDE_RUN_PROGRESS: null,
     IDE_RUN_FINISH: null,
     IDE_RESIZE_SPLIT: null,
+    IDE_SWITCH_DISPLAY_MODE: null,
 
     TREE_LOAD: null,
     TREE_RELOAD: null,

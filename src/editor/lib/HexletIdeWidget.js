@@ -81,6 +81,10 @@ export default class HexletIdeWidget {
     return IdeActions.showReadme(readmeText);
   }
 
+  switchDisplayMode(displayMode) {
+    return IdeActions.switchDisplayMode(displayMode);
+  }
+
   run() {
     return IdeActions.run();
   }
@@ -102,6 +106,8 @@ export default class HexletIdeWidget {
 
       case "ide:readme":
         return this.showReadme(data.readme);
+      case "ide:switch_display_mode":
+        return this.switchDisplayMode(data.displayMode);
 
       default:
         return null;

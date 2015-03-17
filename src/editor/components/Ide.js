@@ -28,36 +28,53 @@ var Ide = React.createClass({
     IdeActions.globalClick();
   },
 
+  renderDisplayMode(mode) {
+    switch(mode) {
+      case "normal":
+        return this.renderNormalMode();
+      case "terminal":
+        return this.renderTerminalMode();
+    }
+  },
+
+  renderNormalMode() {
+    return <div className="max-height" onClick={this.handleGlobalClick}>
+      <VerticalSplit className="ide-split">
+        <Panel className="left-panel">
+          <TreeBox />
+        </Panel>
+        <Panel className="right-panel">
+          <HorizontalSplit className="editor-split">
+            <Panel className="top-panel">
+              <EditorsBox />
+            </Panel>
+            <Panel className="bottom-panel">
+              <TerminalsBox />
+            </Panel>
+          </HorizontalSplit>
+        </Panel>
+      </VerticalSplit>
+    </div>
+  },
+
+  renderTerminalMode() {
+    return <div className="max-height" onClick={this.handleGlobalClick}>
+      <TerminalsBox />
+    </div>
+  },
+
   render: function() {
     if (!this.state.loaded) {
       return <Loader />;
     }
 
+    const displayMode = this.state.displayMode;
+
     return (
       <div className="ide-inner">
         <PopupBox />
         <ContextMenu />
-        <div className="max-height" onClick={this.handleGlobalClick}>
-          <VerticalSplit className="ide-split">
-            {/* <Panel className="left-panel">
-              <ActionsBox />
-              <StatusBox />
-            </Panel> */ }
-            <Panel className="left-panel">
-              <TreeBox />
-            </Panel>
-            <Panel className="right-panel">
-              <HorizontalSplit className="editor-split">
-                <Panel className="top-panel">
-                  <EditorsBox />
-                </Panel>
-                <Panel className="bottom-panel">
-                  <TerminalsBox />
-                </Panel>
-              </HorizontalSplit>
-            </Panel>
-          </VerticalSplit>
-        </div>
+        {this.renderDisplayMode(displayMode)}
       </div>
     );
   }

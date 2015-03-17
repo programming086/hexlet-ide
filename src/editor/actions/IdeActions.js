@@ -99,6 +99,13 @@ var IdeActions = {
     AppDispatcher.dispatch({
       actionType: ActionTypes.IDE_SUBMIT_RESULT
     });
+  },
+
+  switchDisplayMode(displayMode) {
+    AppDispatcher.dispatch({
+      actionType: ActionTypes.IDE_SWITCH_DISPLAY_MODE,
+      displayMode: displayMode
+    });
   }
 };
 

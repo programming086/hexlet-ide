@@ -27,6 +27,12 @@ export default React.createClass({
     this.setState({myCodeMirror: myCodeMirror});
   },
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.focus) {
+      this.state.myCodeMirror.refresh();
+    }
+  },
+
   render() {
     return ( <div className={this.props.className} ref="editor"></div>);
   }

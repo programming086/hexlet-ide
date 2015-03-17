@@ -61,7 +61,7 @@ var TerminalsBox = React.createClass({
         <ul className="nav nav-tabs" role="tablist">
           {this.renderTabHeaders()}
           <li key="tab_create">
-            <a onClick={this.createTerminal}>Create terminal</a>
+            <a href="#" onClick={this.createTerminal}>Create terminal</a>
           </li>
         </ul>
         <div className="tab-content max-height">
