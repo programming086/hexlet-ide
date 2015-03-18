@@ -27,8 +27,8 @@ export default React.createClass({
     this.setState({myCodeMirror: myCodeMirror});
   },
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.focus) {
+  componentDidUpdate() {
+    if (this.props.focus) {
       this.state.myCodeMirror.refresh();
     }
   },
