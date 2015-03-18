@@ -6,11 +6,15 @@ var Panel = React.createClass({
   render: function() {
     var style = {};
 
-    if(this.props.width)
+    if(this.props.width) {
       style.width = this.props.width;
+      style.minWidth = this.props.width;
+    }
 
-    if(this.props.height)
+    if(this.props.height) {
       style.height = this.props.height;
+      style.minHeight = this.props.height;
+    }
 
     var className = (this.props.className || "") + " split-panel";
 

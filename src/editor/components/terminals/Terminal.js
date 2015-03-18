@@ -4,7 +4,7 @@ var TerminalsActions = require('editor/actions/TerminalsActions');
 export default React.createClass({
   render() {
     return (
-        <div className={this.props.className} ref="terminal"></div>
+        <div className="terminal" ref="terminal"></div>
     );
   },
 

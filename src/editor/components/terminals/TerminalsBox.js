@@ -44,12 +44,12 @@ var TerminalsBox = React.createClass({
       var classes = React.addons.classSet({
         "tab-pane": true,
         "fade active in": terminal.current,
-        "terminal": true
+        "terminal-box": true
       });
 
       return (
           <div className={classes} key={terminal.id}>
-            <Terminal terminal={terminal} className={classes} />
+            <Terminal terminal={terminal} />
           </div>
       );
     });

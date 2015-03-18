@@ -35,6 +35,8 @@ AppDispatcher.registerHandler(ActionTypes.TERMINALS_CREATE_TERMINAL, function(pa
       useStyle: true,
     })
   };
+
+  window.t = terminals[payload.id];
   _.each(terminals, function(t) { t.current = false; });
   const currentTerminal = terminals[payload.id];
   currentTerminal.current = true;

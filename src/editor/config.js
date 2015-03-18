@@ -5,7 +5,7 @@ var _ = require("lodash");
 var defaultConfig = {
   terminal: {
     cols: 110,
-    rows: 18
+    rows: 8
   },
   autosaveInterval: 1000,
   rpc: {

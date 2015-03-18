@@ -4,9 +4,11 @@
     flex-direction: column;
     & .nav {
         border: 0;
-        background: #222830;
-        min-height: 27px;
-        max-height: 27px;
+        background: @terminal-tab-menu-bg;
+        min-height: @terminal-tab-menu-height;
+        max-height: @terminal-tab-menu-height;
+        height: @terminal-tab-menu-height;
+
         a {
             border: 0;
             border-radius: 0;
@@ -44,10 +46,18 @@
 
     & .tab-content {
         display: flex;
+        flex: 1;
+        //HACK for FF
+        min-height: 1px;
 
-        & .terminal {
+        & .terminal-box {
             width: 100%;
             &.active {
+                display: flex;
+            }
+
+            .terminal {
+                width: 100%;
                 display: flex;
             }
         }
