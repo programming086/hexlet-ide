@@ -72,6 +72,42 @@ AppDispatcher.registerHandler(ActionTypes.EDITORS_MAKE_CURRENT, function(payload
   EditorsStore.emitChange();
 });
 
+AppDispatcher.registerHandler(ActionTypes.KEY_CTRL_OPEN_SQUARE_BR, function(payload) {
+  if (editors.length === 0) return;
+  var idx = _.findIndex(editors, {id: EditorsStore.getCurrent().id});
+  var newIdx = idx;
+  if (idx == 0) {
+    newIdx = editors.length - 1;
+  } else {
+    newIdx = idx - 1;
+  }
+
+  editors.map(function(t) { t.current = false; });
+
+  const editor = editors[newIdx];
+  editor.current = true;
+
+  EditorsStore.emitChange();
+});
+
+AppDispatcher.registerHandler(ActionTypes.KEY_CTRL_CLOSE_SQUARE_BR, function(payload) {
+  if (editors.length === 0) return;
+  var idx = _.findIndex(editors, {id: EditorsStore.getCurrent().id});
+  var newIdx = idx;
+  if (idx == editors.length - 1) {
+    newIdx = 0;
+  } else {
+    newIdx = idx + 1;
+  }
+
+  editors.map(function(t) { t.current = false; });
+
+  const editor = editors[newIdx];
+  editor.current = true;
+
+  EditorsStore.emitChange();
+});
+
 AppDispatcher.registerHandler(ActionTypes.EDITORS_CLOSE, function(payload) {
   editors = _.filter(editors, function(t) { return t.id !== payload.id; });
 

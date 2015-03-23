@@ -102,4 +102,12 @@ AppDispatcher.registerHandler(ActionTypes.IDE_SUBMIT_RESULT, function(payload) {
   PopupStore.emitChange();
 });
 
+AppDispatcher.registerHandler(ActionTypes.KEY_ESC, function(payload) {
+  if (state.isOpened) {
+    state = close(state);
+
+    PopupStore.emitChange();
+  }
+});
+
 module.exports = PopupStore;

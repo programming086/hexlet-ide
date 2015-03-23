@@ -1,6 +1,8 @@
 var React = require("react/addons");
 var CodeMirror = require("codemirror");
 
+var KeyboardActions = require("editor/actions/KeyboardActions");
+
 export default React.createClass({
   componentDidMount() {
     let myCodeMirror = CodeMirror(this.refs.editor.getDOMNode(), {
@@ -11,6 +13,8 @@ export default React.createClass({
           let spaces = Array(cm.getOption("indentUnit") + 1).join(" ");
           cm.replaceSelection(spaces);
         },
+        "Ctrl-[": KeyboardActions.ctrl_open_square_br,
+        "Ctrl-]": KeyboardActions.ctrl_close_square_br,
         "Shift-Tab": "autocomplete"
       },
       value: this.props.initContent,
@@ -27,10 +31,15 @@ export default React.createClass({
     this.setState({myCodeMirror: myCodeMirror});
   },
 
-  componentDidUpdate() {
+  componentDidUpdate(oldProps) {
     if (this.props.focus) {
       this.state.myCodeMirror.refresh();
+
+      if (!oldProps.focus) {
+        this.state.myCodeMirror.focus();
+      }
     }
+
   },
 
   render() {

@@ -1,7 +1,9 @@
+import Mousetrap from "mousetrap";
 const React = require("react/addons");
 const Config = require("editor/config");
 const Ide = require("editor/components/Ide");
 
+const KeyboardActions = require("editor/actions/KeyboardActions");
 const TreeActions = require("editor/actions/TreeActions");
 const TerminalsActions = require("editor/actions/TerminalsActions");
 const IdeActions = require("editor/actions/IdeActions");
@@ -21,6 +23,7 @@ export default class HexletIdeWidget {
     this.cmd = options.cmd;
     this.bindEvents();
     this.runAutosave();
+    this.bindKeyEvents();
     this.render();
   }
 
@@ -65,6 +68,13 @@ export default class HexletIdeWidget {
     }, Config.autosaveInterval);
   }
 
+  bindKeyEvents() {
+    Mousetrap.bind("esc", KeyboardActions.esc);
+    Mousetrap.bind("ctrl+r", IdeActions.run);
+    Mousetrap.bind("ctrl+[", KeyboardActions.ctrl_open_square_br);
+    Mousetrap.bind("ctrl+]", KeyboardActions.ctrl_close_square_br);
+  }
+
   render() {
     return React.render(<Ide cmd={this.cmd} />, this.domElement);
   }
@@ -101,7 +111,8 @@ export default class HexletIdeWidget {
             cmd: cmd,
             response: response
           };
-          e.source.postMessage(result, e.origin);
+          window.parent.postMessage(result, "*");
+          // e.source.postMessage(result, e.origin);
         });
 
       case "ide:readme":

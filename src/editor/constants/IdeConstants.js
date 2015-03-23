@@ -44,7 +44,13 @@ module.exports = {
     TERMINALS_CLOSE_TERMINAL: null,
 
     CONTEXT_MENU_SHOW: null,
-    CONTEXT_MENU_HIDE: null
+    CONTEXT_MENU_HIDE: null,
+
+
+    KEY_ESC: null,
+    KEY_CTRL_R: null,
+    KEY_CTRL_OPEN_SQUARE_BR: null,
+    KEY_CTRL_CLOSE_SQUARE_BR: null
 
   })
 };

@@ -27,6 +27,7 @@
     "marked": "^0.3.3",
     "moment": "*",
     "morgan": "*",
+    "mousetrap": "^1.4.6",
     "pty.js": "git://github.com/chjj/pty.js",
     "rimraf": "*",
     "socket.io": "*",
