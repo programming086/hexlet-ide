@@ -7,7 +7,7 @@ var defaultConfig = {
     cols: 110,
     rows: 8
   },
-  autosaveInterval: 1000,
+  autosaveInterval: 3000,
   rpc: {
     url: "",
     options: {

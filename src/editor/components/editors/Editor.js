@@ -1,3 +1,4 @@
+var _ = require("lodash");
 var React = require("react/addons");
 var CodeMirror = require("codemirror");
 
@@ -24,9 +25,9 @@ export default React.createClass({
       viewportMargin: Infinity
     });
 
-    myCodeMirror.on("change", (CodeMirror, object) => {
+    myCodeMirror.on("change", _.throttle((CodeMirror, object) => {
       this.props.onChangeValue(myCodeMirror.getValue());
-    });
+    }, 2000));
 
     this.setState({myCodeMirror: myCodeMirror});
   },
