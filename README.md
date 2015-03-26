@@ -15,3 +15,11 @@
        var widget = HexletIde.create(document.getElementById("ide"), {
          url: "Backend url"
        });
+
+### Hotkeys
+
+`Ctrl+r` – run tests
+
+`Esc` – close modal windows (e.g. README or Test output)
+
+`Ctrl+[` and `Ctrl+]` – switch between modes (normal and terminal)
