@@ -109,9 +109,11 @@ AppDispatcher.registerHandler(ActionTypes.KEY_CTRL_CLOSE_SQUARE_BR, function(pay
 });
 
 AppDispatcher.registerHandler(ActionTypes.EDITORS_CLOSE, function(payload) {
+  const removedEditor = _.find(editors, { id: payload.id });
+
   editors = _.filter(editors, function(t) { return t.id !== payload.id; });
 
-  if (editors.length > 0) {
+  if (removedEditor.current && editors.length > 0) {
     var editor = _.last(editors);
     editor.current = true;
   }
