@@ -6,9 +6,9 @@ var AppDispatcher = require("editor/dispatcher/AppDispatcher");
 var BaseStore = require("./BaseStore");
 var ActionTypes = require("editor/constants/IdeConstants").ActionTypes;
 
-var editors = [];
+window.editors = [];
 
-var EditorsStore = BaseStore.extend({
+window.EditorsStore = BaseStore.extend({
   getAll() {
     return editors;
   },
@@ -21,6 +21,10 @@ var EditorsStore = BaseStore.extend({
 
   getCurrent() {
     return _.find(editors, { current: true });
+  },
+
+  isRunViewActive() {
+    return !_.find(editors, (e) => { return e.current == true });
   }
 });
 
@@ -117,6 +121,18 @@ AppDispatcher.registerHandler(ActionTypes.EDITORS_CLOSE, function(payload) {
     var editor = _.last(editors);
     editor.current = true;
   }
+
+  EditorsStore.emitChange();
+});
+
+AppDispatcher.registerHandler(ActionTypes.EDITORS_SHOW_RUN_VIEW, function(payload) {
+  editors.map((editor) => editor.current = false);
+
+  EditorsStore.emitChange();
+});
+
+AppDispatcher.registerHandler(ActionTypes.IDE_RUN, function(payload) {
+  editors.map((editor) => editor.current = false);
 
   EditorsStore.emitChange();
 });

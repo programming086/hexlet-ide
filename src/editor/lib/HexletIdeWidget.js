@@ -99,22 +99,13 @@ export default class HexletIdeWidget {
     return IdeActions.run();
   }
 
-
   handleWindowMessage(e) {
     var cmd = e.data.cmd;
     var data = e.data.data;
 
     switch(cmd) {
       case "ide:run":
-        return this.run().done((response) => {
-          var result = {
-            cmd: cmd,
-            response: response
-          };
-          window.parent.postMessage(result, "*");
-          // e.source.postMessage(result, e.origin);
-        });
-
+        return this.run();
       case "ide:readme":
         return this.showReadme(data.readme);
       case "ide:switch_display_mode":

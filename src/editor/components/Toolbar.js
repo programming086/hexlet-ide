@@ -1,14 +1,21 @@
 var React = require("react/addons");
 var IdeStore = require("editor/stores/IdeStore");
+var IdeActions = require("editor/actions/IdeActions");
 
-var StatusBox = React.createClass({
+module.exports = React.createClass({
 
   render: function() {
     return (
-      <div className="status-box">
+      <div className="toolbar">
         <div className="btn-group-vertical" role="group">
           <button type="button" className={this.getStatusClasses()}>
             <span className={this.getStatusInnerClasses()} />
+          </button>
+          <button type="button" className="btn" onClick={IdeActions.run}>
+            <span className="glyphicon glyphicon-play-circle" />
+          </button>
+          <button type="button" className="btn">
+            <span className="glyphicon glyphicon-question-sign" />
           </button>
         </div>
       </div>
@@ -39,5 +46,3 @@ var StatusBox = React.createClass({
     return cx(classes);
   }
 });
-
-module.exports = StatusBox;

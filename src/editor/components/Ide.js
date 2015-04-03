@@ -7,8 +7,8 @@ var ContextMenu = require("editor/components/common/ContextMenu");
 var Loader = require("editor/components/common/Loader");
 var RunnerBox = require("editor/components/RunnerBox");
 var ActionsBox = require("editor/components/ActionsBox");
-var StatusBox = require("editor/components/StatusBox");
 var PopupBox = require("editor/components/PopupBox");
+var Toolbar = require("editor/components/Toolbar");
 
 var IdeActions = require("editor/actions/IdeActions");
 var WatchStoreMixin = require("editor/mixins/WatchStore");
@@ -41,6 +41,7 @@ var Ide = React.createClass({
     return <div className="splits-container" onClick={this.handleGlobalClick}>
       <VerticalSplit className="ide-split">
         <Panel className="left-panel">
+          <Toolbar />
           <TreeBox />
         </Panel>
         <Panel className="right-panel">

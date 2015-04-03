@@ -69,7 +69,13 @@ var IdeActions = {
 
   run() {
     AppDispatcher.dispatch({ actionType: ActionTypes.IDE_RUN });
-    return rpc.getClient().run.exec("make test")
+    return rpc.getClient().run.exec("make test").then((response) => {
+      var result = {
+        cmd: cmd,
+        response: response
+      };
+      window.parent.postMessage(result, "*");
+    });
   },
 
   runProgress(data) {

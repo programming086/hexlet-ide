@@ -78,11 +78,11 @@ AppDispatcher.registerHandler(ActionTypes.IDE_SHOW_README, function(payload) {
   PopupStore.emitChange();
 });
 
-AppDispatcher.registerHandler(ActionTypes.IDE_RUN, function(payload) {
-  state = open(state, "run_view");
+// AppDispatcher.registerHandler(ActionTypes.IDE_RUN, function(payload) {
+//   state = open(state, "run_view");
 
-  PopupStore.emitChange();
-});
+//   PopupStore.emitChange();
+// });
 
 AppDispatcher.registerHandler(ActionTypes.IDE_DISCONNECTED, function(payload) {
   state = open(state, "reconnect_view");

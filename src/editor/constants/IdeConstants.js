@@ -36,6 +36,7 @@ module.exports = {
     EDITORS_SAVING_CURRENT: null,
     EDITORS_SAVE_CURRENT: null,
     EDITORS_EDIT_CURRENT: null,
+    EDITORS_SHOW_RUN_VIEW: null,
     // EDITORS_FLUSH_CONTENT: null
 
     TERMINALS_CREATE_TERMINAL: null,

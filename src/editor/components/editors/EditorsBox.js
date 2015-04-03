@@ -5,6 +5,7 @@ var key = require("keymaster");
 var WatchStoreMixin = require("editor/mixins/WatchStore");
 
 var Editor = require("./Editor");
+var RunView = require("./RunView");
 
 var EditorsStore = require("editor/stores/EditorsStore");
 var EditorsActions = require("editor/actions/EditorsActions");
@@ -15,7 +16,8 @@ var EditorsBox = React.createClass({
   getFluxState: function() {
     return {
       editors: EditorsStore.getAll(),
-      current: EditorsStore.getCurrent()
+      current: EditorsStore.getCurrent(),
+      isRunViewActive: EditorsStore.isRunViewActive()
     }
   },
 
@@ -36,19 +38,13 @@ var EditorsBox = React.createClass({
   handleCloseTab: function(editor, e) {
     e.stopPropagation();
     e.preventDefault();
-    // if (editor.dirty) {
-    //   ModalActions.showModal({
-    //     title: "Close unsaved tab",
-    //     onApply: function() {
-    //       EditorsActions.closeEditor(editor);
-    //     },
-    //     content: function() {
-    //       return <p>are you sure? (unsaved data will be lost)</p>;
-    //     }
-    //   });
-    // } else {
-      EditorsActions.closeEditor(editor);
-    // }
+    EditorsActions.closeEditor(editor);
+  },
+
+  showRunView(e) {
+    e.stopPropagation();
+    e.preventDefault();
+    EditorsActions.showRunView();
   },
 
   render: function() {
@@ -56,6 +52,10 @@ var EditorsBox = React.createClass({
 
     var editors = this.state.editors;
     var current = this.state.current;
+
+    var runResultClasses = cx({
+      "active": this.state.isRunViewActive
+    });
 
     var items = editors.map(function(editor) {
       var classes = cx({
@@ -77,12 +77,25 @@ var EditorsBox = React.createClass({
       </li>);
     }, this);
 
+
+    var runViewPaneClasses = cx({
+      "tab-pane": true,
+      "fade active in": this.state.isRunViewActive,
+      "run-view": true
+    });
+
     return (
       <div className="editors-box">
           <ul className="nav nav-tabs" role="tablist">
+            <li key={"run-result"} className={runResultClasses} role="presentation">
+              <a href="#" onClick={this.showRunView} className={runResultClasses}>
+                <span>Run result</span>
+              </a>
+            </li>
             {items}
           </ul>
           <div className="tab-content file-content">
+            <RunView className={runViewPaneClasses} />
             {editors.map(function(editor) {
               var mode = this.getEditorMode(editor.name);
               var classes = cx({

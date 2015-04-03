@@ -55,5 +55,12 @@ module.exports = {
       id: editor.id,
       content: content
     });
+  },
+
+  showRunView() {
+    "use strict";
+    AppDispatcher.dispatch({
+      actionType: ActionTypes.EDITORS_SHOW_RUN_VIEW
+    });
   }
 };
