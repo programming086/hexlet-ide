@@ -1,4 +1,4 @@
-var Escaper = require("escaper.js");
+// var Escaper = require("escaper.js");
 var React = require("react/addons");
 var RunViewStore = require("editor/stores/RunViewStore");
 var WatchStoreMixin = require("editor/mixins/WatchStore");
@@ -6,7 +6,7 @@ var IdeActions = require("editor/actions/IdeActions");
 
 var cx = React.addons.classSet;
 
-var escaper = new Escaper();
+// var escaper = new Escaper();
 
 export default React.createClass({
   mixins: [WatchStoreMixin(RunViewStore)],
@@ -21,7 +21,8 @@ export default React.createClass({
   },
 
   getContent() {
-    return escaper.escape(this.state.content);
+    return this.state.content;
+    // return escaper.escape(this.state.content);
   },
 
   getStatusText() {
