@@ -4,6 +4,7 @@ var keyMirror = require("react/lib/keyMirror");
 
 module.exports = {
   ActionTypes: keyMirror({
+    IDE_INIT: null,
     IDE_GLOBAL_CLICK: null,
     IDE_TOGGLE_FULL_SCREEN: null,
     IDE_LOADED: null,
@@ -43,6 +44,7 @@ module.exports = {
     TERMINALS_UPDATE_TERMINAL: null,
     TERMINALS_SELECT_TERMINAL: null,
     TERMINALS_CLOSE_TERMINAL: null,
+    TERMINALS_SHOW_RUN_VIEW: null,
 
     CONTEXT_MENU_SHOW: null,
     CONTEXT_MENU_HIDE: null,

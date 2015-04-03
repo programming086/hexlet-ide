@@ -41,7 +41,6 @@ var Ide = React.createClass({
     return <div className="splits-container" onClick={this.handleGlobalClick}>
       <VerticalSplit className="ide-split">
         <Panel className="left-panel">
-          <Toolbar />
           <TreeBox />
         </Panel>
         <Panel className="right-panel">
@@ -60,7 +59,7 @@ var Ide = React.createClass({
 
   renderTerminalMode() {
     return <div className="splits-container" onClick={this.handleGlobalClick}>
-      <TerminalsBox />
+      <TerminalsBox showRunView={true} />
     </div>
   },
 

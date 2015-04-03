@@ -6,9 +6,9 @@ var AppDispatcher = require("editor/dispatcher/AppDispatcher");
 var BaseStore = require("./BaseStore");
 var ActionTypes = require("editor/constants/IdeConstants").ActionTypes;
 
-window.editors = [];
+var editors = [];
 
-window.EditorsStore = BaseStore.extend({
+var EditorsStore = BaseStore.extend({
   getAll() {
     return editors;
   },

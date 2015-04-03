@@ -71,6 +71,7 @@ export default class HexletIdeWidget {
   bindKeyEvents() {
     Mousetrap.bind("esc", KeyboardActions.esc);
     Mousetrap.bind("ctrl+r", IdeActions.run);
+    Mousetrap.bind("ctrl+h", IdeActions.showReadme);
     Mousetrap.bind("ctrl+[", KeyboardActions.ctrl_open_square_br);
     Mousetrap.bind("ctrl+]", KeyboardActions.ctrl_close_square_br);
   }
@@ -87,12 +88,16 @@ export default class HexletIdeWidget {
 //     return RpcClient.getClient().run.exec(cmd);
 //   }
 
-  showReadme(readmeText) {
-    return IdeActions.showReadme(readmeText);
+  showReadme() {
+    return IdeActions.showReadme();
   }
 
   switchDisplayMode(displayMode) {
     return IdeActions.switchDisplayMode(displayMode);
+  }
+
+  init(data) {
+    IdeActions.init(data);
   }
 
   run() {
@@ -107,10 +112,11 @@ export default class HexletIdeWidget {
       case "ide:run":
         return this.run();
       case "ide:readme":
-        return this.showReadme(data.readme);
+        return this.showReadme();
       case "ide:switch_display_mode":
         return this.switchDisplayMode(data.displayMode);
-
+      case "ide:init":
+        return this.init(data);
       default:
         return null;
     }

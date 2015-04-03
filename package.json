@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "commander": "2.6.0",
-    "escaper.js": "0.0.3",
+    "escaper.js": "0.0.5",
     "express": "*",
     "express-debug": "*",
     "findit": "*",

@@ -6,17 +6,11 @@ module.exports = React.createClass({
 
   render: function() {
     return (
-      <div className="toolbar">
-        <div className="btn-group-vertical" role="group">
-          <button type="button" className={this.getStatusClasses()}>
+      <div className="toolbar pull-right">
+        <div className="btn-group" role="group">
+          <div className={this.getStatusClasses()}>
             <span className={this.getStatusInnerClasses()} />
-          </button>
-          <button type="button" className="btn" onClick={IdeActions.run}>
-            <span className="glyphicon glyphicon-play-circle" />
-          </button>
-          <button type="button" className="btn">
-            <span className="glyphicon glyphicon-question-sign" />
-          </button>
+          </div>
         </div>
       </div>
     );
@@ -28,7 +22,8 @@ module.exports = React.createClass({
       "btn-success" :
       "btn-danger";
     var classes = {
-      "btn": true
+      "btn": true,
+      "status-indicator": true
     };
     classes[buttonType] = true;
     return cx(classes);

@@ -1,4 +1,4 @@
-// var Escaper = require("escaper.js");
+var Escaper = require("escaper.js");
 var React = require("react/addons");
 var RunViewStore = require("editor/stores/RunViewStore");
 var WatchStoreMixin = require("editor/mixins/WatchStore");
@@ -6,7 +6,7 @@ var IdeActions = require("editor/actions/IdeActions");
 
 var cx = React.addons.classSet;
 
-// var escaper = new Escaper();
+var escaper = new Escaper();
 
 export default React.createClass({
   mixins: [WatchStoreMixin(RunViewStore)],
@@ -21,8 +21,8 @@ export default React.createClass({
   },
 
   getContent() {
-    return this.state.content;
-    // return escaper.escape(this.state.content);
+    // return this.state.content;
+    return escaper.escape(this.state.content);
   },
 
   getStatusText() {
@@ -56,11 +56,9 @@ export default React.createClass({
       <div {...this.props}>
        <div className="scrollable" ref="content">
         <pre className="run-result-content" dangerouslySetInnerHTML={{ __html: this.getContent() }}></pre>
-        { this.state.isFinished ?
-           <div className={this.getResultClasses()}>
-             <h4>Run result ({this.getStatusText()})</h4>
-           </div>
-           : "" }
+        { this.state.isFinished && this.state.isSuccess ?
+          <h5 className="run-failed-text">Run failed! Check and fix errors above!</h5>
+         : "" }
        </div>
      </div>
     );

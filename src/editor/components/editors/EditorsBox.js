@@ -5,7 +5,8 @@ var key = require("keymaster");
 var WatchStoreMixin = require("editor/mixins/WatchStore");
 
 var Editor = require("./Editor");
-var RunView = require("./RunView");
+var RunView = require("editor/components/common/tab/RunView");
+var Toolbar = require("editor/components/Toolbar");
 
 var EditorsStore = require("editor/stores/EditorsStore");
 var EditorsActions = require("editor/actions/EditorsActions");
@@ -54,12 +55,13 @@ var EditorsBox = React.createClass({
     var current = this.state.current;
 
     var runResultClasses = cx({
-      "active": this.state.isRunViewActive
+      // "active": this.state.isRunViewActive,
+      "run-view-tab": true
     });
 
     var items = editors.map(function(editor) {
       var classes = cx({
-        "active": editor.current,
+        "active": editor.current
       });
 
       return (<li key={"editor_" + editor.id} className={classes} role="presentation">
@@ -89,10 +91,13 @@ var EditorsBox = React.createClass({
           <ul className="nav nav-tabs" role="tablist">
             <li key={"run-result"} className={runResultClasses} role="presentation">
               <a href="#" onClick={this.showRunView} className={runResultClasses}>
-                <span>Run result</span>
+                <span>Output</span>
               </a>
             </li>
             {items}
+            <li className="pull-right">
+              <Toolbar />
+            </li>
           </ul>
           <div className="tab-content file-content">
             <RunView className={runViewPaneClasses} />

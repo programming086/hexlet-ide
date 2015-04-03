@@ -7,15 +7,20 @@ var TerminalsActions = require("editor/actions/TerminalsActions");
 var TerminalsStore = require("editor/stores/TerminalsStore");
 
 var Terminal = require("./Terminal");
+var RunView = require("editor/components/common/tab/RunView");
+var Toolbar = require("editor/components/Toolbar");
 
 var WatchStoreMixin = require("editor/mixins/WatchStore");
+
+var cx = React.addons.classSet;
 
 var TerminalsBox = React.createClass({
   mixins: [WatchStoreMixin(TerminalsStore)],
 
   getFluxState: function() {
     return {
-      terminals: TerminalsStore.getAll()
+      terminals: TerminalsStore.getAll(),
+      isRunViewActive: TerminalsStore.isRunViewActive()
     };
   },
 
@@ -56,15 +61,40 @@ var TerminalsBox = React.createClass({
   },
 
   render: function() {
+    var runResultClasses = cx({
+      // "active": this.state.isRunViewActive,
+      "run-view-tab": true
+    });
+
+    var runViewPaneClasses = cx({
+      "tab-pane": true,
+      "fade active in": this.state.isRunViewActive,
+      "run-view": true
+    });
     return (
       <div className="terminals-box">
         <ul className="nav nav-tabs" role="tablist">
+          { this.props.showRunView ?
+          <li key={"run-result"} className={runResultClasses} role="presentation">
+            <a href="#" onClick={this.showRunView} className={runResultClasses}>
+              <span>Output</span>
+            </a>
+          </li>
+          : "" }
           {this.renderTabHeaders()}
           <li key="tab_create">
             <a href="#" onClick={this.createTerminal}>Create terminal</a>
           </li>
+          { this.props.showRunView ?
+          <li className="pull-right">
+            <Toolbar />
+          </li>
+          : "" }
         </ul>
         <div className="tab-content max-height">
+          { this.props.showRunView ?
+          <RunView className={runViewPaneClasses} />
+          : "" }
           {this.renderTerminals()}
         </div>
       </div>
@@ -88,6 +118,13 @@ var TerminalsBox = React.createClass({
     e.stopPropagation();
     TerminalsActions.closeTerminal(terminal);
   },
+
+  showRunView(e) {
+    e.stopPropagation();
+    e.preventDefault();
+    TerminalsActions.showRunView();
+  },
+
 });
 
 module.exports = TerminalsBox;

@@ -10,6 +10,7 @@ require("bootstrap/dist/css/bootstrap.css");
 require("codemirror/lib/codemirror.css");
 require("codemirror/theme/solarized.css");
 require("xterm.js/src/xterm.css");
+require("escaper.js/src/escaper.css");
 
 require("codemirror/mode/javascript/javascript");
 require("codemirror/mode/python/python");

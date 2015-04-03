@@ -7,7 +7,7 @@ develop:
 	gulp develop
 
 test:
-	ls -la && sleep 1 &&  ls -a && sleep 1 && ls
+	npm test
 
 publish:
 	npm publish

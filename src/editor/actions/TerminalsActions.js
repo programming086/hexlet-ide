@@ -87,6 +87,13 @@ var TerminalsActions = {
 
   resize: function(msg) {
     rpc.getClient().terminal.resize(msg);
+  },
+
+  showRunView() {
+    "use strict";
+    AppDispatcher.dispatch({
+      actionType: ActionTypes.TERMINALS_SHOW_RUN_VIEW
+    });
   }
 };
 

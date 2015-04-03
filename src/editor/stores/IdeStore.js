@@ -6,13 +6,19 @@ var ActionTypes = require("editor/constants/IdeConstants").ActionTypes;
 var state = {
   loaded: false,
   displayMode: "normal", // "normal" | "terminal"
-  connected: false
+  connected: false,
+  readme: ""
 };
 
 var IdeStore = BaseStore.extend({
-  getState: function() {
+  getState() {
     "use strict";
     return state;
+  },
+
+  getReadme() {
+    "use strict";
+    return state.readme;
   }
 });
 
@@ -47,6 +53,14 @@ AppDispatcher.registerHandler(ActionTypes.IDE_CONNECTED, function() {
 AppDispatcher.registerHandler(ActionTypes.IDE_SWITCH_DISPLAY_MODE, function(payload) {
   "use strict";
   state.displayMode = payload.displayMode;
+  IdeStore.emitChange();
+});
+
+AppDispatcher.registerHandler(ActionTypes.IDE_INIT, function(payload) {
+  "use strict";
+  const data = payload.data;
+  state.displayMode = data.displayMode;
+  state.readme = data.readme;
   IdeStore.emitChange();
 });
 

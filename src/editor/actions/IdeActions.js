@@ -9,6 +9,14 @@ var ActionTypes = IdeConstants.ActionTypes;
 var rpc = require("editor/lib/RpcClient");
 
 var IdeActions = {
+  init(data) {
+    "use strict";
+    AppDispatcher.dispatch({
+      actionType: ActionTypes.IDE_INIT,
+      data: data
+    });
+  },
+
   globalClick() {
     "use strict";
     AppDispatcher.dispatch({
@@ -59,11 +67,12 @@ var IdeActions = {
     });
   },
 
-  showReadme(text) {
+  showReadme() {
+    const readme = IdeStore.getReadme();
     AppDispatcher.dispatch({
       actionType: ActionTypes.IDE_SHOW_README,
-      content: text,
-      title: "README.md"
+      title: "README.md",
+      content: readme
     });
   },
 
@@ -71,7 +80,7 @@ var IdeActions = {
     AppDispatcher.dispatch({ actionType: ActionTypes.IDE_RUN });
     return rpc.getClient().run.exec("make test").then((response) => {
       var result = {
-        cmd: cmd,
+        cmd: "ide:run_finish",
         response: response
       };
       window.parent.postMessage(result, "*");

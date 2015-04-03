@@ -22,6 +22,10 @@ var TerminalsStore = BaseStore.extend({
 
   getNextSequence: function() {
     return terminalSequence++;
+  },
+
+  isRunViewActive() {
+    return !_.find(terminals, (e) => { return e.current == true });
   }
 });
 
@@ -70,6 +74,12 @@ AppDispatcher.registerHandler(ActionTypes.TERMINALS_CLOSE_TERMINAL, function(pay
 
 AppDispatcher.registerHandler(ActionTypes.IDE_RESIZE_SPLIT, function(payload) {
   var t = TerminalsStore.getCurrent();
+});
+
+AppDispatcher.registerHandler(ActionTypes.TERMINALS_SHOW_RUN_VIEW, function(payload) {
+  _.map(terminals, (t, id) => { t.current = false });
+
+  TerminalsStore.emitChange();
 });
 
 module.exports = TerminalsStore;
