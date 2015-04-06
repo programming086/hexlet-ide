@@ -56,7 +56,7 @@ export default React.createClass({
       <div {...this.props}>
        <div className="scrollable" ref="content">
         <pre className="run-result-content" dangerouslySetInnerHTML={{ __html: this.getContent() }}></pre>
-        { this.state.isFinished && this.state.isSuccess ?
+        { this.state.isFinished && !this.state.isSuccess ?
           <h5 className="run-failed-text">Run failed! Check and fix errors above!</h5>
          : "" }
        </div>
