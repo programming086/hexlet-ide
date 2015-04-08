@@ -12,7 +12,7 @@ function BaseStore() { "use strict";
 BaseStore.prototype = new EventEmitter();
 
 BaseStore.prototype.emitChange = function() {
-  this.emit(CHANGE_EVENT);
+  setTimeout(() => { this.emit(CHANGE_EVENT); }, 0);
 };
 
 BaseStore.prototype.addChangeListener = function(callback) {

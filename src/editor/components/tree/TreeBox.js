@@ -18,6 +18,10 @@ var TreeBox = React.createClass({
     };
   },
 
+  componentDidMount() {
+    TreeActions.loadTree();
+  },
+
   handleOpenCreateFolderModal(parentId) {
     PopupActions.open("create_folder", { parentId: parentId });
   },

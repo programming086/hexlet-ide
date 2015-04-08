@@ -24,6 +24,10 @@ var TerminalsBox = React.createClass({
     };
   },
 
+  componentDidMount() {
+    TerminalsActions.createDefaultTerminal(Config.terminal);
+  },
+
   renderTabHeaders: function() {
     return _.map(this.state.terminals, function(terminal, id) {
       var tabClasses = React.addons.classSet({

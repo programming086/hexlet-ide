@@ -31,9 +31,6 @@ export default class HexletIdeWidget {
     var rpcClient = RpcClient.getClient();
 
     rpcClient.ready((proxy) => {
-      TreeActions.loadTree();
-      TerminalsActions.createDefaultTerminal(Config.terminal);
-
       IdeActions.loadCompleted();
       IdeActions.connect();
     });

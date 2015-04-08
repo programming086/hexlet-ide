@@ -62,7 +62,7 @@
     "nightmare": "^1.5.0",
     "nodemon": "*",
     "polyfill-function-prototype-bind": "0.0.1",
-    "react": "*",
+    "react": "0.13.1",
     "socket.io-client": "*",
     "style-loader": "*",
     "url-loader": "*",
