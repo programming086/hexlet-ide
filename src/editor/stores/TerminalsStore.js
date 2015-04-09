@@ -82,4 +82,10 @@ AppDispatcher.registerHandler(ActionTypes.TERMINALS_SHOW_RUN_VIEW, function(payl
   TerminalsStore.emitChange();
 });
 
+AppDispatcher.registerHandler(ActionTypes.IDE_RUN, function(payload) {
+  _.map(terminals, (t, id) => { t.current = false });
+
+  TerminalsStore.emitChange();
+});
+
 module.exports = TerminalsStore;

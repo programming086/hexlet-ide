@@ -21,8 +21,8 @@ export default React.createClass({
   },
 
   getContent() {
-    // return this.state.content;
-    return escaper.escape(this.state.content);
+    return this.state.content;
+    // return escaper.escape(this.state.content);
   },
 
   getStatusText() {
