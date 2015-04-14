@@ -7,6 +7,7 @@ var AppDispatcher = require("editor/dispatcher/AppDispatcher");
 var ActionTypes = require("editor/constants/IdeConstants").ActionTypes;
 
 var BaseStore = require("./BaseStore");
+var IdeStore = require("./IdeStore");
 
 var terminals = {};
 var terminalSequence = 1;
@@ -83,9 +84,11 @@ AppDispatcher.registerHandler(ActionTypes.TERMINALS_SHOW_RUN_VIEW, function(payl
 });
 
 AppDispatcher.registerHandler(ActionTypes.IDE_RUN, function(payload) {
-  _.map(terminals, (t, id) => { t.current = false });
+  if (IdeStore.isTerminalMode()) {
+    _.map(terminals, (t, id) => { t.current = false });
 
-  TerminalsStore.emitChange();
+    TerminalsStore.emitChange();
+  }
 });
 
 module.exports = TerminalsStore;

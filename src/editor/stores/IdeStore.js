@@ -19,6 +19,10 @@ var IdeStore = BaseStore.extend({
   getReadme() {
     "use strict";
     return state.readme;
+  },
+
+  isTerminalMode() {
+    return state.displayMode === "terminal";
   }
 });
 
