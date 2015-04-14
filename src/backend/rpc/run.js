@@ -10,7 +10,7 @@ module.exports = function(options) {
       var deferred = when.defer();
 
       if (this.child) {
-        this.child.kill("SIGTERM");
+        this.child.kill("SIGKILL");
       }
 
       var socket = this.clientSocket;
