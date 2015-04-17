@@ -9,7 +9,7 @@ html
     script.
         var widget = HexletIde.create(document.getElementById("hexlet-ide"), {
           rpc: {
-              url: window.location.host,
+              url: window.location.host + window.location.pathname,
               events: {
                 reconnect: console.log.bind(console, "reconnect"),
                 reconnect_error: console.log.bind(console, "reconnect_error"),
