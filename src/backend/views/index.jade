@@ -7,13 +7,18 @@ html
     #hexlet-ide.hexlet-ide
 
     script.
+        var pathname = window.location.pathname.split("/").join("");
+        var path = pathname + "/socket.io";
         var widget = HexletIde.create(document.getElementById("hexlet-ide"), {
           rpc: {
-              url: window.location.host + window.location.pathname,
+              url: window.location.host,
               events: {
                 reconnect: console.log.bind(console, "reconnect"),
                 reconnect_error: console.log.bind(console, "reconnect_error"),
                 reconnect_failed: console.log.bind(console, "reconnect_failed"),
+              },
+              options: {
+                path: path
               }
           },
           cmd: "make test"

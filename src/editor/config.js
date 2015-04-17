@@ -11,6 +11,7 @@ var defaultConfig = {
   rpc: {
     url: "",
     options: {
+      path: "socket.io",
       reconnectionDelay: 10000,
       reconnectionDelayMax: 10000
     },
