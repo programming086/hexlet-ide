@@ -1,9 +1,12 @@
 /* global require module window */
 
+var when = require("when");
 var AppDispatcher = require("editor/dispatcher/AppDispatcher");
 var IdeConstants = require("editor/constants/IdeConstants");
 var IdeStore = require("editor/stores/IdeStore");
 var TreeStore = require("editor/stores/TreeStore");
+var EditorsStore = require("editor/stores/EditorsStore");
+var EditorsActions = require("editor/actions/EditorsActions");
 var ActionTypes = IdeConstants.ActionTypes;
 
 var rpc = require("editor/lib/RpcClient");
@@ -78,7 +81,12 @@ var IdeActions = {
 
   run() {
     AppDispatcher.dispatch({ actionType: ActionTypes.IDE_RUN });
-    return rpc.getClient().run.exec("make test").then((response) => {
+    var editors = EditorsStore.getAllUnsaved();
+    var promises = editors.map(EditorsActions.save);
+
+    when.all(promises).then((_resp) => {
+      return rpc.getClient().run.exec("make test");
+    }).then((response) => {
       var result = {
         cmd: "ide:run_finish",
         response: response

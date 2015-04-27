@@ -16,7 +16,7 @@ module.exports = {
   //     });
   // },
 
-  closeEditor: function(editor) {
+  closeEditor(editor) {
     "use strict";
     AppDispatcher.dispatch({
       actionType: ActionTypes.EDITORS_CLOSE,
@@ -24,7 +24,7 @@ module.exports = {
     });
   },
 
-  makeCurrent: function(editor) {
+  makeCurrent(editor) {
     "use strict";
     AppDispatcher.dispatch({
       actionType: ActionTypes.EDITORS_MAKE_CURRENT,
@@ -32,7 +32,7 @@ module.exports = {
     });
   },
 
-  save: function(editor) {
+  save(editor) {
     "use strict";
     var path = TreeStore.getPathById(editor.id);
     AppDispatcher.dispatch({
@@ -40,7 +40,7 @@ module.exports = {
       id: editor.id
     });
 
-    rpc.getClient().fs.write(path, editor.content).then(function() {
+    return rpc.getClient().fs.write(path, editor.content).then(function() {
       AppDispatcher.dispatch({
         actionType: ActionTypes.EDITORS_SAVE_CURRENT,
         id: editor.id
@@ -48,7 +48,7 @@ module.exports = {
     });
   },
 
-  edit: function(editor, content) {
+  edit(editor, content) {
     "use strict";
     AppDispatcher.dispatch({
       actionType: ActionTypes.EDITORS_EDIT_CURRENT,
