@@ -20,7 +20,7 @@ module.exports = function() {
 
     cache: isPrepublish() ? false : true,
     debug: isPrepublish() ? false : true,
-    devtool: isPrepublish() ? false : "source-map",
+    devtool: false,
     target: "web",
     entry: {
       main: path.join(__dirname, "./src/editor/main.js")
@@ -48,7 +48,8 @@ module.exports = function() {
       }, {
         test: /\.js$/,
         exclude: /(node_modules|bower_components)/,
-        loader: "babel-loader?experimental&optional=runtime"
+        // loader: "babel-loader?experimental&optional=runtime"
+        loaders: ["babel?stage=0&optional=validation.undeclaredVariableCheck"]
       }, {
         test: /\.less$/,
         loader: "style!css!autoprefixer!less"

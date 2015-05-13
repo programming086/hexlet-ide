@@ -4,11 +4,12 @@ import HexletIdeWidget from "editor/lib/HexletIdeWidget";
 
 var key = require("keymaster");
 
-key.filter = function(event) {
+key.filter = function() {
   return true;
-}
+};
+
 var HexletIde = {
-  create: function(domElement, options) {
+  create: function(domElement: any, options: any) : HexletIdeWidget {
     return new HexletIdeWidget(domElement, options);
   }
 };

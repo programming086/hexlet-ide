@@ -104,7 +104,7 @@ AppDispatcher.registerHandler(ActionTypes.TREE_RENAME, function(payload) {
 });
 
 AppDispatcher.registerHandler(ActionTypes.TREE_RELOAD, function() {
-  throw new Exception("Not implemented!");
+  throw "Not implemented!";
 });
 
 module.exports = TreeStore;
