@@ -3,7 +3,7 @@
   "version": "0.0.2",
   "main": "src/backend/public/assets/main.js",
   "dependencies": {
-    "bootstrap": "~3.3.2",
+    "bootstrap": "*",
     "xterm.js": "https://github.com/sourcelair/xterm.js.git#0.30"
   },
   "overrides": {

@@ -2,14 +2,10 @@
   hosts: all
 
   tasks:
-    - name: add nodejs repo
-      apt_repository: repo='ppa:chris-lea/node.js' state=present
-
-    - name: update apt cache
-      apt: update_cache=yes
+    - shell: curl -sL https://deb.nodesource.com/setup_0.12 | bash -
 
     - name: install dependencies
-      apt: pkg={{ item }} state=latest
+      apt: pkg={{ item }} state=latest update_cache=yes
       with_items:
       - nodejs
       - phantomjs
@@ -20,3 +16,4 @@
       with_items:
       - gulp
       - bower
+      - mocha

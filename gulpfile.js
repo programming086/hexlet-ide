@@ -2,7 +2,7 @@
 
 var gulp = require("gulp");
 var mainBowerFiles = require('main-bower-files');
-var webpack = require("gulp-webpack");
+var webpack = require("webpack-stream");
 var nodemon = require("gulp-nodemon");
 var eslint = require("gulp-eslint");
 

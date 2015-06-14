@@ -14,7 +14,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     item.ssh.forward_agent = true
 
-    item.vm.provision 'docker', version: '1.3.2'
+    item.vm.provision 'docker', version: '1.6.2'
 
     item.vm.provision 'ansible' do |ansible|
       ansible.playbook = 'cm/vagrant.yml'
