@@ -13,8 +13,12 @@ function generateClientMethod(client, methodName) {
   client[namespace][name] = function() {
     var args = Array.prototype.slice.call(arguments);
 
+    var uniqKey = _.uniqueId();
+
+    args.unshift(uniqKey);
+
     return when.promise(function(resolve) {
-      client.socket.once(methodName + "Done", function() {
+      client.socket.once(methodName + "Done" + uniqKey, function() {
         resolve.apply(null, arguments);
       });
 

@@ -22,6 +22,13 @@ var TreeStore = BaseStore.extend({
     return node.model;
   },
 
+  getFileByPath(path) {
+    let node = root.first((node) => {
+      return node.model.type == "file" && _.contains(node.model.path, path);
+    });
+    return node.model;
+  },
+
   getPathById(id) {
     let node = root.first(function(node) { return node.model.id === id; });
     return node.getPath().map(function(node){ return node.model.name; }).join("/");

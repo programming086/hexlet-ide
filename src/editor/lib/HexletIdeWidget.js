@@ -10,6 +10,7 @@ const IdeActions = require("editor/actions/IdeActions");
 const EditorsActions = require("editor/actions/EditorsActions");
 const TerminalsStore = require("editor/stores/TerminalsStore");
 const EditorsStore = require("editor/stores/EditorsStore");
+const TreeStore = require("editor/stores/TreeStore");
 
 const RpcClient = require("editor/lib/RpcClient");
 
@@ -101,6 +102,15 @@ export default class HexletIdeWidget {
     return IdeActions.run();
   }
 
+  openFile(filePath) {
+    const fileNode = TreeStore.getFileByPath(filePath)
+    TreeActions.openFile(fileNode);
+  }
+
+  openFiles(files) {
+    files.map(this.openFile, this);
+  }
+
   handleWindowMessage(e) {
     var cmd = e.data.cmd;
     var data = e.data.data;
@@ -114,6 +124,8 @@ export default class HexletIdeWidget {
         return this.switchDisplayMode(data.displayMode);
       case "ide:init":
         return this.init(data);
+      case "ide:open_files":
+        return this.openFiles(data);
       default:
         return null;
     }

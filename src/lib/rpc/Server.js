@@ -3,12 +3,13 @@ var when = require("when");
 
 function registerServerMethod(socket, methodName, callback) { "use strict";
   socket.on(methodName, function(argsArray) {
+    var uniqId = argsArray.shift();
     console.log("Call server method: ", methodName, " with args: ", argsArray);
     var clientInfo = { clientSocket: socket };
     var promise = when(callback.apply(clientInfo, argsArray));
     promise.then(function(result) {
       console.log("Respond to client: ", methodName, " with result: ", result);
-      socket.emit(methodName + "Done", result);
+      socket.emit(methodName + "Done" + uniqId, result);
     });
   });
 }
