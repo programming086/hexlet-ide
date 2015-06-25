@@ -8,12 +8,7 @@ export default React.createClass({
   componentDidMount() {
     let myCodeMirror = CodeMirror(this.refs.editor.getDOMNode(), {
       lineNumbers: true,
-      tabSize: 2,
       extraKeys: {
-        Tab: function(cm) {
-          let spaces = Array(cm.getOption("indentUnit") + 1).join(" ");
-          cm.replaceSelection(spaces);
-        },
         "Ctrl-[": KeyboardActions.ctrl_open_square_br,
         "Ctrl-]": KeyboardActions.ctrl_close_square_br,
         "Shift-Tab": "autocomplete"

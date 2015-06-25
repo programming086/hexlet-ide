@@ -25,6 +25,7 @@
     "moment": "*",
     "morgan": "*",
     "mousetrap": "*",
+    "pty.js": "git://github.com/chjj/pty.js",
     "rimraf": "*",
     "socket.io": "*",
     "tree-model": "*",

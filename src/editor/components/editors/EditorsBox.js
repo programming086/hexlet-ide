@@ -134,6 +134,7 @@ var EditorsBox = React.createClass({
       "jar": "clike",
       "clj": "clojure",
       "erl": "erlang",
+      "make": "cmake",
       "html": "htmlmixed",
       "xml": "xml",
       "css": "css",
@@ -158,8 +159,13 @@ var EditorsBox = React.createClass({
       "": "text"
     };
 
+    if (fileName === "Makefile") {
+      return modes["make"];
+    }
+
     var fNameStruct = fileName.split(".");
     var extension = fNameStruct.length > 1 ? _.last(fNameStruct) : "";
+
     var mode = modes[extension];
     if (!mode) {
       console.warn("Mode for file: ",  fileName, " is not defined");
