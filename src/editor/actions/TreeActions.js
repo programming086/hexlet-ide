@@ -12,8 +12,8 @@ var ActionTypes = IdeConstants.ActionTypes;
 
 
 var TreeActions = {
-  loadTree: function() {
-    rpc.getClient().fs.tree().then(function(result) {
+  loadTree() {
+    return rpc.getClient().fs.tree().then(function(result) {
       // FIXME check result
       AppDispatcher.dispatch({
         actionType: ActionTypes.TREE_LOAD,
@@ -22,8 +22,16 @@ var TreeActions = {
     });
   },
 
-  toggleFolderState: function(tree) {
-    "use strict";
+  loadTreeAndOpenFiles(files) {
+    this.loadTree().then(() => {
+      files.map((file) => {
+        const fileNode = TreeStore.getFileByPath(file);
+        this.openFile(fileNode);
+      })
+    });
+  },
+
+  toggleFolderState(tree) {
     if (tree.state === "closed") {
       rpc.getClient().fs.tree(tree.path).then(function(result) {
         AppDispatcher.dispatch({
@@ -40,9 +48,7 @@ var TreeActions = {
     }
   },
 
-  openFile: function(item) {
-    "use strict";
-
+  openFile(item) {
     rpc.getClient().fs.read(item.path).then(function(result) {
       AppDispatcher.dispatch({
         actionType: ActionTypes.TREE_OPEN_FILE,
@@ -52,7 +58,7 @@ var TreeActions = {
     });
   },
 
-  createFolder: function(parentId, name) {
+  createFolder(parentId, name) {
     var parentFolder = TreeStore.getPathById(parentId);
     rpc.getClient().fs.mkdir(path.join(parentFolder, name)).then(function(result) {
       if (result) {
@@ -65,7 +71,7 @@ var TreeActions = {
     });
   },
 
-  remove: function(id) {
+  remove(id) {
     var folderPath = TreeStore.getPathById(id);
     var files = TreeStore.getFilesForPath(id);
     rpc.getClient().fs.unlink(folderPath).then(function(result) {
@@ -78,7 +84,7 @@ var TreeActions = {
     });
   },
 
-  createFile: function(parentId, name) {
+  createFile(parentId, name) {
     var parentFolder = TreeStore.getPathById(parentId);
     rpc.getClient().fs.touch(path.join(parentFolder, name)).then(function(result) {
       if (result) {
@@ -91,7 +97,7 @@ var TreeActions = {
     });
   },
 
-  rename: function(parentId, name) {
+  rename(parentId, name) {
     var parentPath = TreeStore.getPathById(parentId);
     rpc.getClient().fs.rename(parentPath, name).then(function(result) {
       if (result) {

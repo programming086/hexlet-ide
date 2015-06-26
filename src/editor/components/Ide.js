@@ -20,11 +20,11 @@ var HorizontalSplit = require("./common/split/HorizontalSplit");
 
 var Ide = React.createClass({
   mixins: [WatchStoreMixin(IdeStore)],
-  getFluxState: function() {
+  getFluxState() {
     return IdeStore.getState();
   },
 
-  handleGlobalClick: function() {
+  handleGlobalClick() {
     IdeActions.globalClick();
   },
 
