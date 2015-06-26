@@ -96,12 +96,6 @@ export default class HexletIdeWidget {
 
   init(data) {
     IdeActions.init(data);
-    if (data.displayMode == "normal") {
-      const files = data.removedParts.map((p) => {
-        return p.file_name.replace("exercise/", "");
-      });
-      TreeActions.loadTreeAndOpenFiles(files);
-    }
   }
 
   run() {
@@ -114,7 +108,7 @@ export default class HexletIdeWidget {
   }
 
   openFiles(files) {
-    files.map(this.openFile, this);
+    TreeActions.loadTreeAndOpenFiles(files);
   }
 
   handleWindowMessage(e) {
