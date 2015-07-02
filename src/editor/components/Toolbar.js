@@ -19,10 +19,9 @@ module.exports = React.createClass({
   getStatusClasses: function() {
     var cx = React.addons.classSet;
     var buttonType = IdeStore.getState().connected ?
-      "btn-success" :
-      "btn-danger";
+      "connected" :
+      "disconnected";
     var classes = {
-      "btn": true,
       "status-indicator": true
     };
     classes[buttonType] = true;
@@ -32,7 +31,7 @@ module.exports = React.createClass({
   getStatusInnerClasses: function() {
     var cx = React.addons.classSet;
     var glyphiconType = IdeStore.getState().connected ?
-      "glyphicon-ok-circle" :
+      "glyphicon-record" :
       "glyphicon-remove-circle";
     var classes = {
       "glyphicon": true
