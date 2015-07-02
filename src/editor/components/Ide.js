@@ -38,7 +38,7 @@ var Ide = React.createClass({
   },
 
   renderNormalMode() {
-    return <div className="splits-container" onClick={this.handleGlobalClick}>
+    return <div className="splits-container" onMouseDown={this.handleGlobalClick}>
       <VerticalSplit className="ide-split">
         <Panel className="left-panel">
           <TreeBox />
