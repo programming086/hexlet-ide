@@ -1,3 +1,9 @@
+//fix because safari can't focus zero-size element
+.terminals-box .terminal .xterm-helper-textarea {
+    width: 1px;
+    height: 1px;
+}
+
 .terminals-box {
     width: 100%;
     display: flex;

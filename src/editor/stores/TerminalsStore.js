@@ -36,8 +36,6 @@ AppDispatcher.registerHandler(ActionTypes.TERMINALS_CREATE_TERMINAL, function(pa
     terminal: new Terminal({
       cols: payload.params.cols,
       rows: payload.params.rows,
-      screenKeys: true,
-      useStyle: true,
     })
   };
 
