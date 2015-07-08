@@ -33,12 +33,28 @@ export default class HexletIdeWidget {
 
     rpcClient.ready((proxy) => {
       IdeActions.loadCompleted();
-      IdeActions.connect();
     });
 
     //FIXME: это хак, пока не сделано дуплексное RPC между клиентом и сервером
     rpcClient.socket.on("terminalUpdated", (msg) => {
       TerminalsActions.finishUpdateTerminal(msg);
+    });
+
+    rpcClient.socket.on("reconnect_attempt", () => {
+      IdeActions.reconnectAttempt();
+    });
+
+    rpcClient.socket.on("reconnecting", (attempt) => {
+      IdeActions.reconnecting(attempt);
+    });
+
+    rpcClient.socket.on("reconnect_error", (error) => {
+      IdeActions.reconnectError(error);
+    });
+
+
+    rpcClient.socket.on("connect", () => {
+      IdeActions.connect();
     });
 
     rpcClient.socket.on("reconnect", () => {

@@ -6,7 +6,7 @@ module.exports = React.createClass({
 
   render: function() {
     return (
-      <div className="toolbar pull-right">
+      <div className="toolbar">
         <div className="btn-group" role="group">
           <div className={this.getStatusClasses()}>
             <span className={this.getStatusInnerClasses()} />
@@ -18,11 +18,12 @@ module.exports = React.createClass({
 
   getStatusClasses: function() {
     var cx = React.addons.classSet;
-    var buttonType = IdeStore.getState().connected ?
+    var buttonType = IdeStore.isConnected() ?
       "connected" :
       "disconnected";
     var classes = {
-      "status-indicator": true
+      "status-indicator": true,
+      "pull-right": true
     };
     classes[buttonType] = true;
     return cx(classes);
@@ -30,7 +31,7 @@ module.exports = React.createClass({
 
   getStatusInnerClasses: function() {
     var cx = React.addons.classSet;
-    var glyphiconType = IdeStore.getState().connected ?
+    var glyphiconType = IdeStore.isConnected() ?
       "glyphicon-record" :
       "glyphicon-remove-circle";
     var classes = {

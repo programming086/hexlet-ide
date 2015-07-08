@@ -84,17 +84,17 @@ AppDispatcher.registerHandler(ActionTypes.IDE_SHOW_README, function(payload) {
 //   PopupStore.emitChange();
 // });
 
-AppDispatcher.registerHandler(ActionTypes.IDE_DISCONNECTED, function(payload) {
-  state = open(state, "reconnect_view");
+// AppDispatcher.registerHandler(ActionTypes.IDE_DISCONNECTED, function(payload) {
+//   state = open(state, "reconnect_view");
 
-  PopupStore.emitChange();
-});
+//   PopupStore.emitChange();
+// });
 
-AppDispatcher.registerHandler(ActionTypes.IDE_CONNECTED, function(payload) {
-  state = close(state);
+// AppDispatcher.registerHandler(ActionTypes.IDE_CONNECTED, function(payload) {
+//   state = close(state);
 
-  PopupStore.emitChange();
-});
+//   PopupStore.emitChange();
+// });
 
 AppDispatcher.registerHandler(ActionTypes.IDE_SUBMIT_RESULT, function(payload) {
   state = close(state);

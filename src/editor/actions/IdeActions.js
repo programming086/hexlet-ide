@@ -51,8 +51,6 @@ var IdeActions = {
   },
 
   connect() {
-    "use strict";
-
     var msg = { cmd: "ide:connect" };
     window.parent.postMessage(msg, "*");
     AppDispatcher.dispatch({
@@ -60,14 +58,28 @@ var IdeActions = {
     });
   },
 
-  disconnect() {
-    "use strict";
+  reconnectAttempt() {
+    var msg = { cmd: "ide:reconnect_attempt" };
+    window.parent.postMessage(msg, "*");
+    AppDispatcher.dispatch({ actionType: ActionTypes.IDE_RECONNECT_ATTEMPT });
+  },
 
+  reconnecting(number) {
+    var msg = { cmd: "ide:reconnecting" };
+    window.parent.postMessage(msg, "*");
+    AppDispatcher.dispatch({ actionType: ActionTypes.IDE_RECONNECTING, attempt: number });
+  },
+
+  reconnectError(error) {
+    var msg = { cmd: "ide:reconnect_error" };
+    window.parent.postMessage(msg, "*");
+    AppDispatcher.dispatch({ actionType: ActionTypes.IDE_RECONNECT_ERROR, error: error });
+  },
+
+  disconnect() {
     var msg = { cmd: "ide:disconnect" };
     window.parent.postMessage(msg, "*");
-    AppDispatcher.dispatch({
-      actionType: ActionTypes.IDE_DISCONNECTED
-    });
+    AppDispatcher.dispatch({ actionType: ActionTypes.IDE_DISCONNECTED });
   },
 
   showReadme() {

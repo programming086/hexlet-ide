@@ -1,17 +1,18 @@
-var _ = require("lodash");
-var React = require("react/addons");
-var key = require("keymaster");
+const _ = require("lodash");
+const React = require("react/addons");
+const key = require("keymaster");
 
-var WatchStoreMixin = require("editor/mixins/WatchStore");
+const WatchStoreMixin = require("editor/mixins/WatchStore");
 
-var Editor = require("./Editor");
-var RunView = require("editor/components/common/tab/RunView");
-var Toolbar = require("editor/components/Toolbar");
+const Editor = require("./Editor");
+const RunView = require("editor/components/common/tab/RunView");
+const Toolbar = require("editor/components/Toolbar");
+const ReconnectionStatusBar = require("editor/components/ReconnectionStatusBar");
 
-var EditorsStore = require("editor/stores/EditorsStore");
-var EditorsActions = require("editor/actions/EditorsActions");
+const EditorsStore = require("editor/stores/EditorsStore");
+const EditorsActions = require("editor/actions/EditorsActions");
 
-var EditorsBox = React.createClass({
+const EditorsBox = React.createClass({
   mixins: [ WatchStoreMixin(EditorsStore) ],
 
   getFluxState: function() {
@@ -60,7 +61,7 @@ var EditorsBox = React.createClass({
     });
 
     var items = editors.map(function(editor) {
-      var classes = cx({
+      const classes = cx({
         "active": editor.current
       });
 
@@ -99,6 +100,7 @@ var EditorsBox = React.createClass({
               <Toolbar />
             </li>
           </ul>
+          <ReconnectionStatusBar />
           <div className="tab-content file-content">
             <RunView className={runViewPaneClasses} />
             {editors.map(function(editor) {
