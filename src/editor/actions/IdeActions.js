@@ -50,6 +50,10 @@ var IdeActions = {
     });
   },
 
+  forceConnect() {
+    rpc.socket.connect();
+  },
+
   connect() {
     var msg = { cmd: "ide:connect" };
     window.parent.postMessage(msg, "*");
