@@ -12,8 +12,10 @@ var defaultConfig = {
     url: "",
     options: {
       path: "socket.io",
-      reconnectionDelay: 5000,
-      reconnectionDelayMax: 10000
+      reconnectionDelay: 2000,
+      reconnectionDelayMax: 3000,
+      reconnection: true,
+      autoConnect: true
     },
     events: {
       connect: _.noop,

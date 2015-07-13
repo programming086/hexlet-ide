@@ -19,7 +19,20 @@ var RpcClient = {
 
   getClient() {
     return this.client;
+  },
+
+  forceReconnect() {
+    //NOTE: it's works. Socket io can't force reconnect, and i did it on my own.
+    const socket = this.socket;
+    socket.io.reconnecting = false;
+    socket.io.skipReconnect = false;
+    socket.io.readyState = "closed";
+    const oldDuration = socket.io.backoff.max;
+    socket.io.backoff.max = 50;
+    socket.io.reconnect();
+    socket.io.backoff.max = oldDuration;
   }
+
 };
 
 export default RpcClient;

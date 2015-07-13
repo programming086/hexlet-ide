@@ -51,7 +51,7 @@ var IdeActions = {
   },
 
   forceConnect() {
-    rpc.socket.connect();
+    rpc.forceReconnect();
   },
 
   connect() {

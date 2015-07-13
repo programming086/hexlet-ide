@@ -41,28 +41,34 @@ export default class HexletIdeWidget {
     });
 
     rpcClient.socket.on("reconnect_attempt", () => {
+      console.log('reconnect_attempt');
       IdeActions.reconnectAttempt();
     });
 
     rpcClient.socket.on("reconnecting", (attempt) => {
+      console.log('reconnecting');
       IdeActions.reconnecting(attempt);
     });
 
     rpcClient.socket.on("reconnect_error", (error) => {
+      console.log('reconnect_error');
       IdeActions.reconnectError(error);
     });
 
 
     rpcClient.socket.on("connect", () => {
+    console.log('connect');
       IdeActions.connect();
     });
 
     rpcClient.socket.on("reconnect", () => {
+    console.log('reconnect');
       IdeActions.connect();
       TerminalsActions.reconnectTerminals();
     });
 
     rpcClient.socket.on("disconnect", () => {
+    console.log('disconnect');
       IdeActions.disconnect();
     });
 
