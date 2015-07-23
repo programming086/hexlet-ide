@@ -48,12 +48,14 @@ var TerminalsActions = {
     });
 
     var options = _.merge({ id: id }, params);
+    cmd = "timeout -s SIGTERM -k 20 15 " + cmd;
     rpc.getClient().terminal.create(options).then(function() {
       rpc.getClient().terminal.update({ id: id, data: cmd + "\n" });
     });
   },
 
   runCommand: function(terminal, cmd) {
+    cmd = "timeout -s SIGTERM -k 20 15 " + cmd;
     rpc.getClient().terminal.update({ id: terminal.id, data: cmd + "\n" });
   },
 
