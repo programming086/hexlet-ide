@@ -65,6 +65,7 @@ var IdeActions = {
   reconnectAttempt() {
     var msg = { cmd: "ide:reconnect_attempt" };
     window.parent.postMessage(msg, "*");
+
     AppDispatcher.dispatch({ actionType: ActionTypes.IDE_RECONNECT_ATTEMPT });
   },
 
