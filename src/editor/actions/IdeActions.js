@@ -101,7 +101,7 @@ var IdeActions = {
     var promises = editors.map(EditorsActions.save);
 
     when.all(promises).then((_resp) => {
-      return rpc.getClient().run.exec("make test");
+      return rpc.getClient().run.exec("timeout -s SIGTERM -k 20 15 make test");
     }).then((response) => {
       var result = {
         cmd: "ide:run_finish",
