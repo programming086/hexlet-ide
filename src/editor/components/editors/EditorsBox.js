@@ -131,7 +131,7 @@ const EditorsBox = React.createClass({
       "go": "go",
       "rs": "rust",
       "json": {name: "javascript", mode: "json"},
-      "java": {name: "clike", mode: "java"},
+      "java": {name: "clike", java: true},
       "class": "clike",
       "jar": "clike",
       "clj": "clojure",
