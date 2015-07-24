@@ -131,9 +131,9 @@ const EditorsBox = React.createClass({
       "go": "go",
       "rs": "rust",
       "json": {name: "javascript", mode: "json"},
-      "java": {name: "clike", java: true},
-      "class": "clike",
-      "jar": "clike",
+      "java": "text/x-java",
+      "class": "text/x-java",
+      "jar": "text/x-java",
       "clj": "clojure",
       "erl": "erlang",
       "make": "cmake",
@@ -147,8 +147,8 @@ const EditorsBox = React.createClass({
       "jade": "jade",
       "py": "python",
       "rb": "ruby",
-      "c": "clike",
-      "c++": "clike",
+      "c": "text/x-csrc",
+      "c++": "text/x-c++src",
       "txt": "text",
       "yml": "yaml",
       "yaml": "yaml",
@@ -156,7 +156,7 @@ const EditorsBox = React.createClass({
       "lhs": "haskell",
       "pl": "perl",
       "php": "php",
-      "scala": {name: "clike", mode: "scala"},
+      "scala": "text/x-scala",
 
       "": "text"
     };
