@@ -157,6 +157,7 @@ const EditorsBox = React.createClass({
       "pl": "perl",
       "php": "php",
       "scala": "text/x-scala",
+      "sql": "text/x-sql",
 
       "": "text"
     };

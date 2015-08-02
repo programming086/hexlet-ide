@@ -16,6 +16,7 @@ require("codemirror/mode/javascript/javascript");
 require("codemirror/mode/python/python");
 require("codemirror/mode/ruby/ruby");
 require("codemirror/mode/clike/clike");
+require("codemirror/mode/sql/sql");
 require("codemirror/mode/cmake/cmake");
 require("codemirror/mode/jade/jade");
 require("codemirror/mode/yaml/yaml");
