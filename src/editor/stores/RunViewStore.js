@@ -1,7 +1,6 @@
-/* global require module */
-var AppDispatcher = require("editor/dispatcher/AppDispatcher");
+import AppDispatcher from "editor/dispatcher/AppDispatcher";
+import {ActionTypes} from "editor/constants/IdeConstants";
 var BaseStore = require("./BaseStore");
-var ActionTypes = require("editor/constants/IdeConstants").ActionTypes;
 
 var state = {
   content: "",

@@ -3,8 +3,8 @@ var _ = require("lodash");
 
 var Terminal = require("xterm.js/src/xterm");
 
-var AppDispatcher = require("editor/dispatcher/AppDispatcher");
-var ActionTypes = require("editor/constants/IdeConstants").ActionTypes;
+import AppDispatcher from "editor/dispatcher/AppDispatcher";
+import {ActionTypes} from "editor/constants/IdeConstants";
 
 var BaseStore = require("./BaseStore");
 var IdeStore = require("./IdeStore");

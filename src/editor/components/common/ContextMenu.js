@@ -1,50 +1,69 @@
-var React = require("react/addons");
+import _ from "lodash";
+import React, {Component} from "react/addons";
+import {Container} from 'flux/utils';
 
-var WatchStoreMixin = require("editor/mixins/WatchStore");
-var ContextMenuStore = require("editor/stores/ContextMenuStore");
+import ContextMenuStore from "editor/stores/ContextMenuStore";
 
-var ContextMenu = React.createClass({
-  mixins: [ WatchStoreMixin(ContextMenuStore) ],
+class ContextMenu extends Component<{}, {}, {}> {
+  static contextTypes = {
+    router: React.PropTypes.func
+  }
 
-  getFluxState: function() {
-    return ContextMenuStore.getState();
-  },
+  static getStores(): Array<Store> {
+    return [ContextMenuStore];
+  }
 
-  render: function() {
-    if (!this.state.isVisible) return null;
+  static calculateState(prevState) {
+    return {
+      contextMenuStore: ContextMenuStore.getState()
+    };
+  }
 
-    var menuStyle = {
+  render() {
+    const isVisible = this.state.contextMenuStore.get('isVisible');
+
+    if (!isVisible) return null;
+
+    const coords = this.state.contextMenuStore.get('coords');
+    const options = this.state.contextMenuStore.get('options');
+
+    const menuStyle = {
       position: "fixed",
       zIndex: 100,
-      top: this.state.coords.y,
-      left: this.state.coords.x
+      top: coords.get('y'),
+      left: coords.get('x')
     };
+
+    const optionsItems = options.reduce(function(acc, group, index, array) {
+      const boundedGroup = group.map(function(item) {
+        const title = item.get('title');
+        const onClick = item.get('onClick');
+        return <li key={title}><a href="#" data-name={title} onClick={this.clickHandler(onClick)}>{title}</a></li>;
+      }, this);
+
+      const boundedGroup1 = array.count() != index + 1
+      ? boundedGroup.push(<li key={"divider_" + index} className="divider"></li>)
+      : boundedGroup;
+
+      return acc.concat(boundedGroup);
+    }.bind(this), []);
+
 
     return (
       <div style={menuStyle} className="open context-menu">
         <ul className="dropdown-menu" role="menu">
-          {this.state.options.reduce(function(acc, group, index, array) {
-            var boundedGroup = group.map(function(item) {
-              return <li key={item.title}><a href="#" data-name={item.title} onClick={this.clickHandler(item.onClick)}>{item.title}</a></li>;
-            }, this);
-
-            if (array.length !== index + 1) {
-              boundedGroup.push(<li key={"divider_" + index} className="divider"></li>);
-            }
-
-            return acc.concat(boundedGroup);
-          }.bind(this), [])}
+          {optionsItems}
         </ul>
       </div>
     );
-  },
+  }
 
-  clickHandler: function(onClick) {
+  clickHandler(onClick) {
     return function(e) {
       e.preventDefault();
       onClick();
     }
   }
-});
+};
 
-module.exports = ContextMenu;
+export default Container.create(ContextMenu);

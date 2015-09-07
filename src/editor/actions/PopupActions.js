@@ -1,17 +1,15 @@
-/* global require module */
+import {dispatch} from "editor/dispatcher/AppDispatcher";
+import {ActionTypes} from  "editor/constants/IdeConstants";
 
-var AppDispatcher = require("editor/dispatcher/AppDispatcher");
-var ActionTypes = require("editor/constants/IdeConstants").ActionTypes;
-
-module.exports = {
+export default {
   open(type, options) {
-    AppDispatcher.dispatch({
+    dispatch({
       actionType: ActionTypes.POPUP_OPEN,
       type: type,
       options: options
     });
   },
   close() {
-    AppDispatcher.dispatch({ actionType: ActionTypes.POPUP_CLOSE });
+    dispatch({ actionType: ActionTypes.POPUP_CLOSE });
   }
 };

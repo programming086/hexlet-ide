@@ -1,22 +1,14 @@
-/* global require module */
+import {dispatch} from "editor/dispatcher/AppDispatcher";
+import {ActionTypes} from  "editor/constants/IdeConstants";
 
-var AppDispatcher = require("editor/dispatcher/AppDispatcher");
-var ActionTypes = require("editor/constants/IdeConstants").ActionTypes;
+export function showContextMenu(coords, options) {
+  dispatch({
+    actionType: ActionTypes.CONTEXT_MENU_SHOW,
+    coords: coords,
+    options: options
+  });
+}
 
-module.exports = {
-  showContextMenu: function(coords, options) {
-    "use strict";
-    AppDispatcher.dispatch({
-      actionType: ActionTypes.CONTEXT_MENU_SHOW,
-      coords: coords,
-      options: options
-    });
-  },
-
-  hideContextMenu: function() {
-    "use strict";
-    AppDispatcher.dispatch({
-      actionType: ActionTypes.CONTEXT_MENU_HIDE
-    });
-  }
-};
+export function hideContextMenu() {
+  dispatch({ actionType: ActionTypes.CONTEXT_MENU_HIDE });
+}

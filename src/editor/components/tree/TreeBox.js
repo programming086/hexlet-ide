@@ -7,7 +7,10 @@ var TreeStore = require("editor/stores/TreeStore");
 
 var PopupActions = require("editor/actions/PopupActions");
 var TreeActions = require("editor/actions/TreeActions");
-var ContextMenuActions = require("editor/actions/ContextMenuActions");
+import {
+  showContextMenu,
+  hideContextMenu
+} from "editor/actions/ContextMenuActions";
 
 var TreeBox = React.createClass({
   mixins: [ WatchStoreMixin(TreeStore) ],
@@ -44,7 +47,7 @@ var TreeBox = React.createClass({
 
   handleRefreshTree() {
     TreeActions.loadTree();
-    ContextMenuActions.hideContextMenu();
+    hideContextMenu();
   },
 
   getContextMenuItems(item) {
@@ -78,12 +81,12 @@ var TreeBox = React.createClass({
   handleContextMenu(e, item) {
     e.preventDefault();
     e.stopPropagation();
-    var coords = {
+    const coords = {
       x: e.clientX,
       y: e.clientY
     };
-    var items = this.getContextMenuItems(item);
-    ContextMenuActions.showContextMenu(coords, items);
+    const items = this.getContextMenuItems(item);
+    showContextMenu(coords, items);
   },
 
   render() {

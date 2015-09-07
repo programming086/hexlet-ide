@@ -1,10 +1,10 @@
 /* global require module */
 
-var Dispatcher = require("flux/lib/Dispatcher");
-var objectAssign = require("react/lib/Object.assign");
+import Dispatcher from "flux/lib/Dispatcher";
+import objectAssign from "react/lib/Object.assign";
 
-var AppDispatcher = objectAssign(new Dispatcher(), {
-  registerHandler: function(actionType, callback) {
+class AppDispatcher extends Dispatcher {
+  registerHandler(actionType, callback) {
     if (!actionType) {
       throw "ActionType is undefined!!!";
     }
@@ -15,6 +15,12 @@ var AppDispatcher = objectAssign(new Dispatcher(), {
       }
     });
   }
-});
+}
 
-module.exports = AppDispatcher;
+const instance = new AppDispatcher();
+
+export default instance;
+export const dispatch = function(action) {
+  console.log("Dispatch action: ", action);
+  instance.dispatch(action);
+};

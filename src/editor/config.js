@@ -1,8 +1,6 @@
-/* global module require window */
+import _ from "lodash";
 
-var _ = require("lodash");
-
-var defaultConfig = {
+const defaultConfig = {
   terminal: {
     cols: 110,
     rows: 8
@@ -30,8 +28,8 @@ var defaultConfig = {
 };
 
 
-module.exports = {
-  extend: function(config) {
+export default {
+  extend(config) {
      _.extend(this, _.merge(defaultConfig, config));
   }
 };

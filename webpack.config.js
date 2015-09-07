@@ -42,14 +42,21 @@ module.exports = function() {
     resolveLoader: { root: path.join(__dirname, "node_modules") },
 
     module: {
+      preLoaders: [
+        {
+          test: /\.js$/,
+          loader: "eslint-loader",
+          exclude: /node_modules/
+        }
+      ],
+
       loaders: [{
         test: /\.css$/,
         loader: "style!css!autoprefixer-loader"
       }, {
         test: /\.js$/,
         exclude: /(node_modules|bower_components)/,
-        // loader: "babel-loader?experimental&optional=runtime"
-        loaders: ["babel?stage=0&optional=validation.undeclaredVariableCheck"]
+        loaders: ["babel?stage=0"]
       }, {
         test: /\.less$/,
         loader: "style!css!autoprefixer!less"

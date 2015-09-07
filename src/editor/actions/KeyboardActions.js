@@ -1,20 +1,20 @@
-const AppDispatcher = require("editor/dispatcher/AppDispatcher");
-const ActionTypes = require("editor/constants/IdeConstants").ActionTypes;
+import {dispatch} from "editor/dispatcher/AppDispatcher";
+import {ActionTypes} from  "editor/constants/IdeConstants";
 
-module.exports = {
+export default {
   esc() {
-    AppDispatcher.dispatch({ actionType: ActionTypes.KEY_ESC });
+    dispatch({ actionType: ActionTypes.KEY_ESC });
   },
 
   ctrl_r() {
-    AppDispatcher.dispatch({ actionType: ActionTypes.KEY_CTRL_R });
+    dispatch({ actionType: ActionTypes.KEY_CTRL_R });
   },
 
   ctrl_open_square_br() {
-    AppDispatcher.dispatch({ actionType: ActionTypes.KEY_CTRL_OPEN_SQUARE_BR });
+    dispatch({ actionType: ActionTypes.KEY_CTRL_OPEN_SQUARE_BR });
   },
 
   ctrl_close_square_br() {
-    AppDispatcher.dispatch({ actionType: ActionTypes.KEY_CTRL_CLOSE_SQUARE_BR });
+    dispatch({ actionType: ActionTypes.KEY_CTRL_CLOSE_SQUARE_BR });
   },
 };

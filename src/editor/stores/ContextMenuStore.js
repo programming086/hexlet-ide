@@ -1,52 +1,38 @@
-/* global require module */
-var AppDispatcher = require("editor/dispatcher/AppDispatcher");
-var BaseStore = require("./BaseStore");
-var ActionTypes = require("editor/constants/IdeConstants").ActionTypes;
+import Immutable from 'immutable';
+import {ReduceStore} from 'flux/utils';
 
-var state = {
-  isVisible: false,
-  coords: { x: 0, y: 0 },
-  options: {}
-};
+import dispatcher from "editor/dispatcher/AppDispatcher";
+import {ActionTypes} from "editor/constants/IdeConstants";
 
-var ContextMenuStore = BaseStore.extend({
-  isVisible: function() {
-    return state.isVisible;
-  },
-
-  getCoords: function() {
-    return state.coords;
-  },
-
-  getItems: function() {
-    return state.items;
-  },
-
-  getState: function() {
-    return state;
+class ContextMenuStore extends ReduceStore {
+  getInitialState() {
+    return Immutable.fromJS({
+      isVisible: false,
+      coords: { x: 0, y: 0 },
+      options: {}
+    });
   }
-});
 
-AppDispatcher.registerHandler(ActionTypes.CONTEXT_MENU_SHOW, function(payload) {
-  state.isVisible = true;
-  state.coords = payload.coords;
-  state.options = payload.options;
-  ContextMenuStore.emitChange();
-});
+  reduce(state, action) {
+    switch(action.actionType) {
+      case ActionTypes.CONTEXT_MENU_SHOW:
+        return state.set('isVisible', true)
+                    .set('coords', Immutable.fromJS(action.coords))
+                    .set('options', Immutable.fromJS(action.options));
 
-AppDispatcher.registerHandler(ActionTypes.CONTEXT_MENU_HIDE, function() {
-  state.isVisible = false;
-  ContextMenuStore.emitChange();
-});
+      case ActionTypes.CONTEXT_MENU_HIDE:
+        return state.set('isVisible', false);
 
-AppDispatcher.registerHandler(ActionTypes.IDE_GLOBAL_CLICK, function() {
-  state.isVisible = false;
-  ContextMenuStore.emitChange();
-});
+      case ActionTypes.IDE_GLOBAL_CLICK:
+        return state.set('isVisible', false);
 
-AppDispatcher.registerHandler(ActionTypes.POPUP_OPEN, function() {
-  state.isVisible = false;
-  ContextMenuStore.emitChange();
-});
+      case ActionTypes.POPUP_OPEN:
+        return state.set('isVisible', false);
 
-module.exports = ContextMenuStore;
+      default:
+        return state;
+    }
+  }
+}
+
+export default new ContextMenuStore(dispatcher);

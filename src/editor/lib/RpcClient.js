@@ -1,17 +1,14 @@
 /* global module require  */
 
-var io = require("socket.io-client");
-var _ = require("lodash");
+import io from "socket.io-client";
+import _ from "lodash";
+import rpc from "../../lib/rpc";
 
-var rpc = require("../../lib/rpc");
-
-var RpcClient = {
+export default {
   init(params) {
-    var socket = io.connect(params.url, params.options);
-    _.each(params.events, function(callback, name) {
-      "use strict";
-      socket.on(name, callback);
-    });
+    const socket = io.connect(params.url, params.options);
+
+    _.each(params.events, (callback, name) =>  socket.on(name, callback));
 
     this.socket = socket;
     this.client = rpc.createClient(socket);
@@ -34,11 +31,3 @@ var RpcClient = {
   }
 
 };
-
-export default RpcClient;
-
-
-
-
-
-

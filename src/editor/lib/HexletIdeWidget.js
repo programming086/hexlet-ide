@@ -1,18 +1,18 @@
 import Mousetrap from "mousetrap";
-const React = require("react/addons");
-const Config = require("editor/config");
-const Ide = require("editor/components/Ide");
+import React from "react/addons";
+import Config from "editor/config";
+import Ide from "editor/components/Ide";
 
-const KeyboardActions = require("editor/actions/KeyboardActions");
-const TreeActions = require("editor/actions/TreeActions");
-const TerminalsActions = require("editor/actions/TerminalsActions");
-const IdeActions = require("editor/actions/IdeActions");
-const EditorsActions = require("editor/actions/EditorsActions");
-const TerminalsStore = require("editor/stores/TerminalsStore");
-const EditorsStore = require("editor/stores/EditorsStore");
-const TreeStore = require("editor/stores/TreeStore");
+import KeyboardActions from "editor/actions/KeyboardActions";
+import TreeActions from "editor/actions/TreeActions";
+import TerminalsActions from "editor/actions/TerminalsActions";
+import IdeActions from "editor/actions/IdeActions";
+import EditorsActions from "editor/actions/EditorsActions";
+import TerminalsStore from "editor/stores/TerminalsStore";
+import EditorsStore from "editor/stores/EditorsStore";
+import TreeStore from "editor/stores/TreeStore";
 
-const RpcClient = require("editor/lib/RpcClient");
+import RpcClient from "editor/lib/RpcClient";
 
 export default class HexletIdeWidget {
   constructor(domElement, options) {
@@ -29,7 +29,7 @@ export default class HexletIdeWidget {
   }
 
   bindEvents() {
-    var rpcClient = RpcClient.getClient();
+    const rpcClient = RpcClient.getClient();
 
     rpcClient.ready((proxy) => {
       IdeActions.loadCompleted();
@@ -83,7 +83,7 @@ export default class HexletIdeWidget {
 
   runAutosave() {
     this.autosaveTimer = setInterval(() => {
-      var editors = EditorsStore.getAllUnsaved();
+      const editors = EditorsStore.getAllUnsaved();
       editors.forEach(EditorsActions.save);
     }, Config.autosaveInterval);
   }
@@ -134,8 +134,8 @@ export default class HexletIdeWidget {
   }
 
   handleWindowMessage(e) {
-    var cmd = e.data.cmd;
-    var data = e.data.data;
+    const cmd = e.data.cmd;
+    const data = e.data.data;
 
     switch(cmd) {
       case "ide:run":

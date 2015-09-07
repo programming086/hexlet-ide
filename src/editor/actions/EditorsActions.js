@@ -1,47 +1,33 @@
-/* global require module */
+import {dispatch} from "editor/dispatcher/AppDispatcher";
+import {ActionTypes} from  "editor/constants/IdeConstants";
 
-var AppDispatcher = require("editor/dispatcher/AppDispatcher");
-var IdeConstants = require("editor/constants/IdeConstants");
-var ActionTypes = IdeConstants.ActionTypes;
 var TreeStore = require("editor/stores/TreeStore");
 var rpc = require("editor/lib/RpcClient");
 
 module.exports = {
-  // flushTabContent: function(id, content) {
-  //     "use strict";
-  //     AppDispatcher.dispatch({
-  //         actionType: ActionTypes.TABS_FLUSH_CONTENT,
-  //         id: id,
-  //         content: content
-  //     });
-  // },
-
   closeEditor(editor) {
-    "use strict";
-    AppDispatcher.dispatch({
+    dispatch({
       actionType: ActionTypes.EDITORS_CLOSE,
       id: editor.id
     });
   },
 
   makeCurrent(editor) {
-    "use strict";
-    AppDispatcher.dispatch({
+    dispatch({
       actionType: ActionTypes.EDITORS_MAKE_CURRENT,
       id: editor.id
     });
   },
 
   save(editor) {
-    "use strict";
-    var path = TreeStore.getPathById(editor.id);
-    AppDispatcher.dispatch({
+    const path = TreeStore.getPathById(editor.id);
+    dispatch({
       actionType: ActionTypes.EDITORS_SAVING_CURRENT,
       id: editor.id
     });
 
-    return rpc.getClient().fs.write(path, editor.content).then(function() {
-      AppDispatcher.dispatch({
+    return rpc.getClient().fs.write(path, editor.content).then(_ => {
+      dispatch({
         actionType: ActionTypes.EDITORS_SAVE_CURRENT,
         id: editor.id
       });
@@ -49,8 +35,7 @@ module.exports = {
   },
 
   edit(editor, content) {
-    "use strict";
-    AppDispatcher.dispatch({
+    dispatch({
       actionType: ActionTypes.EDITORS_EDIT_CURRENT,
       id: editor.id,
       content: content
@@ -58,8 +43,7 @@ module.exports = {
   },
 
   showRunView() {
-    "use strict";
-    AppDispatcher.dispatch({
+    dispatch({
       actionType: ActionTypes.EDITORS_SHOW_RUN_VIEW
     });
   }

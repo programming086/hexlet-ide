@@ -1,8 +1,8 @@
 /* global require module */
 
-var keyMirror = require("react/lib/keyMirror");
+import keyMirror from "react/lib/keyMirror";
 
-module.exports = {
+const CONSTANTS = {
   ActionTypes: keyMirror({
     IDE_INIT: null,
     IDE_GLOBAL_CLICK: null,
@@ -60,3 +60,6 @@ module.exports = {
 
   })
 };
+
+export default CONSTANTS;
+export const ActionTypes = CONSTANTS.ActionTypes;

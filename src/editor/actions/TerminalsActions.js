@@ -1,102 +1,98 @@
-/* global require module */
-var _ = require("lodash");
+import _ from "lodash";
 
-var AppDispatcher = require("editor/dispatcher/AppDispatcher");
-var IdeConstants = require("editor/constants/IdeConstants");
-var ActionTypes = IdeConstants.ActionTypes;
+import {dispatch} from "editor/dispatcher/AppDispatcher";
+import {ActionTypes} from  "editor/constants/IdeConstants";
+
 var TerminalsStore = require("editor/stores/TerminalsStore");
 
-var rpc = require("editor/lib/RpcClient");
+import rpc from "editor/lib/RpcClient";
 
-var TerminalsActions = {
-  createTerminal: function(params) {
-    var id = TerminalsStore.getNextSequence();
-    AppDispatcher.dispatch({
+export default {
+  createTerminal(params) {
+    const id = TerminalsStore.getNextSequence();
+    dispatch({
       actionType: ActionTypes.TERMINALS_CREATE_TERMINAL,
       id: id,
       params: params
     });
 
-    var options = _.merge({ id: id}, params);
+    const options = _.merge({ id: id}, params);
     rpc.getClient().terminal.create(options);
   },
 
-  createDefaultTerminal: function(params) {
-    var id = TerminalsStore.getNextSequence();
-    AppDispatcher.dispatch({
+  createDefaultTerminal(params) {
+    const id = TerminalsStore.getNextSequence();
+    dispatch({
       actionType: ActionTypes.TERMINALS_CREATE_TERMINAL,
       id: id,
       params: params
     });
 
-    var options = _.merge({ id: id}, params);
+    const options = _.merge({ id: id}, params);
     rpc.getClient().terminal.createDefault(options);
   },
 
-  reconnectTerminals: function() {
+  reconnectTerminals() {
     _.each(TerminalsStore.getAll(), function(terminal) {
       rpc.getClient().terminal.reconnect({ id: terminal.id });
     });
   },
 
-  runCommandInNewTerminal: function(cmd, params) {
-    var id = TerminalsStore.getNextSequence();
-    AppDispatcher.dispatch({
+  runCommandInNewTerminal(cmd, params) {
+    const id = TerminalsStore.getNextSequence();
+    dispatch({
       actionType: ActionTypes.TERMINALS_CREATE_TERMINAL,
       id: id,
       params: params
     });
 
-    var options = _.merge({ id: id }, params);
+    const options = _.merge({ id: id }, params);
     cmd = "timeout -s SIGTERM -k 20 15 " + cmd;
     rpc.getClient().terminal.create(options).then(function() {
       rpc.getClient().terminal.update({ id: id, data: cmd + "\n" });
     });
   },
 
-  runCommand: function(terminal, cmd) {
+  runCommand(terminal, cmd) {
     cmd = "timeout -s SIGTERM -k 20 15 " + cmd;
     rpc.getClient().terminal.update({ id: terminal.id, data: cmd + "\n" });
   },
 
-  startUpdateTerminal: function(msg) {
+  startUpdateTerminal(msg) {
     rpc.getClient().terminal.update(msg);
   },
 
-  finishUpdateTerminal: function(msg) {
-    AppDispatcher.dispatch({
+  finishUpdateTerminal(msg) {
+    dispatch({
       actionType: ActionTypes.TERMINALS_UPDATE_TERMINAL,
       id: msg.id,
       data: msg.data
     });
   },
 
-  selectTerminal: function(terminal) {
-    AppDispatcher.dispatch({
+  selectTerminal(terminal) {
+    dispatch({
       actionType: ActionTypes.TERMINALS_SELECT_TERMINAL,
       id: terminal.id
     });
   },
 
-  closeTerminal: function(terminal) {
+  closeTerminal(terminal) {
     rpc.getClient().terminal.destroy({id: terminal.id }).then(function() {
-      AppDispatcher.dispatch({
+      dispatch({
         actionType: ActionTypes.TERMINALS_CLOSE_TERMINAL,
         id: terminal.id
       });
     });
   },
 
-  resize: function(msg) {
+  resize(msg) {
     rpc.getClient().terminal.resize(msg);
   },
 
   showRunView() {
-    "use strict";
-    AppDispatcher.dispatch({
+    dispatch({
       actionType: ActionTypes.TERMINALS_SHOW_RUN_VIEW
     });
   }
 };
-
-module.exports = TerminalsActions;

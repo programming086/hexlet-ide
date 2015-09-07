@@ -1,8 +1,9 @@
-/* global require module */
-const AppDispatcher = require("editor/dispatcher/AppDispatcher");
+import keyMirror from "react/lib/keyMirror";
+
+import AppDispatcher from "editor/dispatcher/AppDispatcher";
+import {ActionTypes} from "editor/constants/IdeConstants";
+
 const BaseStore = require("./BaseStore");
-const ActionTypes = require("editor/constants/IdeConstants").ActionTypes;
-const keyMirror = require("react/lib/keyMirror");
 
 const IDE_CONNECTION_STATES = keyMirror({
   connected: null,
