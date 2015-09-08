@@ -6,6 +6,8 @@
 import $ from "jquery";
 import jQuery from "jquery";
 
+require("array.from");
+
 require("bootstrap/dist/css/bootstrap.css");
 require("codemirror/lib/codemirror.css");
 require("codemirror/theme/solarized.css");

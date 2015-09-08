@@ -17,10 +17,31 @@ class AppDispatcher extends Dispatcher {
   }
 }
 
-const instance = new AppDispatcher();
+const dispatcher = new AppDispatcher();
 
-export default instance;
-export const dispatch = function(action) {
-  console.log("Dispatch action: ", action);
-  instance.dispatch(action);
+export default dispatcher;
+
+export const dispatch = function() {
+  const args = Array.from(arguments);
+  console.log("Dispatch action: ", args);
+  if (args.length > 1) {
+    args[1].actionType = args[0];
+    dispatcher.dispatch(args[1]);
+
+  } else if (_.isObject(args[0])) {
+    dispatcher.dispatch(args[0]);
+  } else {
+    dispatcher.dispatch({
+      actionType: args[0]
+    });
+  }
 };
+
+export const promiseDispatch = function(actionType, params = {}) {
+  return function(result) {
+    params.actionType = actionType;
+    params.promiseResult = result;
+    console.log("Dispatch action: ", params);
+    dispatcher.dispatch(params);
+  }
+}
