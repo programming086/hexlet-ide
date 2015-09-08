@@ -3,15 +3,6 @@
   "version": "0.0.2",
   "main": "src/backend/public/assets/main.js",
   "dependencies": {
-    "bootstrap": "*",
     "xterm.js": "https://github.com/sourcelair/xterm.js.git#master"
-  },
-  "overrides": {
-    "bootstrap": {
-      "main": [
-        "**/bootstrap.css",
-        "**/bootstrap.css.map"
-      ]
-    }
   }
 }

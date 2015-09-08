@@ -1,42 +1,31 @@
-/* global require console process module __dirname */
-
 var fs = require("fs");
 var path = require("path");
 var express = require("express");
-var app = express();
 var morgan = require("morgan");
+var http = require("http");
+var socketIOFactory = require("socket.io");
+var rpcFactory = require("./rpc");
 
-var s = function(options) { "use strict";
+var routes = require("./routes/index");
+
+module.exports = function(options) {
+  var app = express();
   app.use(morgan("combined"));
-
   app.engine("jade", require("jade").__express);
 
   app.set("views", path.join(__dirname, "views"));
   app.set("view engine", "jade");
 
-  var server;
+  var server = http.createServer(app);
+  server.listen(options.port);
+  console.log("info: starting on port '" + options.port + "'");
 
-  if (options.httpsPath === undefined) {
-    console.log("info: starting on port '" + options.port + "'");
-    server = require("http").createServer(app);
-    server.listen(options.port);
-  } else {
-    var privateKey = fs.readFileSync(options.httpsPath + ".key", "utf8");
-    var certificate = fs.readFileSync(options.httpsPath + ".crt", "utf8");
-    var credentials = {key: privateKey, cert: certificate, passphrase: options.httpsPassphrase};
-
-    console.log("info: starting https on port '" + options.httpsPort + "'");
-    server = require("https").createServer(credentials, app);
-    server.listen(options.httpsPort);
-  }
-
-  var io = require("socket.io")(server);
+  var io = socketIOFactory(server);
   // TODO it might make sense to do rpc calls timeouts on the client side
   io.set("heartbeat timeout", 5000);
   io.set("heartbeat interval", 3000);
-  require("./rpc")(io, options);
+  rpcFactory(io, options);
 
-  var routes = require("./routes/index");
   app.use("/", routes);
 
   if (process.env.NODE_ENV === "develop" || process.env.NODE_ENV === "test") {
@@ -87,5 +76,3 @@ var s = function(options) { "use strict";
 
   return server;
 };
-
-module.exports = s;

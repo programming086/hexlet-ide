@@ -1,14 +1,6 @@
 /* global require */
-// require("es5-shim");
-//
-
-
-import $ from "jquery";
-import jQuery from "jquery";
-
 require("array.from");
 
-require("bootstrap/dist/css/bootstrap.css");
 require("codemirror/lib/codemirror.css");
 require("codemirror/theme/solarized.css");
 require("xterm.js/src/xterm.css");

@@ -4,8 +4,7 @@ var cp = require("child_process");
 var when = require("when");
 
 module.exports = function(options) {
-  var childs = {
-  };
+  var childs = {};
 
   return {
     exec: function(command) {

@@ -1,5 +1,3 @@
-/* global module */
-
 module.exports = {
   treeOptions: {
     modelComparatorFn: function(a, b) {
