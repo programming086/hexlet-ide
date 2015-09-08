@@ -5,10 +5,7 @@ var EditorsBox = require("editor/components/editors/EditorsBox");
 var TerminalsBox = require("editor/components/terminals/TerminalsBox");
 var ContextMenu = require("editor/components/common/ContextMenu");
 var Loader = require("editor/components/common/Loader");
-var RunnerBox = require("editor/components/RunnerBox");
-var ActionsBox = require("editor/components/ActionsBox");
 var PopupBox = require("editor/components/PopupBox");
-var Toolbar = require("editor/components/Toolbar");
 
 var IdeActions = require("editor/actions/IdeActions");
 var WatchStoreMixin = require("editor/mixins/WatchStore");
