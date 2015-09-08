@@ -1,52 +1,55 @@
-import AppDispatcher from "editor/dispatcher/AppDispatcher";
+import Immutable from 'immutable';
+import {ReduceStore} from 'flux/utils';
+
+import dispatcher from "editor/dispatcher/AppDispatcher";
 import {ActionTypes} from "editor/constants/IdeConstants";
-var BaseStore = require("./BaseStore");
 
-var state = {
-  content: "",
-  code: 0,
-  signal: null,
+class Store extends ReduceStore {
+  getInitialState() {
+    return Immutable.fromJS({
+      content: "",
+      code: 0,
+      signal: null,
 
-  isFinished: false
-};
+      isFinished: false
+    });
+  }
 
-var RunViewStore = BaseStore.extend({
   getContent() {
-    return state.content;
-  },
+    return this.getState().get("content");
+  }
   getCode() {
-    return state.code;
-  },
+    return this.getState().get("code");
+  }
 
   isFinished() {
-    return state.isFinished;
-  },
+    return this.getState().get("isFinished");
+  }
 
   isSuccess() {
-    return state.code == 0;
+    return this.getState().get("code") === 0;
   }
-});
 
-AppDispatcher.registerHandler(ActionTypes.IDE_RUN, function(payload) {
-  state.content = "";
-  state.code = "";
-  state.signal = null;
-  state.isFinished = false;
+  reduce(state, action) {
+    switch(action.actionType) {
+      case ActionTypes.IDE_RUN:
+        return state.set("content", "")
+                    .set("code", "")
+                    .set("signal", null)
+                    .set("isFinished", false);
 
-  RunViewStore.emitChange();
-});
+      case ActionTypes.IDE_RUN_PROGRESS:
+        return state.update("content", c => c += action.chunk);
 
-AppDispatcher.registerHandler(ActionTypes.IDE_RUN_PROGRESS, function(payload) {
-  state.content += payload.chunk;
-  RunViewStore.emitChange();
-});
+      case ActionTypes.IDE_RUN_FINISH:
+        return state.set("code", action.code)
+                    .set("signal", action.signal)
+                    .set("isFinished", true);
 
-AppDispatcher.registerHandler(ActionTypes.IDE_RUN_FINISH, function(payload) {
-  state.code = payload.code;
-  state.signal = payload.signal;
-  state.isFinished = true;
-  RunViewStore.emitChange();
-});
+      default:
+        return state;
+    }
+  }
+}
 
-module.exports = RunViewStore;
-
+export default new Store(dispatcher);

@@ -1,44 +1,47 @@
-var _ = require("lodash");
-var React = require("react/addons");
-var CodeMirror = require("codemirror");
+import _ from "lodash";
+import React, { Component } from "react/addons";
+import CodeMirror from "codemirror";
 
-var KeyboardActions = require("editor/actions/KeyboardActions");
+import KeyboardActions from "editor/actions/KeyboardActions";
 
-export default React.createClass({
+export default class extends Component {
   componentDidMount() {
-    let myCodeMirror = CodeMirror(this.refs.editor.getDOMNode(), {
+    const { initContent, mode, onChangeValue } = this.props;
+    const editorEl = React.findDOMNode(this.refs.editor);
+
+    const editor = CodeMirror(editorEl, {
       lineNumbers: true,
       extraKeys: {
         "Ctrl-[": KeyboardActions.ctrl_open_square_br,
         "Ctrl-]": KeyboardActions.ctrl_close_square_br,
         "Shift-Tab": "autocomplete"
       },
-      value: this.props.initContent,
-      mode: this.props.mode,
+      value: initContent,
+      mode: mode,
       theme: "solarized dark",
       indentWithTabs: false,
       viewportMargin: Infinity
     });
 
-    myCodeMirror.on("change", _.throttle((CodeMirror, object) => {
-      this.props.onChangeValue(myCodeMirror.getValue());
+    editor.on("change", _.throttle((CodeMirror, object) => {
+      onChangeValue(myCodeMirror.getValue());
     }, 2000));
 
-    this.setState({myCodeMirror: myCodeMirror});
-  },
+    this.setState({ editor: editor });
+  }
 
   componentDidUpdate(oldProps) {
     if (this.props.focus) {
-      this.state.myCodeMirror.refresh();
+      this.state.editor.refresh();
 
       if (!oldProps.focus) {
-        this.state.myCodeMirror.focus();
+        this.state.editor.focus();
       }
     }
 
-  },
+  }
 
   render() {
     return ( <div className={this.props.className} ref="editor"></div>);
   }
-});
+}

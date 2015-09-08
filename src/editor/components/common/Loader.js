@@ -16,7 +16,7 @@ class Loader extends Component {
   }
 
   render() {
-    return <div className="fuelux">
+    return <div className="">
       <div className="loader" data-initialize="loader" data-frame={this.state.frame}></div>
     </div>;
   }

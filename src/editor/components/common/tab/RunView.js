@@ -1,36 +1,34 @@
-var Escaper = require("escaper.js");
-var React = require("react/addons");
-var RunViewStore = require("editor/stores/RunViewStore");
-var WatchStoreMixin = require("editor/mixins/WatchStore");
-var IdeActions = require("editor/actions/IdeActions");
+import React, {Component} from "react/addons";
+import {Container} from 'flux/utils';
 
-var cx = React.addons.classSet;
+import RunViewStore from "editor/stores/RunViewStore";
 
-var escaper = new Escaper();
+const cx = React.addons.classSet;
 
-export default React.createClass({
-  mixins: [WatchStoreMixin(RunViewStore)],
+class RunView extends Component {
+  static getStores(): Array<Store> {
+    return [RunViewStore];
+  }
 
-  getFluxState() {
+  static calculateState(prevState) {
     return {
       content: RunViewStore.getContent(),
       isFinished: RunViewStore.isFinished(),
       isSuccess: RunViewStore.isSuccess(),
       code: RunViewStore.getCode()
     };
-  },
+  }
 
   getContent() {
     return this.state.content;
-    // return escaper.escape(this.state.content);
-  },
+  }
 
   getStatusText() {
     if (!this.state.isFinished) {
       return "progress";
     }
     return this.state.isSuccess ? "success" : "fail";
-  },
+  }
 
   getResultClasses() {
     return cx({
@@ -38,18 +36,19 @@ export default React.createClass({
       "alert-success": this.state.isFinished && this.state.isSuccess,
       "alert-danger": this.state.isFinished && !this.state.isSuccess,
     });
-  },
+  }
 
   componentDidUpdate(prevProps, prevState) {
     if (prevState.content !== this.state.content ||
         prevState.isFinished !== this.state.isFinished) {
-      this.scrollBottom(this.refs.content.getDOMNode());
+      const contentBox = React.findDOMNode(this.refs.content);
+      this.scrollBottom(contentBox);
     }
-  },
+  }
 
   scrollBottom(el) {
     el.scrollTop = el.scrollHeight;
-  },
+  }
 
   render() {
     return (
@@ -62,6 +61,7 @@ export default React.createClass({
        </div>
      </div>
     );
-  },
-});
+  }
+};
 
+export default Container.create(RunView);

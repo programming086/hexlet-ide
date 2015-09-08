@@ -39,6 +39,4 @@ require("codemirror/addon/hint/anyword-hint");
 
 require("xterm.js/addons/fit/fit.js");
 
-// require("bootstrap/dist/js/bootstrap");
-
 require("editor/styles/application.less");
