@@ -1,9 +1,9 @@
+import cx from "classnames";
 import React, {Component} from "react/addons";
 import {Container} from 'flux/utils';
 
 import RunViewStore from "editor/stores/RunViewStore";
 
-const cx = React.addons.classSet;
 
 class RunView extends Component {
   static getStores(): Array<Store> {

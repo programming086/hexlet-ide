@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "array.from": "^0.2.0",
+    "classnames": "^2.1.3",
     "commander": "*",
     "escaper.js": "*",
     "express": "*",
