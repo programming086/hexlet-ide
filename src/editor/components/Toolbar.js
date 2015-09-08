@@ -1,10 +1,13 @@
-var React = require("react/addons");
-var IdeStore = require("editor/stores/IdeStore");
-var IdeActions = require("editor/actions/IdeActions");
+import _ from "lodash";
+import React, {Component} from "react/addons";
+import {Container} from 'flux/utils';
 
-module.exports = React.createClass({
+import IdeStore from "editor/stores/IdeStore";
+import IdeActions from "editor/actions/IdeActions";
 
-  render: function() {
+class Toolbar extends Component<{}, {}, {}> {
+
+  render() {
     return (
       <div className="toolbar">
         <div className="btn-group" role="group">
@@ -14,30 +17,32 @@ module.exports = React.createClass({
         </div>
       </div>
     );
-  },
+  }
 
-  getStatusClasses: function() {
+  getStatusClasses() {
     var cx = React.addons.classSet;
-    var buttonType = IdeStore.isConnected() ?
+    const buttonType = IdeStore.isConnected() ?
       "connected" :
       "disconnected";
-    var classes = {
+    const classes = {
       "status-indicator": true,
       "pull-right": true
     };
     classes[buttonType] = true;
     return cx(classes);
-  },
+  }
 
-  getStatusInnerClasses: function() {
+  getStatusInnerClasses() {
     var cx = React.addons.classSet;
-    var glyphiconType = IdeStore.isConnected() ?
+    const glyphiconType = IdeStore.isConnected() ?
       "glyphicon-record" :
       "glyphicon-remove-circle";
-    var classes = {
+    const classes = {
       "glyphicon": true
     };
     classes[glyphiconType] = true;
     return cx(classes);
   }
-});
+};
+
+export default Toolbar;
