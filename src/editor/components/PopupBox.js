@@ -1,28 +1,32 @@
-var React = require("react/addons");
-var PopupStore = require("editor/stores/PopupStore");
-var PopupActions = require("editor/actions/PopupActions");
+import _ from "lodash";
+import React, {Component} from "react/addons";
+import {Container} from "flux/utils";
 
-var WatchStoreMixin = require("editor/mixins/WatchStore");
+import PopupStore from "editor/stores/PopupStore";
+import {closePopup} from "editor/actions/PopupActions";
 
-var CreateFolder = require("editor/components/popup/CreateFolder");
-var CreateFile = require("editor/components/popup/CreateFile");
-var RemoveFolder  = require("editor/components/popup/RemoveFolder");
-var RemoveFile = require("editor/components/popup/RemoveFile");
-var Rename = require("editor/components/popup/Rename");
-var MarkdownView = require("editor/components/popup/MarkdownView");
-var RunView = require("editor/components/popup/RunView");
-var ReconnectView = require("editor/components/popup/ReconnectView");
+import CreateFolder from "editor/components/popup/CreateFolder";
+import CreateFile from "editor/components/popup/CreateFile";
+import RemoveFolder  from "editor/components/popup/RemoveFolder";
+import RemoveFile from "editor/components/popup/RemoveFile";
+import Rename from "editor/components/popup/Rename";
+import MarkdownView from "editor/components/popup/MarkdownView";
+import RunView from "editor/components/popup/RunView";
+import ReconnectView from "editor/components/popup/ReconnectView";
 
-export default React.createClass({
-  mixins: [WatchStoreMixin(PopupStore)],
+class PopupBox extends Component<{}, {}, {}> {
 
-  getFluxState() {
+  static getStores() {
+    return [PopupStore];
+  }
+
+  static calculateState(prevState) {
     return {
       isOpened: PopupStore.isOpened(),
-      type: PopupStore.getType(),
-      options: PopupStore.getOptions()
+      type: PopupStore.type(),
+      options: PopupStore.options()
     };
-  },
+  }
 
   render() {
     if (!this.state.isOpened)
@@ -35,7 +39,7 @@ export default React.createClass({
         </div>
       </div>
     );
-  },
+  }
 
   renderCurrentModal() {
     switch(this.state.type) {
@@ -49,9 +53,11 @@ export default React.createClass({
       case "reconnect_view": return <ReconnectView options={this.state.options} onClose={this.onClose} />;
       default: throw "Bad modal type!";
     }
-  },
+  }
 
   onClose() {
-    PopupActions.close();
+    closePopup();
   }
-});
+};
+
+export default Container.create(PopupBox);

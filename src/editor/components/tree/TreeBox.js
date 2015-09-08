@@ -5,7 +5,7 @@ var WatchStoreMixin = require("editor/mixins/WatchStore");
 var Tree = require("./Tree");
 var TreeStore = require("editor/stores/TreeStore");
 
-var PopupActions = require("editor/actions/PopupActions");
+import {openPopup} from "editor/actions/PopupActions";
 var TreeActions = require("editor/actions/TreeActions");
 import {
   showContextMenu,
@@ -26,23 +26,23 @@ var TreeBox = React.createClass({
   },
 
   handleOpenCreateFolderModal(parentId) {
-    PopupActions.open("create_folder", { parentId: parentId });
+    openPopup("create_folder", { parentId: parentId });
   },
 
   handleOpenCreateFileModal(parentId) {
-    PopupActions.open("create_file", { parentId: parentId });
+    openPopup("create_file", { parentId: parentId });
   },
 
   handleOpenRenameModal(item) {
-    PopupActions.open("rename", { item: item });
+    openPopup("rename", { item: item });
   },
 
   handleOpenRemoveFolderModal(item) {
-    PopupActions.open("remove_folder", { item: item });
+    openPopup("remove_folder", { item: item });
   },
 
   handleOpenRemoveFileModal(item) {
-    PopupActions.open("remove_file", { item: item });
+    openPopup("remove_file", { item: item });
   },
 
   handleRefreshTree() {

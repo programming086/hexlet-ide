@@ -1,14 +1,20 @@
-var React = require("react/addons");
-var TreeActions = require("editor/actions/TreeActions");
+import React, {Component} from "react/addons";
+import TreeActions from "editor/actions/TreeActions";
 
-export default React.createClass({
+class CreateFolder extends Component<{}, {}, {}> {
+  constructor() {
+    super();
+    this.handleApply = this.handleApply.bind(this);
+    this.handleClose = this.handleClose.bind(this);
+  }
+
   handleClose() {
     this.props.onClose();
-  },
+  }
 
   handleApply(e) {
-    TreeActions.createFolder(this.props.options.parentId, this.refs.nameInput.getDOMNode().value);
-  },
+    TreeActions.createFolder(this.props.options.get("parentId"), this.refs.nameInput.getDOMNode().value);
+  }
 
   render() {
     return (
@@ -28,6 +34,7 @@ export default React.createClass({
        </div>
      </div>
     );
-  },
-});
+  }
+};
 
+export default CreateFolder;
