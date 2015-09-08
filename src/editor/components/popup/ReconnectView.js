@@ -1,9 +1,14 @@
-var React = require("react/addons");
+import React, {Component} from "react/addons";
 
-export default React.createClass({
+class ReconnectView extends Component<{}, {}, {}> {
+  constructor() {
+    super();
+    this.handleClose = this.handleClose.bind(this);
+  }
+
   handleClose() {
     this.props.onClose();
-  },
+  }
 
   render() {
     return (
@@ -18,6 +23,6 @@ export default React.createClass({
        </div>
       </div>
     );
-  },
-});
-
+  }
+};
+export default ReconnectView;

@@ -1,32 +1,39 @@
-var React = require("react/addons");
-var RunViewStore = require("editor/stores/RunViewStore");
-var WatchStoreMixin = require("editor/mixins/WatchStore");
-var IdeActions = require("editor/actions/IdeActions");
+import React, {Component} from "react/addons";
+import {Container} from "flux/utils";
+import RunViewStore from "editor/stores/RunViewStore";
+import IdeActions from "editor/actions/IdeActions";
 
-var cx = React.addons.classSet;
+import cx from "classnames";
 
-export default React.createClass({
-  mixins: [WatchStoreMixin(RunViewStore)],
+class RunView extends Component<{}, {}, {}> {
+  constructor() {
+    super();
+    this.handleClose = this.handleClose.bind(this);
+  }
 
-  getFluxState() {
+  static getStores() {
+    return [RunViewStore];
+  }
+
+  static calculateState(prevState) {
     return {
       content: RunViewStore.getContent(),
       isFinished: RunViewStore.isFinished(),
       isSuccess: RunViewStore.isSuccess(),
       code: RunViewStore.getCode()
     };
-  },
+  }
 
   getContent() {
     return this.state.content;
-  },
+  }
 
   getStatusText() {
     if (!this.state.isFinished) {
       return "progress";
     }
     return this.state.isSuccess ? "success" : "fail";
-  },
+  }
 
   getHeaderClasses() {
     return cx({
@@ -34,15 +41,15 @@ export default React.createClass({
       "alert-success": this.state.isFinished && this.state.isSuccess,
       "alert-danger": this.state.isFinished && !this.state.isSuccess,
     });
-  },
+  }
 
   handleClose() {
     this.props.onClose();
-  },
+  }
 
   handleSubmit() {
     IdeActions.submitResult();
-  },
+  }
 
   render() {
     return (
@@ -63,6 +70,7 @@ export default React.createClass({
        </div>
       </div>
     );
-  },
-});
+  }
+};
 
+export default Container.create(RunView);

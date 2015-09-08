@@ -1,113 +1,74 @@
-import AppDispatcher from "editor/dispatcher/AppDispatcher";
+import Immutable from "immutable";
+import {ReduceStore} from "flux/utils";
+
+import dispatcher from "editor/dispatcher/AppDispatcher";
 import {ActionTypes} from "editor/constants/IdeConstants";
 
-var BaseStore = require("./BaseStore");
-
-var state = {
-  type: "",
-  options: {},
-  isOpened: false
-};
-
 function open(state, type, options) {
-  state.type = type;
-  state.options = options;
-  state.isOpened = true;
-
-  return state;
+  return state.set("type", type)
+              .set("options", options)
+              .set("isOpened", true);
 }
 
 function close(state) {
-  state.isOpened = false;
-  state.type = "";
-  state.options = {};
-  return state;
+  return state.set("type", "")
+              .set("options", {})
+              .set("isOpened", false);
 }
-
-var PopupStore = BaseStore.extend({
-  getType() {
-    return state.type;
-  },
-
-  getOptions() {
-    return state.options;
-  },
+class PopupStore extends ReduceStore {
+  getInitialState() {
+    return Immutable.fromJS({
+      type: "",
+      options: {},
+      isOpened: false
+    });
+  }
 
   isOpened() {
-    return state.isOpened;
+    return this.getState().get("isOpened");
   }
-});
 
-AppDispatcher.registerHandler(ActionTypes.POPUP_OPEN, function(payload) {
-  state = open(state, payload.type, payload.options);
-
-  PopupStore.emitChange();
-});
-
-AppDispatcher.registerHandler(ActionTypes.POPUP_CLOSE, function() {
-  state = close(state);
-  PopupStore.emitChange();
-});
-
-AppDispatcher.registerHandler(ActionTypes.TREE_CREATE_FOLDER, function() {
-  state = close(state);
-  PopupStore.emitChange();
-});
-
-AppDispatcher.registerHandler(ActionTypes.TREE_CREATE_FILE, function() {
-  state = close(state);
-  PopupStore.emitChange();
-});
-
-AppDispatcher.registerHandler(ActionTypes.TREE_REMOVE, function() {
-  state = close(state);
-  PopupStore.emitChange();
-});
-
-AppDispatcher.registerHandler(ActionTypes.TREE_RENAME, function() {
-  state = close(state);
-  PopupStore.emitChange();
-});
-
-AppDispatcher.registerHandler(ActionTypes.IDE_SHOW_README, function(payload) {
-  state = open(state, "markdown_view", {
-    content: payload.content,
-    title: payload.title
-  });
-
-  PopupStore.emitChange();
-});
-
-// AppDispatcher.registerHandler(ActionTypes.IDE_RUN, function(payload) {
-//   state = open(state, "run_view");
-
-//   PopupStore.emitChange();
-// });
-
-// AppDispatcher.registerHandler(ActionTypes.IDE_DISCONNECTED, function(payload) {
-//   state = open(state, "reconnect_view");
-
-//   PopupStore.emitChange();
-// });
-
-// AppDispatcher.registerHandler(ActionTypes.IDE_CONNECTED, function(payload) {
-//   state = close(state);
-
-//   PopupStore.emitChange();
-// });
-
-AppDispatcher.registerHandler(ActionTypes.IDE_SUBMIT_RESULT, function(payload) {
-  state = close(state);
-
-  PopupStore.emitChange();
-});
-
-AppDispatcher.registerHandler(ActionTypes.KEY_ESC, function(payload) {
-  if (state.isOpened) {
-    state = close(state);
-
-    PopupStore.emitChange();
+  type() {
+    return this.getState().get("type");
   }
-});
 
-module.exports = PopupStore;
+  options() {
+    return this.getState().get("options");
+  }
+
+  reduce(state, action) {
+    switch(action.actionType) {
+      case ActionTypes.POPUP_OPEN:
+        return open(state, Immutable.fromJS(action.type), Immutable.fromJS(action.options));
+
+      case ActionTypes.POPUP_CLOSE:
+        return close(state);
+
+      case ActionTypes.TREE_CREATE_FOLDER:
+        return close(state);
+
+      case ActionTypes.TREE_CREATE_FILE:
+        return close(state);
+
+      case ActionTypes.TREE_REMOVE:
+        return close(state);
+
+      case ActionTypes.TREE_RENAME:
+        return close(state);
+
+      case ActionTypes.IDE_SHOW_README:
+        return open(state, "markdown_view", Immutable.fromJS(action.options));
+
+      case ActionTypes.IDE_SUBMIT_RESULT:
+        return close(state);
+
+      case ActionTypes.KEY_ESC:
+        return (state.get("isOpened")) ? close(state): state;
+
+      default:
+        return state;
+    }
+  }
+};
+
+export default new PopupStore(dispatcher);
