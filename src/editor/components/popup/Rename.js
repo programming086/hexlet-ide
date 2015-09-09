@@ -1,5 +1,5 @@
 import React, {Component} from "react/addons";
-import TreeActions from "editor/actions/TreeActions";
+import {rename} from "editor/actions/TreeActions";
 
 class Rename extends Component<{}, {}, {}> {
   constructor() {
@@ -14,7 +14,7 @@ class Rename extends Component<{}, {}, {}> {
 
   handleApply(e) {
     console.log(this);
-    TreeActions.rename(this.props.options.get("item").get("id"), this.refs.nameInput.getDOMNode().value);
+    rename(this.props.options.get("item").get("id"), this.refs.nameInput.getDOMNode().value);
   }
 
   render() {

@@ -1,60 +1,61 @@
-var React = require("react/addons");
+import React, {Component} from "react/addons";
+import {Container} from "flux/utils";
 
-var WatchStoreMixin = require("editor/mixins/WatchStore");
-
-var Tree = require("./Tree");
-var TreeStore = require("editor/stores/TreeStore");
+import Tree from "./Tree";
+import TreeStore from "editor/stores/TreeStore";
 
 import {openPopup} from "editor/actions/PopupActions";
-var TreeActions = require("editor/actions/TreeActions");
+import {loadTree}  from "editor/actions/TreeActions";
 import {
   showContextMenu,
   hideContextMenu
 } from "editor/actions/ContextMenuActions";
 
-var TreeBox = React.createClass({
-  mixins: [ WatchStoreMixin(TreeStore) ],
+class TreeBox extends Component<{}, {}, {}> {
+  static getStores() {
+    return [TreeStore];
+  }
 
-  getFluxState() {
+  static calculateState() {
     return {
-      tree: TreeStore.getRoot(),
+      tree: TreeStore.getRoot()
     };
-  },
+  }
 
   componentDidMount() {
-    TreeActions.loadTree();
-  },
+    loadTree();
+  }
 
   handleOpenCreateFolderModal(parentId) {
     openPopup("create_folder", { parentId: parentId });
-  },
+  }
 
   handleOpenCreateFileModal(parentId) {
     openPopup("create_file", { parentId: parentId });
-  },
+  }
 
   handleOpenRenameModal(item) {
     openPopup("rename", { item: item });
-  },
+  }
 
   handleOpenRemoveFolderModal(item) {
     openPopup("remove_folder", { item: item });
-  },
+  }
 
   handleOpenRemoveFileModal(item) {
     openPopup("remove_file", { item: item });
-  },
+  }
 
   handleRefreshTree() {
-    TreeActions.loadTree();
+    loadTree();
     hideContextMenu();
-  },
+  }
 
   getContextMenuItems(item) {
     var contextMenuChildren = [];
 
     contextMenuChildren.push([
-        {onClick: this.handleRefreshTree.bind(this), title: "Refresh tree"},
+      {onClick: this.handleRefreshTree.bind(this), title: "Refresh tree"},
     ]);
     if (item.type === "directory") {
       contextMenuChildren.push([
@@ -76,7 +77,7 @@ var TreeBox = React.createClass({
     }
 
     return contextMenuChildren;
-  },
+  }
 
   handleContextMenu(e, item) {
     e.preventDefault();
@@ -87,22 +88,22 @@ var TreeBox = React.createClass({
     };
     const items = this.getContextMenuItems(item);
     showContextMenu(coords, items);
-  },
+  }
 
   render() {
     return (
       <div className="fuelux file-tree-box">
         <h3>Folders</h3>
         {this.state.tree ?
-        <div className="tree">
-          <ul role="tree">
-            <Tree key={"tree_" + this.state.tree.id} tree={this.state.tree} handleContextMenu={this.handleContextMenu} />
-          </ul>
+          <div className="tree">
+            <ul role="tree">
+              <Tree key={"tree_" + this.state.tree.id} tree={this.state.tree} handleContextMenu={this.handleContextMenu.bind(this)} />
+            </ul>
+          </div>
+          : null}
         </div>
-        : null}
-      </div>
     );
   }
-});
+};
 
-module.exports = TreeBox;
+export default Container.create(TreeBox, { pure: false });
