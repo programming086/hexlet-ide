@@ -34,7 +34,7 @@ class TreeStore extends ReduceStore {
     let node = root.first((node) => {
       return node.model.type == "file" && _.contains(node.model.path, path);
     });
-    return node.model;
+    return node ? node.model : null;
   }
 
   getPathById(id) {

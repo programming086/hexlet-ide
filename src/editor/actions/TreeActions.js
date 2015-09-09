@@ -16,10 +16,12 @@ export function loadTree() {
 }
 
 export function loadTreeAndOpenFiles(files) {
-  this.loadTree().then(() => {
+  loadTree().then(() => {
     files.map((file) => {
       const fileNode = TreeStore.getFileByPath(file);
-      this.openFile(fileNode);
+      if (fileNode) {
+        openFile(fileNode);
+      }
     })
   });
 }
