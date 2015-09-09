@@ -12,7 +12,7 @@ class Loader extends Component {
     var frame = this.state.frame;
     var newFrame = frame > 7 ? 1 : frame + 1;
     this.setState({ frame: newFrame });
-    this.setState({ timer: setTimeout(this.tick, 300) });
+    this.setState({ timer: setTimeout(this.tick.bind(this), 300) });
   }
 
   render() {
