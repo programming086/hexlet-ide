@@ -1,5 +1,3 @@
-/* global require module */
-
 import path from "path";
 
 import {dispatch} from "editor/dispatcher/AppDispatcher";

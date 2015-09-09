@@ -24,7 +24,7 @@ export default class extends Component {
     });
 
     editor.on("change", _.throttle((CodeMirror, object) => {
-      onChangeValue(myCodeMirror.getValue());
+      onChangeValue(editor.getValue());
     }, 2000));
 
     this.setState({ editor: editor });

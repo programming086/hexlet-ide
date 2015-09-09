@@ -4,11 +4,16 @@ import Config from "editor/config";
 import Ide from "editor/components/Ide";
 
 import KeyboardActions from "editor/actions/KeyboardActions";
-import TreeActions from "editor/actions/TreeActions";
+
+import {
+  openFile,
+  loadTreeAndOpenFiles
+} from "editor/actions/TreeActions";
+
 import TerminalsActions from "editor/actions/TerminalsActions";
 import IdeActions from "editor/actions/IdeActions";
 import EditorsActions from "editor/actions/EditorsActions";
-import TerminalsStore from "editor/stores/TerminalsStore";
+
 import EditorsStore from "editor/stores/EditorsStore";
 import TreeStore from "editor/stores/TreeStore";
 
@@ -126,11 +131,11 @@ export default class HexletIdeWidget {
 
   openFile(filePath) {
     const fileNode = TreeStore.getFileByPath(filePath)
-    TreeActions.openFile(fileNode);
+    openFile(fileNode);
   }
 
   openFiles(files) {
-    TreeActions.loadTreeAndOpenFiles(files);
+    loadTreeAndOpenFiles(files);
   }
 
   handleWindowMessage(e) {
