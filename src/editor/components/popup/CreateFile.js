@@ -1,5 +1,5 @@
 import React, {Component} from "react/addons";
-import TreeActions from "editor/actions/TreeActions";
+import {createFile} from "editor/actions/TreeActions";
 
 class CreateFile extends Component<{}, {}, {}> {
   constructor() {
@@ -13,7 +13,7 @@ class CreateFile extends Component<{}, {}, {}> {
   }
 
   handleApply(e) {
-    TreeActions.createFile(this.props.options.get("parentId"), this.refs.nameInput.getDOMNode().value);
+    createFile(this.props.options.get("parentId"), this.refs.nameInput.getDOMNode().value);
   }
 
   render() {

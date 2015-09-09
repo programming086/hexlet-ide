@@ -1,5 +1,5 @@
 import React, {Component} from "react/addons";
-import TreeActions from "editor/actions/TreeActions";
+import {remove} from "editor/actions/TreeActions";
 
 class RemoveFolder extends Component<{}, {}, {}> {
   constructor() {
@@ -13,7 +13,7 @@ class RemoveFolder extends Component<{}, {}, {}> {
   }
 
   handleApply(e) {
-    TreeActions.remove(this.props.options.get("item").get("id"));
+    remove(this.props.options.get("item").get("id"));
   }
 
   render() {

@@ -1,16 +1,16 @@
 import _ from "lodash";
 import React from "react/addons";
 
-import TreeActions from "editor/actions/TreeActions";
+import {toggleFolderState} from "editor/actions/TreeActions";
 import TreeStore from "editor/stores/TreeStore";
 import Leaf from "./Leaf";
 
-const cx = React.addons.classSet;
+import cx from "classnames";
 
 const Tree = React.createClass({
   handleToggleFolderState(tree, e) {
     e.stopPropagation();
-    TreeActions.toggleFolderState(tree);
+    toggleFolderState(tree);
   },
 
   handleContextMenu(tree, e) {

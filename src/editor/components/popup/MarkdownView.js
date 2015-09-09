@@ -13,7 +13,6 @@ marked.setOptions({
 
 
 import React, {Component} from "react/addons";
-import TreeActions from "editor/actions/TreeActions";
 
 class MarkdownView extends Component<{}, {}, {}> {
   constructor() {

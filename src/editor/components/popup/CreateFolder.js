@@ -1,5 +1,5 @@
 import React, {Component} from "react/addons";
-import TreeActions from "editor/actions/TreeActions";
+import {createFolder} from "editor/actions/TreeActions";
 
 class CreateFolder extends Component<{}, {}, {}> {
   constructor() {
@@ -13,7 +13,7 @@ class CreateFolder extends Component<{}, {}, {}> {
   }
 
   handleApply(e) {
-    TreeActions.createFolder(this.props.options.get("parentId"), this.refs.nameInput.getDOMNode().value);
+    createFolder(this.props.options.get("parentId"), this.refs.nameInput.getDOMNode().value);
   }
 
   render() {

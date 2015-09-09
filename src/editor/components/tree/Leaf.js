@@ -1,19 +1,19 @@
-var _ = require("lodash");
-var React = require("react/addons");
+import _ from "lodash";
+import React, {Component} from "react/addons";
 
-var TreeActions = require("editor/actions/TreeActions");
+import {openFile} from "editor/actions/TreeActions";
 
-var Leaf = React.createClass({
-  handleOpenFile: function(leaf, e) {
+class Leaf extends Component<{}, {}, {}> {
+  handleOpenFile(leaf, e) {
     e.stopPropagation();
-    TreeActions.openFile(leaf);
-  },
+    openFile(leaf);
+  }
 
-  handleContextMenu: function(leaf, e) {
+  handleContextMenu(leaf, e) {
     this.props.handleContextMenu(e, leaf);
-  },
+  }
 
-  render: function() {
+  render() {
     var leaf = this.props.leaf;
     if (!leaf) return null;
 
@@ -28,6 +28,6 @@ var Leaf = React.createClass({
       </li>
     );
   }
-});
+};
 
-module.exports = Leaf;
+export default Leaf;
