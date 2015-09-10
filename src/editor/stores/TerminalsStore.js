@@ -1,8 +1,6 @@
 /* global require module */
 import _ from "lodash";
 
-import Terminal from "xterm.js/src/xterm";
-
 import Immutable from "immutable";
 import {ReduceStore} from "flux/utils";
 

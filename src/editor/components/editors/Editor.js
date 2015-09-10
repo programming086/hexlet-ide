@@ -1,6 +1,5 @@
 import _ from "lodash";
 import React, { Component } from "react/addons";
-import CodeMirror from "codemirror";
 
 import KeyboardActions from "editor/actions/KeyboardActions";
 

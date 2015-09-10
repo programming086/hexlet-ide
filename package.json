@@ -34,18 +34,16 @@
     "when": "*"
   },
   "devDependencies": {
-    "autoprefixer-loader": "*",
+    "autoprefixer-core": "^5.2.0",
     "babel-eslint": "^4.1.1",
     "babel-loader": "^5.3.2",
     "babel-runtime": "^5.8.20",
     "chai": "*",
     "codemirror": "^5.6.0",
-    "css-loader": "*",
     "debug": "*",
     "eslint": "^1.3.1",
     "eslint-loader": "^1.0.0",
     "eslint-plugin-react": "^3.3.1",
-    "file-loader": "*",
     "gulp": "*",
     "gulp-cjsx": "*",
     "gulp-download": "*",
@@ -55,15 +53,17 @@
     "gulp-util": "*",
     "gulp-watch": "*",
     "keymaster": "*",
-    "less-loader": "*",
     "main-bower-files": "*",
     "mocha": "*",
     "nightmare": "*",
     "nodemon": "*",
     "socket.io-client": "*",
-    "style-loader": "*",
-    "url-loader": "*",
     "webpack-dev-middleware": "*",
-    "webpack-stream": "*"
+    "webpack-stream": "*",
+    "mincer": "*",
+    "less" : "*",
+    "postcss": ">=4.1",
+    "csswring": "*",
+    "uglify-js": "*"
   }
 }

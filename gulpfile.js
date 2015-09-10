@@ -26,6 +26,11 @@ gulp.task("webpack", function() {
   .pipe(gulp.dest("src/backend/public/assets"));
 });
 
+gulp.task("assets", function() {
+  process.env.NODE_ENV = "production";
+  require("./src/backend/asset.js").manifestCompiler();
+});
+
 gulp.task("prepublish", function() {
   process.env.NODE_ENV = "prepublish";
   return gulp.src("./src/editor/main.js")
