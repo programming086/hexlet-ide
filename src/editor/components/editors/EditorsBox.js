@@ -131,7 +131,7 @@ const EditorsBox = React.createClass({
       "go": "go",
       "rs": "rust",
       "json": {name: "javascript", mode: "json"},
-      "java": "text/x-java",
+      "java": {name: "text/x-java", indentUnit: 4, indentWithTabs: true },
       "class": "text/x-java",
       "jar": "text/x-java",
       "clj": "clojure",

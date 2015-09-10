@@ -18,8 +18,9 @@ export default class extends Component {
       },
       value: initContent,
       mode: mode,
+      indentUnit: mode.indentUnit || 2,
       theme: "solarized dark",
-      indentWithTabs: false,
+      indentWithTabs: mode.indentWithTabs || false,
       viewportMargin: Infinity
     });
 
