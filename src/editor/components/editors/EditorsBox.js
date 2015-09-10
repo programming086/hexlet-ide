@@ -136,7 +136,7 @@ const EditorsBox = React.createClass({
       "jar": "text/x-java",
       "clj": "clojure",
       "erl": "erlang",
-      "make": "cmake",
+      "make": {name: "text/x-cmake", indentUnit: 4, indentWithTabs: true },
       "html": "htmlmixed",
       "xml": "xml",
       "css": "css",
