@@ -1,22 +1,29 @@
-import cx from "classnames";
-const React = require("react/addons");
-const IdeActions = require("editor/actions/IdeActions");
-const IdeStore = require("editor/stores/IdeStore");
+import React, {Component} from "react/addons";
+import {Container} from 'flux/utils';
 
-const WatchStoreMixin = require("editor/mixins/WatchStore");
+import IdeActions from "editor/actions/IdeActions";
+import IdeStore from "editor/stores/IdeStore";
+
 const ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
+import cx from 'classnames';
 
+class ReconnectionStatusBar extends Component<{}, {}, {}> {
+  static getStores(): Array<Store> {
+    return [IdeStore];
+  }
 
-module.exports = React.createClass({
-  mixins: [WatchStoreMixin(IdeStore)],
-  getFluxState() {
-    return IdeStore.getState();
-  },
+  static calculateState(prevState) {
+    return {
+      connectionState: IdeStore.getConnectionState(),
+      reconnectionAttempt: IdeStore.getReconnectionAttempt(),
+      isConnected: IdeStore.isConnected(),
+    };
+  }
 
   render() {
-    if (IdeStore.isConnected()) {
-      return null;
-    }
+    const isConnected = this.state.isConnected;
+
+    if (isConnected) return null;
 
     const classes = {
       "reconnection-status-bar": true
@@ -31,7 +38,7 @@ module.exports = React.createClass({
         </div>
       </ReactCSSTransitionGroup>
     );
-  },
+  }
 
   renderText() {
     switch(this.state.connectionState) {
@@ -47,14 +54,16 @@ module.exports = React.createClass({
       default:
         return <span><i className="glyphicon glyphicon-ok-circle"></i> Connected</span>;
     }
-  },
+  }
 
   renderReconnectBtn() {
     return <a className="reconnect-btn" href="#" onClick={this.onReconnectBtnClick}>Reconnect now</a>;
-  },
+  }
 
   onReconnectBtnClick(e) {
     e.preventDefault();
     IdeActions.forceConnect();
   }
-});
+};
+
+export default Container.create(ReconnectionStatusBar);

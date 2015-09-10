@@ -1,29 +1,38 @@
-var React = require("react/addons");
+import React, {Component} from "react/addons";
+import {Container} from 'flux/utils';
 
-var TreeBox = require("editor/components/tree/TreeBox");
-var EditorsBox = require("editor/components/editors/EditorsBox");
-var TerminalsBox = require("editor/components/terminals/TerminalsBox");
-var ContextMenu = require("editor/components/common/ContextMenu");
-var Loader = require("editor/components/common/Loader");
-var PopupBox = require("editor/components/PopupBox");
+import TreeBox from "editor/components/tree/TreeBox";
+import EditorsBox from "editor/components/editors/EditorsBox";
+import TerminalsBox from "editor/components/terminals/TerminalsBox";
+import ContextMenu from "editor/components/common/ContextMenu";
+import Loader from "editor/components/common/Loader";
+import PopupBox from "editor/components/PopupBox";
 
-var IdeActions = require("editor/actions/IdeActions");
-var WatchStoreMixin = require("editor/mixins/WatchStore");
-var IdeStore = require("editor/stores/IdeStore");
+import IdeActions from "editor/actions/IdeActions";
+import IdeStore from "editor/stores/IdeStore";
 
-var Panel = require("./common/split/Panel");
-var VerticalSplit = require("./common/split/VerticalSplit");
-var HorizontalSplit = require("./common/split/HorizontalSplit");
+import Panel from "./common/split/Panel";
+import VerticalSplit from "./common/split/VerticalSplit";
+import HorizontalSplit from "./common/split/HorizontalSplit";
 
-var Ide = React.createClass({
-  mixins: [WatchStoreMixin(IdeStore)],
-  getFluxState() {
-    return IdeStore.getState();
-  },
+import {globalClick} from "editor/actions/IdeActions"
+
+class Ide extends Component<{}, {}, {}> {
+
+  static getStores(): Array<Store> {
+    return [IdeStore];
+  }
+
+  static calculateState(prevState) {
+    return {
+      isLoaded: IdeStore.isLoaded(),
+      displayMode: IdeStore.getDisplayMode()
+    };
+  }
 
   handleGlobalClick() {
-    IdeActions.globalClick();
-  },
+    globalClick();
+  }
 
   renderDisplayMode(mode) {
     switch(mode) {
@@ -32,7 +41,7 @@ var Ide = React.createClass({
       case "terminal":
         return this.renderTerminalMode();
     }
-  },
+  }
 
   renderNormalMode() {
     return <div className="splits-container" onMouseDown={this.handleGlobalClick}>
@@ -52,16 +61,18 @@ var Ide = React.createClass({
         </Panel>
       </VerticalSplit>
     </div>
-  },
+  }
 
   renderTerminalMode() {
     return <div className="splits-container" onClick={this.handleGlobalClick}>
       <TerminalsBox showRunView={true} />
     </div>
-  },
+  }
 
-  render: function() {
-    if (!this.state.loaded) {
+  render() {
+    const isLoaded = this.state.isLoaded;
+
+    if (!isLoaded) {
       return <Loader />;
     }
 
@@ -75,6 +86,6 @@ var Ide = React.createClass({
       </div>
     );
   }
-});
+};
 
-module.exports = Ide;
+export default Container.create(Ide);

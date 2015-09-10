@@ -12,7 +12,20 @@ import {
 } from "editor/actions/TreeActions";
 
 import TerminalsActions from "editor/actions/TerminalsActions";
-import IdeActions from "editor/actions/IdeActions";
+import {
+  loadCompleted,
+  run,
+  initIde,
+  switchDisplayMode,
+  showReadme,
+  runFinished,
+  runProgress,
+  disconnect,
+  connect,
+  reconnectError,
+  reconnecting,
+  reconnectAttempt,
+} from "editor/actions/IdeActions";
 import EditorsActions from "editor/actions/EditorsActions";
 
 import EditorsStore from "editor/stores/EditorsStore";
@@ -38,7 +51,7 @@ export default class HexletIdeWidget {
     const rpcClient = RpcClient.getClient();
 
     rpcClient.ready((proxy) => {
-      IdeActions.loadCompleted();
+      loadCompleted();
     });
 
     //FIXME: это хак, пока не сделано дуплексное RPC между клиентом и сервером
@@ -48,42 +61,42 @@ export default class HexletIdeWidget {
 
     rpcClient.socket.on("reconnect_attempt", () => {
       console.log('reconnect_attempt');
-      IdeActions.reconnectAttempt();
+      reconnectAttempt();
     });
 
     rpcClient.socket.on("reconnecting", (attempt) => {
       console.log('reconnecting');
-      IdeActions.reconnecting(attempt);
+      reconnecting(attempt);
     });
 
     rpcClient.socket.on("reconnect_error", (error) => {
       console.log('reconnect_error');
-      IdeActions.reconnectError(error);
+      reconnectError(error);
     });
 
 
     rpcClient.socket.on("connect", () => {
     console.log('connect');
-      IdeActions.connect();
+      connect();
     });
 
     rpcClient.socket.on("reconnect", () => {
     console.log('reconnect');
-      IdeActions.connect();
+      connect();
       TerminalsActions.reconnectTerminals();
     });
 
     rpcClient.socket.on("disconnect", () => {
     console.log('disconnect');
-      IdeActions.disconnect();
+      disconnect();
     });
 
     rpcClient.socket.on("run.progress", (data) => {
-      IdeActions.runProgress(data);
+      runProgress(data);
     });
 
     rpcClient.socket.on("run.finish", (data) => {
-      IdeActions.runFinished(data);
+      runFinished(data);
     });
   }
 
@@ -96,8 +109,8 @@ export default class HexletIdeWidget {
 
   bindKeyEvents() {
     Mousetrap.bind("esc", KeyboardActions.esc);
-    Mousetrap.bind("ctrl+r", IdeActions.run);
-    Mousetrap.bind("ctrl+h", IdeActions.showReadme);
+    Mousetrap.bind("ctrl+r", run);
+    Mousetrap.bind("ctrl+h", showReadme);
     Mousetrap.bind("ctrl+[", KeyboardActions.ctrl_open_square_br);
     Mousetrap.bind("ctrl+]", KeyboardActions.ctrl_close_square_br);
   }
@@ -115,19 +128,19 @@ export default class HexletIdeWidget {
 //   }
 
   showReadme() {
-    return IdeActions.showReadme();
+    return showReadme();
   }
 
   switchDisplayMode(displayMode) {
-    return IdeActions.switchDisplayMode(displayMode);
+    return switchDisplayMode(displayMode);
   }
 
   init(data) {
-    IdeActions.init(data);
+    initIde(data);
   }
 
   run() {
-    return IdeActions.run();
+    return run();
   }
 
   openFile(filePath) {
