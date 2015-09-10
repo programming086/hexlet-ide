@@ -155,10 +155,9 @@ const EditorsBox = React.createClass({
       "hs": "haskell",
       "lhs": "haskell",
       "pl": "perl",
-      "php": "php",
+      "php": {name: "php", indentUnit: 4, indentWithTabs: false },
       "scala": "text/x-scala",
       "sql": "text/x-sql",
-
       "": "text"
     };
 
