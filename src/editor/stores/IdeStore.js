@@ -1,9 +1,10 @@
 import keyMirror from "react/lib/keyMirror";
 
-import AppDispatcher from "editor/dispatcher/AppDispatcher";
-import {ActionTypes} from "editor/constants/IdeConstants";
+import Immutable from 'immutable';
+import {ReduceStore} from 'flux/utils';
 
-const BaseStore = require("./BaseStore");
+import dispatcher from "editor/dispatcher/AppDispatcher";
+import {ActionTypes} from "editor/constants/IdeConstants";
 
 const IDE_CONNECTION_STATES = keyMirror({
   connected: null,
@@ -13,83 +14,86 @@ const IDE_CONNECTION_STATES = keyMirror({
   reconnectError: null
 });
 
-var state = {
-  loaded: false,
-  displayMode: "normal", // "normal" | "terminal"
-  readme: "",
-  connectionState: IDE_CONNECTION_STATES.disconnected,
-  reconnectionAttempt: 0,
-  reconnectionError: null
-};
+class IdeStore extends ReduceStore {
+  getInitialState() {
+    return Immutable.fromJS({
+      loaded: false,
+      displayMode: "normal", // "normal" | "terminal"
+      readme: "",
+      connectionState: IDE_CONNECTION_STATES.disconnected,
+      reconnectionAttempt: 0,
+      reconnectionError: null
+    });
+  }
 
-var IdeStore = BaseStore.extend({
+  isLoaded() {
+    return this.getState().get('loaded');
+  }
+
+  getDisplayMode() {
+    return this.getState().get('displayMode');
+  }
+
+  getConnectionState() {
+    return this.getState().get('connectionState');
+  }
+
+  getReconnectionAttempt() {
+    return this.getState().get('reconnectionAttempt');
+  }
+
   isConnected() {
-    return state.connectionState === IDE_CONNECTION_STATES.connected;
-  },
-
-  getState() {
-    return state;
-  },
+    var connectionState = this.getState().get('connectionState');
+    return connectionState === IDE_CONNECTION_STATES.connected;
+  }
 
   getReadme() {
-    return state.readme;
-  },
+    return this.getState().get('readme');
+  }
 
   isTerminalMode() {
-    return state.displayMode === "terminal";
+    const displayMode = this.getState().get('displayMode');
+    return displayMode === "terminal";
   }
-});
 
-AppDispatcher.registerHandler(ActionTypes.IDE_LOADED, function() {
-  "use strict";
+  reduce(state, action) {
+    switch(action.actionType) {
+      case ActionTypes.IDE_LOADED:
+        return state.set('loaded', true);
 
-  state.loaded = true;
-  IdeStore.emitChange();
-});
+      case ActionTypes.IDE_TOGGLE_FULL_SCREEN:
+        return state.set('fullscreen', action.fullscreen);
 
-AppDispatcher.registerHandler(ActionTypes.IDE_TOGGLE_FULL_SCREEN, function(payload) {
-  state.fullscreen = payload.fullscreen;
-  IdeStore.emitChange();
-});
+      case ActionTypes.IDE_DISCONNECTED:
+        return state.set('connectionState', IDE_CONNECTION_STATES.disconnected)
 
-AppDispatcher.registerHandler(ActionTypes.IDE_DISCONNECTED, function() {
-  state.connectionState = IDE_CONNECTION_STATES.disconnected;
-  IdeStore.emitChange();
-});
+      case ActionTypes.IDE_CONNECTED:
+        return state.set('connectionState', IDE_CONNECTION_STATES.connected)
 
-AppDispatcher.registerHandler(ActionTypes.IDE_CONNECTED, function() {
-  state.connectionState = IDE_CONNECTION_STATES.connected;
-  IdeStore.emitChange();
-});
+      case ActionTypes.IDE_RECONNECT_ATTEMPT:
+        return state.set('connectionState', IDE_CONNECTION_STATES.reconnectAttempt)
 
-AppDispatcher.registerHandler(ActionTypes.IDE_RECONNECT_ATTEMPT, function() {
-  state.connectionState = IDE_CONNECTION_STATES.reconnectAttempt;
-  IdeStore.emitChange();
-});
+      case ActionTypes.IDE_RECONNECTING:
+        return state.set('connectionState', IDE_CONNECTION_STATES.reconnecting)
+                    .set('reconnectionAttempt', action.attempt);
 
-AppDispatcher.registerHandler(ActionTypes.IDE_RECONNECTING, function(payload) {
-  state.connectionState = IDE_CONNECTION_STATES.reconnecting;
-  state.reconnectionAttempt = payload.attempt;
-  IdeStore.emitChange();
-});
+      case ActionTypes.IDE_RECONNECT_ERROR:
+        return state.set('connectionState', IDE_CONNECTION_STATES.reconnectError)
+                    .set('reconnectionError', action.reconnectionError);
 
-AppDispatcher.registerHandler(ActionTypes.IDE_RECONNECT_ERROR, function(payload) {
-  state.connectionState = IDE_CONNECTION_STATES.reconnectError;
-  state.reconnectionError = payload.reconnectionError;
-  IdeStore.emitChange();
-});
+      case ActionTypes.IDE_SWITCH_DISPLAY_MODE:
+        return state.set('displayMode', action.displayMode);
 
-AppDispatcher.registerHandler(ActionTypes.IDE_SWITCH_DISPLAY_MODE, function(payload) {
-  state.displayMode = payload.displayMode;
-  IdeStore.emitChange();
-});
+      case ActionTypes.IDE_INIT:
+        const data = payload.data;
+        state.set('displayMode', data.displayMode)
+             .set('readme', data.readme);
 
-AppDispatcher.registerHandler(ActionTypes.IDE_INIT, function(payload) {
-  "use strict";
-  const data = payload.data;
-  state.displayMode = data.displayMode;
-  state.readme = data.readme;
-  IdeStore.emitChange();
-});
+      default:
+        return state;
+    };
+  };
+};
 
-module.exports = IdeStore;
+
+export default new IdeStore(dispatcher);

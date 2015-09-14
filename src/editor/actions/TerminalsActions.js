@@ -25,7 +25,7 @@ export default {
   },
 
   reconnectTerminals() {
-    _.each(TerminalsStore.getAll(), (terminal) => {
+    _.each(TerminalsStore.getTerminals(), (terminal) => {
       rpc.getClient().terminal.reconnect({ id: terminal.id });
     });
   },

@@ -1,34 +1,36 @@
+import _ from "lodash";
+import React, {Component} from "react/addons";
+import {Container} from 'flux/utils';
+
+import Config from "editor/config";
+
+import TerminalsActions from "editor/actions/TerminalsActions";
+import TerminalsStore from "editor/stores/TerminalsStore";
+
+import Terminal from "./Terminal";
+import RunView from "editor/components/common/tab/RunView";
+import Toolbar from "editor/components/Toolbar";
+
 import cx from "classnames";
-var _ = require("lodash");
-var React = require("react/addons");
 
-var Config = require("editor/config");
+class TerminalsBox extends Component<{}, {}, {}> {
 
-var TerminalsActions = require("editor/actions/TerminalsActions");
-var TerminalsStore = require("editor/stores/TerminalsStore");
+  static getStores(): Array<Store> {
+    return [TerminalsStore];
+  }
 
-var Terminal = require("./Terminal");
-var RunView = require("editor/components/common/tab/RunView");
-var Toolbar = require("editor/components/Toolbar");
-
-var WatchStoreMixin = require("editor/mixins/WatchStore");
-
-
-var TerminalsBox = React.createClass({
-  mixins: [WatchStoreMixin(TerminalsStore)],
-
-  getFluxState: function() {
+  static calculateState(prevState) {
     return {
-      terminals: TerminalsStore.getAll(),
+      terminals: TerminalsStore.getTerminals(),
       isRunViewActive: TerminalsStore.isRunViewActive()
-    };
-  },
+    }
+  };
 
   componentDidMount() {
-    TerminalsActions.createDefaultTerminal(Config.terminal);
-  },
+    // TerminalsActions.createDefaultTerminal(Config.terminal);
+  }
 
-  renderTabHeaders: function() {
+  renderTabHeaders() {
     return _.map(this.state.terminals, function(terminal, id) {
       var tabClasses = cx({
         "active": terminal.current
@@ -46,9 +48,9 @@ var TerminalsBox = React.createClass({
         </a>
       </li>;
     }, this);
-  },
+  }
 
-  renderTerminals: function() {
+  renderTerminals() {
     return _.map(this.state.terminals, function(terminal) {
       var classes = cx({
         "tab-pane": true,
@@ -57,14 +59,14 @@ var TerminalsBox = React.createClass({
       });
 
       return (
-          <div className={classes} key={terminal.id}>
-            <Terminal terminal={terminal} />
-          </div>
-      );
+        <div className={classes} key={terminal.id}>
+          <Terminal terminal={terminal} />
+        </div>
+        );
     });
-  },
+  }
 
-  render: function() {
+  render() {
     var runResultClasses = cx({
       // "active": this.state.isRunViewActive,
       "run-view-tab": true
@@ -79,56 +81,55 @@ var TerminalsBox = React.createClass({
       <div className="terminals-box">
         <ul className="nav nav-tabs" role="tablist">
           { this.props.showRunView ?
-          <li key={"run-result"} className={runResultClasses} role="presentation">
-            <a href="#" onClick={this.showRunView} className={runResultClasses}>
-              <span>Output</span>
-            </a>
-          </li>
-          : "" }
-          {this.renderTabHeaders()}
-          <li key="tab_create">
-            <a href="#" onClick={this.createTerminal}>Create terminal</a>
-          </li>
-          { this.props.showRunView ?
-          <li className="pull-right">
-            <Toolbar />
-          </li>
-          : "" }
-        </ul>
-        <div className="tab-content max-height">
-          { this.props.showRunView ?
-          <RunView className={runViewPaneClasses} />
-          : "" }
-          {this.renderTerminals()}
-        </div>
-      </div>
-    );
-  },
+            <li key={"run-result"} className={runResultClasses} role="presentation">
+              <a href="#" onClick={this.showRunView} className={runResultClasses}>
+                <span>Output</span>
+              </a>
+            </li>
+            : "" }
+            {this.renderTabHeaders()}
+            <li key="tab_create">
+              <a href="#" onClick={this.createTerminal}>Create terminal</a>
+            </li>
+            { this.props.showRunView ?
+              <li className="pull-right">
+                <Toolbar />
+              </li>
+              : "" }
+            </ul>
+            <div className="tab-content max-height">
+              { this.props.showRunView ?
+                <RunView className={runViewPaneClasses} />
+                : "" }
+                {this.renderTerminals()}
+              </div>
+            </div>
+            );
+  }
 
-  selectTerminal: function(terminal, e) {
+  selectTerminal(terminal, e) {
     e.preventDefault();
     e.stopPropagation();
     TerminalsActions.selectTerminal(terminal);
-  },
+  }
 
-  createTerminal: function(e) {
+  createTerminal(e) {
     e.preventDefault();
     e.stopPropagation();
     TerminalsActions.createTerminal(Config.terminal);
-  },
+  }
 
-  closeTerminal: function(terminal, e) {
+  closeTerminal(terminal, e) {
     e.preventDefault();
     e.stopPropagation();
     TerminalsActions.closeTerminal(terminal);
-  },
+  }
 
   showRunView(e) {
     e.stopPropagation();
     e.preventDefault();
     TerminalsActions.showRunView();
-  },
+  }
+  };
 
-});
-
-module.exports = TerminalsBox;
+  export default Container.create(TerminalsBox, { pure: false });

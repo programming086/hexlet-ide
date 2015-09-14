@@ -1,92 +1,101 @@
 /* global require module */
-var _ = require("lodash");
+import _ from "lodash";
 
-var Terminal = require("xterm.js/src/xterm");
+import Terminal from "xterm.js/src/xterm";
 
-import AppDispatcher from "editor/dispatcher/AppDispatcher";
+import Immutable from "immutable";
+import {ReduceStore} from "flux/utils";
+
+import dispatcher from "editor/dispatcher/AppDispatcher";
 import {ActionTypes} from "editor/constants/IdeConstants";
 
-var BaseStore = require("./BaseStore");
-var IdeStore = require("./IdeStore");
+import BaseStore from "./BaseStore";
+import IdeStore from "./IdeStore";
 
-var terminals = {};
-var terminalSequence = 1;
-
-var TerminalsStore = BaseStore.extend({
-  getAll: function() {
-    return terminals;
-  },
-
-  getCurrent: function() {
-    return _.find(terminals, "current");
-  },
-
-  getNextSequence: function() {
-    return terminalSequence++;
-  },
-
-  isRunViewActive() {
-    return !_.find(terminals, (e) => { return e.current == true });
+class TerminalsStore extends ReduceStore {
+  getInitialState() {
+    return {
+      terminals: {},
+      terminalSequence: 1
+    };
   }
-});
 
-AppDispatcher.registerHandler(ActionTypes.TERMINALS_CREATE_TERMINAL, function(payload) {
-  terminals[payload.id] = {
-    id: payload.id,
-    terminal: new Terminal({
-      cols: payload.params.cols,
-      rows: payload.params.rows,
-    })
+  areEqual(oldState, newState) {
+    return false;
+  }
+
+  getTerminals() {
+    return this.getState().terminals;
   };
 
-  _.each(terminals, function(t) { t.current = false; });
-  const currentTerminal = terminals[payload.id];
-  currentTerminal.current = true;
+  getCurrent() {
+    return _.find(this.getState().terminals, "current");
+  };
 
-  TerminalsStore.emitChange();
-});
+  getNextSequence() {
+    return this.getState().terminalSequence++;
+  };
 
-AppDispatcher.registerHandler(ActionTypes.TERMINALS_UPDATE_TERMINAL, function(payload) {
-  const terminal = terminals[payload.id];
-  terminal.terminal.write(payload.data);
-});
+  isRunViewActive() {
+    return !_.find(this.getState().terminals, (e) => { return e.current == true });
+  };
 
-AppDispatcher.registerHandler(ActionTypes.TERMINALS_SELECT_TERMINAL, function(payload) {
-  _.each(terminals, function(t) { t.current = false; });
-  const currentTerminal = terminals[payload.id];
-  currentTerminal.current = true;
+  reduce(state, action) {
+    switch(action.actionType) {
+      case ActionTypes.TERMINALS_CREATE_TERMINAL:
+        this.getState().terminals[action.id] = {
+          id: action.id,
+          terminal: new Terminal({
+            cols: action.params.cols,
+            rows: action.params.rows,
+          })
+        };
+        _.each(this.getState().terminals, function(t) { t.current = false; });
+        var currentTerminal = this.getState().terminals[action.id];
+        currentTerminal.current = true;
+        return state;
 
-  TerminalsStore.emitChange();
-});
+      case ActionTypes.TERMINALS_UPDATE_TERMINAL:
+        const terminal = this.getState().terminals[action.id];
+        terminal.terminal.write(action.data);
+        return state;
 
-AppDispatcher.registerHandler(ActionTypes.TERMINALS_CLOSE_TERMINAL, function(payload) {
-  var term = terminals[payload.id];
-  delete terminals[payload.id];
-  if (term.current) {
-    var terms = _.values(terminals);
-    if (terms.length > 0) {
-      terms[0].current = true;
+      case ActionTypes.TERMINALS_SELECT_TERMINAL:
+        _.each(this.getState().terminals, function(t) { t.current = false; });
+        var currentTerminal = this.getState().terminals[action.id];
+        currentTerminal.current = true;
+        return state;
+
+      case ActionTypes.TERMINALS_CLOSE_TERMINAL:
+        var term = this.getState().terminals[action.id];
+        delete this.getState().terminals[action.id];
+        if (term.current) {
+          var terms = _.values(this.getState().terminals);
+          if (terms.length > 0) {
+            terms[0].current = true;
+          }
+        }
+        return state;
+
+      case ActionTypes.IDE_RESIZE_SPLIT:
+        var t = this.getCurrent();
+        return state;
+
+      case ActionTypes.TERMINALS_SHOW_RUN_VIEW:
+        _.map(this.getState().terminals, (t, id) => { t.current = false });
+        return state;
+
+      case ActionTypes.IDE_RUN:
+        if (IdeStore.isTerminalMode()) {
+          _.map(this.getState().terminals, (t, id) => { t.current = false });
+        }
+        return state;
+
+      default:
+        return state;
     }
   }
-  TerminalsStore.emitChange();
-});
+};
 
-AppDispatcher.registerHandler(ActionTypes.IDE_RESIZE_SPLIT, function(payload) {
-  var t = TerminalsStore.getCurrent();
-});
 
-AppDispatcher.registerHandler(ActionTypes.TERMINALS_SHOW_RUN_VIEW, function(payload) {
-  _.map(terminals, (t, id) => { t.current = false });
-
-  TerminalsStore.emitChange();
-});
-
-AppDispatcher.registerHandler(ActionTypes.IDE_RUN, function(payload) {
-  if (IdeStore.isTerminalMode()) {
-    _.map(terminals, (t, id) => { t.current = false });
-
-    TerminalsStore.emitChange();
-  }
-});
-
-module.exports = TerminalsStore;
+export default new TerminalsStore(dispatcher);
