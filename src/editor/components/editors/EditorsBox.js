@@ -7,10 +7,11 @@ const WatchStoreMixin = require("editor/mixins/WatchStore");
 
 const Editor = require("./Editor");
 const RunView = require("editor/components/common/tab/RunView");
-const Toolbar = require("editor/components/Toolbar");
+const Toolbar = require("editor/components/common/Toolbar");
 const ReconnectionStatusBar = require("editor/components/ReconnectionStatusBar");
 
 const EditorsStore = require("editor/stores/EditorsStore");
+const IdeStore = require("editor/stores/IdeStore");
 const EditorsActions = require("editor/actions/EditorsActions");
 
 const EditorsBox = React.createClass({
@@ -20,7 +21,8 @@ const EditorsBox = React.createClass({
     return {
       editors: EditorsStore.getAll(),
       current: EditorsStore.getCurrent(),
-      isRunViewActive: EditorsStore.isRunViewActive()
+      isRunViewActive: EditorsStore.isRunViewActive(),
+      ideIsConnected: IdeStore.isConnected()
     }
   },
 
@@ -96,7 +98,7 @@ const EditorsBox = React.createClass({
             </li>
             {items}
             <li className="pull-right">
-              <Toolbar />
+              <Toolbar isConnected={this.state.ideIsConnected} />
             </li>
           </ul>
           <ReconnectionStatusBar />

@@ -3,11 +3,7 @@ import cx from "classnames";
 import React, {Component} from "react/addons";
 import {Container} from 'flux/utils';
 
-import IdeStore from "editor/stores/IdeStore";
-import IdeActions from "editor/actions/IdeActions";
-
 class Toolbar extends Component<{}, {}, {}> {
-
   render() {
     return (
       <div className="toolbar">
@@ -21,7 +17,7 @@ class Toolbar extends Component<{}, {}, {}> {
   }
 
   getStatusClasses() {
-    const buttonType = IdeStore.isConnected() ?
+    const buttonType = this.props.isConnected ?
       "connected" :
       "disconnected";
     const classes = {
@@ -33,7 +29,7 @@ class Toolbar extends Component<{}, {}, {}> {
   }
 
   getStatusInnerClasses() {
-    const glyphiconType = IdeStore.isConnected() ?
+    const glyphiconType = this.props.isConnected ?
       "glyphicon-record" :
       "glyphicon-remove-circle";
     const classes = {

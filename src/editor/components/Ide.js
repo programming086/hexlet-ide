@@ -30,10 +30,6 @@ class Ide extends Component<{}, {}, {}> {
     };
   }
 
-  handleGlobalClick() {
-    globalClick();
-  }
-
   renderDisplayMode(mode) {
     switch(mode) {
       case "normal":
@@ -44,7 +40,7 @@ class Ide extends Component<{}, {}, {}> {
   }
 
   renderNormalMode() {
-    return <div className="splits-container" onMouseDown={this.handleGlobalClick}>
+    return <div className="splits-container" onMouseDown={globalClick}>
       <VerticalSplit className="ide-split">
         <Panel className="left-panel">
           <TreeBox />

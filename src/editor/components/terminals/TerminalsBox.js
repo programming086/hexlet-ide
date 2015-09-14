@@ -6,28 +6,30 @@ import Config from "editor/config";
 
 import TerminalsActions from "editor/actions/TerminalsActions";
 import TerminalsStore from "editor/stores/TerminalsStore";
+import IdeStore from "editor/stores/IdeStore";
 
 import Terminal from "./Terminal";
 import RunView from "editor/components/common/tab/RunView";
-import Toolbar from "editor/components/Toolbar";
+import Toolbar from "editor/components/common/Toolbar";
 
 import cx from "classnames";
 
 class TerminalsBox extends Component<{}, {}, {}> {
 
   static getStores(): Array<Store> {
-    return [TerminalsStore];
+    return [TerminalsStore, IdeStore];
   }
 
   static calculateState(prevState) {
     return {
       terminals: TerminalsStore.getTerminals(),
-      isRunViewActive: TerminalsStore.isRunViewActive()
+      isRunViewActive: TerminalsStore.isRunViewActive(),
+      isIdeConnected: IdeStore.isConnected()
     }
   };
 
   componentDidMount() {
-    // TerminalsActions.createDefaultTerminal(Config.terminal);
+    setTimeout(() => TerminalsActions.createDefaultTerminal(Config.terminal), 0);
   }
 
   renderTabHeaders() {
@@ -67,12 +69,15 @@ class TerminalsBox extends Component<{}, {}, {}> {
   }
 
   render() {
-    var runResultClasses = cx({
+    const isIdeConnected = this.state.isIdeConnected;
+    const showRunView = this.state.showRunView;
+
+    const runResultClasses = cx({
       // "active": this.state.isRunViewActive,
       "run-view-tab": true
     });
 
-    var runViewPaneClasses = cx({
+    const runViewPaneClasses = cx({
       "tab-pane": true,
       "fade active in": this.state.isRunViewActive,
       "run-view": true
@@ -80,7 +85,7 @@ class TerminalsBox extends Component<{}, {}, {}> {
     return (
       <div className="terminals-box">
         <ul className="nav nav-tabs" role="tablist">
-          { this.props.showRunView ?
+          { showRunView ?
             <li key={"run-result"} className={runResultClasses} role="presentation">
               <a href="#" onClick={this.showRunView} className={runResultClasses}>
                 <span>Output</span>
@@ -91,14 +96,14 @@ class TerminalsBox extends Component<{}, {}, {}> {
             <li key="tab_create">
               <a href="#" onClick={this.createTerminal}>Create terminal</a>
             </li>
-            { this.props.showRunView ?
+            { showRunView ?
               <li className="pull-right">
-                <Toolbar />
+                <Toolbar isConnected={isIdeConnected} />
               </li>
               : "" }
             </ul>
             <div className="tab-content max-height">
-              { this.props.showRunView ?
+              { showRunView ?
                 <RunView className={runViewPaneClasses} />
                 : "" }
                 {this.renderTerminals()}
