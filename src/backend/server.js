@@ -6,10 +6,21 @@ var http = require("http");
 var socketIOFactory = require("socket.io");
 var rpcFactory = require("./rpc");
 
+var Mincer = require("mincer");
+var Asset = require("./asset");
+
+if (process.env.NODE_ENV === "production") {
+  var manifest = require("./public/assets/manifest.json");
+}
+
 var routes = require("./routes/index");
 
 module.exports = function(options) {
   var app = express();
+
+  app.use(Asset.viewHelper);
+  app.use("/public/assets/", Mincer.createServer(Asset.environment, manifest));
+
   app.use(morgan("combined"));
   app.engine("jade", require("jade").__express);
 

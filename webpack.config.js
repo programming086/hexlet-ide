@@ -57,12 +57,6 @@ module.exports = function() {
       ],
 
       loaders: [{
-        test: /\.css$/,
-        loader: "style!css!autoprefixer-loader"
-      }, {
-        test: /\.less$/,
-        loader: "style!css!autoprefixer!less"
-      }, {
         test: /\.js$/,
         exclude: /(node_modules|bower_components)/,
         loaders: ["babel?stage=0"]
