@@ -1,3 +1,4 @@
+import cx from "classnames";
 var _ = require("lodash");
 var React = require("react/addons");
 
@@ -12,7 +13,6 @@ var Toolbar = require("editor/components/Toolbar");
 
 var WatchStoreMixin = require("editor/mixins/WatchStore");
 
-var cx = React.addons.classSet;
 
 var TerminalsBox = React.createClass({
   mixins: [WatchStoreMixin(TerminalsStore)],
@@ -30,7 +30,7 @@ var TerminalsBox = React.createClass({
 
   renderTabHeaders: function() {
     return _.map(this.state.terminals, function(terminal, id) {
-      var tabClasses = React.addons.classSet({
+      var tabClasses = cx({
         "active": terminal.current
       });
 
@@ -50,7 +50,7 @@ var TerminalsBox = React.createClass({
 
   renderTerminals: function() {
     return _.map(this.state.terminals, function(terminal) {
-      var classes = React.addons.classSet({
+      var classes = cx({
         "tab-pane": true,
         "fade active in": terminal.current,
         "terminal-box": true

@@ -1,6 +1,7 @@
 const _ = require("lodash");
 const React = require("react/addons");
 const key = require("keymaster");
+import cx from "classnames";
 
 const WatchStoreMixin = require("editor/mixins/WatchStore");
 
@@ -50,8 +51,6 @@ const EditorsBox = React.createClass({
   },
 
   render: function() {
-    var cx = React.addons.classSet;
-
     var editors = this.state.editors;
     var current = this.state.current;
 

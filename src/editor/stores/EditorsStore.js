@@ -1,6 +1,5 @@
 /* global require module */
 import _ from "lodash";
-import moment from "moment";
 
 import AppDispatcher from "editor/dispatcher/AppDispatcher";
 import {ActionTypes} from "editor/constants/IdeConstants";
@@ -37,7 +36,7 @@ AppDispatcher.registerHandler(ActionTypes.TREE_OPEN_FILE, function(payload) {
 
   var editor = _.find(editors, {id: item.id});
   if (!editor) {
-    editors.push({id: item.id, dirty: false, name: item.name, current: true, content: content, lastEditedAt: +moment(), lastSavingAt: +moment()});
+    editors.push({id: item.id, dirty: false, name: item.name, current: true, content: content, lastEditedAt: new Date(), lastSavingAt: new Date()});
   } else {
     editor.current = true;
   }
@@ -49,14 +48,14 @@ AppDispatcher.registerHandler(ActionTypes.EDITORS_EDIT_CURRENT, function(payload
   var editor = _.find(editors, {id: payload.id});
   editor.content = payload.content;
   editor.dirty = true;
-  editor.lastModifiedAt = +moment();
+  editor.lastModifiedAt = new Date();
 
   EditorsStore.emitChange();
 });
 
 AppDispatcher.registerHandler(ActionTypes.EDITORS_SAVING_CURRENT, function(payload) {
   var editor = _.find(editors, {id: payload.id});
-  editor.lastSavingAt = +moment();
+  editor.lastSavingAt = new Date();
 
   EditorsStore.emitChange();
 });

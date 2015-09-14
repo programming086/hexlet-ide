@@ -40,38 +40,36 @@ module.exports = function() {
 
     resolveLoader: { root: path.join(__dirname, "node_modules") },
 
-    //     externals: {
-      //       "jquery": "jQuery",
-      //       "moment": "moment",
-      //       "lodash": "_",
-      //       "mousetrap": "Mousetrap",
-      //       "codemirror": "CodeMirror",
-      //       "xterm": "XTerm"
-      //     },
+    externals: {
+      "jquery": "jQuery",
+      "react/addons": "React",
+      "react": "React",
+      "react-dom": "ReactDOM"
+    },
 
-      module: {
-        preLoaders: [
-          {
-            test: /\.js$/,
-            loader: "eslint-loader",
-            exclude: /node_modules/
-          }
-        ],
-
-        loaders: [{
-          test: /\.css$/,
-          loader: "style!css!autoprefixer-loader"
-        }, {
-          test: /\.less$/,
-          loader: "style!css!autoprefixer!less"
-        }, {
+    module: {
+      preLoaders: [
+        {
           test: /\.js$/,
-          exclude: /(node_modules|bower_components)/,
-          loaders: ["babel?stage=0"]
-        }, {
-          test: /\.(png|svg|woff|woff2|eot|ttf|otf)$/,
-          loader: "url?limit=100000"
-        }]
-      }
+          loader: "eslint-loader",
+          exclude: /node_modules/
+        }
+      ],
+
+      loaders: [{
+        test: /\.css$/,
+        loader: "style!css!autoprefixer-loader"
+      }, {
+        test: /\.less$/,
+        loader: "style!css!autoprefixer!less"
+      }, {
+        test: /\.js$/,
+        exclude: /(node_modules|bower_components)/,
+        loaders: ["babel?stage=0"]
+      }, {
+        test: /\.(png|svg|woff|woff2|eot|ttf|otf)$/,
+        loader: "url?limit=100000"
+      }]
+    }
   };
 };

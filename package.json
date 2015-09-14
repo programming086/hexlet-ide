@@ -28,7 +28,6 @@
     "morgan": "*",
     "mousetrap": "*",
     "pty.js": "git://github.com/chjj/pty.js",
-    "react": "^0.13.3",
     "rimraf": "*",
     "socket.io": "*",
     "tree-model": "*",

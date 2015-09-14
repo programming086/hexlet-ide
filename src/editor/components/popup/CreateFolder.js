@@ -13,7 +13,7 @@ class CreateFolder extends Component<{}, {}, {}> {
   }
 
   handleApply(e) {
-    createFolder(this.props.options.get("parentId"), this.refs.nameInput.getDOMNode().value);
+    createFolder(this.props.options.get("parentId"), this.refs.nameInput.value);
   }
 
   render() {

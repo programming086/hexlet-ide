@@ -1,4 +1,6 @@
-var React = require("react/addons");
+import React from "react";
+import ReactDOM from "react-dom";
+
 var { addEvent, removeEvent, dragEventFor } = require("./Helpers");
 
 var VerticalSeparator = React.createClass({

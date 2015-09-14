@@ -1,5 +1,5 @@
-var React = require("react/addons");
-var _ = require("lodash");
+import React from "react";
+import ReactDOM from "react-dom";
 
 var Separator = require("./VerticalSeparator");
 var Panel = require("./Panel");
@@ -41,7 +41,7 @@ var VerticalSplit = React.createClass({
   },
 
   onMoveSplit: function(num, x) {
-    var node = this.getDOMNode();
+    var node = ReactDOM.findDOMNode(this);
     var rect = node.getBoundingClientRect();
 
     var size = this.state.size;

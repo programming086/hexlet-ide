@@ -1,4 +1,5 @@
 import _ from "lodash";
+import cx from "classnames";
 import React, {Component} from "react/addons";
 import {Container} from 'flux/utils';
 
@@ -20,7 +21,6 @@ class Toolbar extends Component<{}, {}, {}> {
   }
 
   getStatusClasses() {
-    var cx = React.addons.classSet;
     const buttonType = IdeStore.isConnected() ?
       "connected" :
       "disconnected";
@@ -33,7 +33,6 @@ class Toolbar extends Component<{}, {}, {}> {
   }
 
   getStatusInnerClasses() {
-    var cx = React.addons.classSet;
     const glyphiconType = IdeStore.isConnected() ?
       "glyphicon-record" :
       "glyphicon-remove-circle";

@@ -13,7 +13,7 @@ class CreateFile extends Component<{}, {}, {}> {
   }
 
   handleApply(e) {
-    createFile(this.props.options.get("parentId"), this.refs.nameInput.getDOMNode().value);
+    createFile(this.props.options.get("parentId"), this.refs.nameInput.value);
   }
 
   render() {

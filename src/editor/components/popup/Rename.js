@@ -14,7 +14,7 @@ class Rename extends Component<{}, {}, {}> {
 
   handleApply(e) {
     console.log(this);
-    rename(this.props.options.get("item").get("id"), this.refs.nameInput.getDOMNode().value);
+    rename(this.props.options.get("item").get("id"), this.refs.nameInput.value);
   }
 
   render() {

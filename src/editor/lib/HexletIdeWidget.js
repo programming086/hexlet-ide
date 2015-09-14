@@ -1,5 +1,6 @@
 import Mousetrap from "mousetrap";
-import React from "react/addons";
+import React from "react";
+import ReactDOM from "react-dom";
 import Config from "editor/config";
 import Ide from "editor/components/Ide";
 
@@ -102,7 +103,7 @@ export default class HexletIdeWidget {
   }
 
   render() {
-    return React.render(<Ide cmd={this.cmd} />, this.domElement);
+    return ReactDOM.render(<Ide cmd={this.cmd} />, this.domElement);
   }
 
 //   runCommand(cmd) {

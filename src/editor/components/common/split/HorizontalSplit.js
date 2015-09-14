@@ -1,5 +1,6 @@
-var React = require("react/addons");
-var _ = require("lodash");
+import React from "react";
+import ReactDOM from "react-dom";
+import _ from "lodash";
 
 
 var Separator = require("./HorizontalSeparator");
@@ -44,7 +45,7 @@ var HorizontalSplit = React.createClass({
   },
 
   onMoveSplit: function(num, y) {
-    var node = this.getDOMNode();
+    var node = ReactDOM.findDOMNode(this);
     var rect = node.getBoundingClientRect();
 
     var size = this.state.size;

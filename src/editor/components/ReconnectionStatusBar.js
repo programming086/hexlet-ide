@@ -1,3 +1,4 @@
+import cx from "classnames";
 const React = require("react/addons");
 const IdeActions = require("editor/actions/IdeActions");
 const IdeStore = require("editor/stores/IdeStore");
@@ -5,8 +6,6 @@ const IdeStore = require("editor/stores/IdeStore");
 const WatchStoreMixin = require("editor/mixins/WatchStore");
 const ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
 
-
-const cx = React.addons.classSet;
 
 module.exports = React.createClass({
   mixins: [WatchStoreMixin(IdeStore)],
