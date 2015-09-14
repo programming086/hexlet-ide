@@ -11,7 +11,11 @@ import {
   loadTreeAndOpenFiles
 } from "editor/actions/TreeActions";
 
-import TerminalsActions from "editor/actions/TerminalsActions";
+import {
+  finishUpdateTerminal,
+  reconnectTerminals
+} from "editor/actions/TerminalsActions";
+
 import {
   loadCompleted,
   run,
@@ -56,7 +60,7 @@ export default class HexletIdeWidget {
 
     //FIXME: это хак, пока не сделано дуплексное RPC между клиентом и сервером
     rpcClient.socket.on("terminalUpdated", (msg) => {
-      TerminalsActions.finishUpdateTerminal(msg);
+      finishUpdateTerminal(msg);
     });
 
     rpcClient.socket.on("reconnect_attempt", () => {
@@ -83,7 +87,7 @@ export default class HexletIdeWidget {
     rpcClient.socket.on("reconnect", () => {
     console.log('reconnect');
       connect();
-      TerminalsActions.reconnectTerminals();
+      reconnectTerminals();
     });
 
     rpcClient.socket.on("disconnect", () => {
@@ -120,7 +124,7 @@ export default class HexletIdeWidget {
   }
 
 //   runCommand(cmd) {
-//     TerminalsActions.runCommandInNewTerminal(cmd, Config.terminal);
+//     runCommandInNewTerminal(cmd, Config.terminal);
 //   }
 
 //   exec() {

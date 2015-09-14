@@ -4,7 +4,14 @@ import {Container} from 'flux/utils';
 
 import Config from "editor/config";
 
-import TerminalsActions from "editor/actions/TerminalsActions";
+import {
+  createDefaultTerminal,
+  selectTerminal,
+  createTerminal,
+  closeTerminal,
+  showRunView
+} from "editor/actions/TerminalsActions";
+
 import TerminalsStore from "editor/stores/TerminalsStore";
 import IdeStore from "editor/stores/IdeStore";
 
@@ -29,7 +36,7 @@ class TerminalsBox extends Component<{}, {}, {}> {
   };
 
   componentDidMount() {
-    setTimeout(() => TerminalsActions.createDefaultTerminal(Config.terminal), 0);
+    setTimeout(() => createDefaultTerminal(Config.terminal), 0);
   }
 
   renderTabHeaders() {
@@ -115,25 +122,25 @@ class TerminalsBox extends Component<{}, {}, {}> {
   selectTerminal(terminal, e) {
     e.preventDefault();
     e.stopPropagation();
-    TerminalsActions.selectTerminal(terminal);
+    selectTerminal(terminal);
   }
 
   createTerminal(e) {
     e.preventDefault();
     e.stopPropagation();
-    TerminalsActions.createTerminal(Config.terminal);
+    createTerminal(Config.terminal);
   }
 
   closeTerminal(terminal, e) {
     e.preventDefault();
     e.stopPropagation();
-    TerminalsActions.closeTerminal(terminal);
+    closeTerminal(terminal);
   }
 
   showRunView(e) {
     e.stopPropagation();
     e.preventDefault();
-    TerminalsActions.showRunView();
+    showRunView();
   }
   };
 
