@@ -1,7 +1,6 @@
 /* global require module */
 
 import Dispatcher from "flux/lib/Dispatcher";
-import objectAssign from "react/lib/Object.assign";
 
 class AppDispatcher extends Dispatcher {
   registerHandler(actionType, callback) {

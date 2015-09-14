@@ -1,6 +1,6 @@
 /* global require module */
 
-import keyMirror from "react/lib/keyMirror";
+import keyMirror from "keymirror";
 
 const CONSTANTS = {
   ActionTypes: keyMirror({

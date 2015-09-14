@@ -22,6 +22,7 @@
     "fs-extra": "*",
     "immutable": "^3.7.5",
     "jade": "*",
+    "keymirror": "^0.1.1",
     "lodash": "*",
     "marked": "*",
     "moment": "*",

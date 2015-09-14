@@ -1,4 +1,4 @@
-import keyMirror from "react/lib/keyMirror";
+import keyMirror from "keymirror";
 
 import Immutable from 'immutable';
 import {ReduceStore} from 'flux/utils';

@@ -1,6 +1,6 @@
 /* global require module */
 
-var objectAssign = require("react/lib/Object.assign");
+import _ from "lodash";
 var EventEmitter = require("events").EventEmitter;
 
 var CHANGE_EVENT = "change";
@@ -24,7 +24,7 @@ BaseStore.prototype.removeChangeListener = function(callback) {
 };
 
 BaseStore.extend = function(data) {
-  return objectAssign(new BaseStore(), data);
+  return _.extend(new BaseStore(), data);
 };
 
 module.exports = BaseStore;
