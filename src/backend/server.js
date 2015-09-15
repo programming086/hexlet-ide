@@ -9,17 +9,17 @@ var rpcFactory = require("./rpc");
 var Mincer = require("mincer");
 var Asset = require("./asset");
 
-if (process.env.NODE_ENV === "production") {
-  var manifest = require("./public/assets/manifest.json");
-}
-
 var routes = require("./routes/index");
 
 module.exports = function(options) {
   var app = express();
 
   app.use(Asset.viewHelper);
-  app.use("/public/assets/", Mincer.createServer(Asset.environment, manifest));
+  if (process.env.NODE_ENV === "production") {
+    app.use("/public/assets", express.static(__dirname + "/public/assets"));
+  } else {
+    app.use("/public/assets/", Mincer.createServer(Asset.environment));
+  }
 
   app.use(morgan("combined"));
   app.engine("jade", require("jade").__express);
