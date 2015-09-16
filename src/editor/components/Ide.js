@@ -11,9 +11,6 @@ import PopupBox from "editor/components/PopupBox";
 import IdeActions from "editor/actions/IdeActions";
 import IdeStore from "editor/stores/IdeStore";
 
-import Panel from "./common/split/Panel";
-import VerticalSplit from "./common/split/VerticalSplit";
-import HorizontalSplit from "./common/split/HorizontalSplit";
 
 import {globalClick} from "editor/actions/IdeActions"
 
@@ -40,27 +37,17 @@ class Ide extends Component<{}, {}, {}> {
   }
 
   renderNormalMode() {
-    return <div className="splits-container" onMouseDown={globalClick}>
-      <VerticalSplit className="ide-split">
-        <Panel className="left-panel">
-          <TreeBox />
-        </Panel>
-        <Panel className="right-panel">
-          <HorizontalSplit className="editor-split">
-            <Panel className="top-panel">
-              <EditorsBox />
-            </Panel>
-            <Panel className="bottom-panel">
-              <TerminalsBox />
-            </Panel>
-          </HorizontalSplit>
-        </Panel>
-      </VerticalSplit>
+    return <div className="container-flow" onMouseDown={globalClick}>
+      <TreeBox />
+      <div className="right-container">
+        <EditorsBox />
+        <TerminalsBox />
+      </div>
     </div>
   }
 
   renderTerminalMode() {
-    return <div className="splits-container" onClick={this.handleGlobalClick}>
+    return <div onClick={this.handleGlobalClick}>
       <TerminalsBox showRunView={true} />
     </div>
   }

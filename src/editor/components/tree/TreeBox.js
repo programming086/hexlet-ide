@@ -92,7 +92,7 @@ class TreeBox extends Component<{}, {}, {}> {
 
   render() {
     return (
-      <div className="fuelux file-tree-box">
+      <div className="file-tree-box">
         <h3>Folders</h3>
         {this.state.tree ?
           <div className="tree">
