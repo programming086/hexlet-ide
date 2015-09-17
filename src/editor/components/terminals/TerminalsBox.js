@@ -40,28 +40,28 @@ class TerminalsBox extends Component<{}, {}, {}> {
   }
 
   renderTabHeaders() {
-    return _.map(this.state.terminals, function(terminal, id) {
-      var tabClasses = cx({
+    return _.map(this.state.terminals, (terminal, id) => {
+      const tabClasses = cx({
         "active": terminal.current
       });
 
       return <li key={"tab_" + id} className={tabClasses}>
-        <a href="#" onClick={this.selectTerminal.bind(this, terminal)} className={tabClasses}>
-          <span>{"Terminal " + id}</span>
-          <button type="button" className="close" onClick={this.closeTerminal.bind(this, terminal)}>
-            <span aria-hidden="true">&times;</span>
-            <span className="sr-only">
-              Close
-            </span>
-          </button>
-        </a>
+      <a href="#" onClick={this.selectTerminal.bind(this, terminal)} className={tabClasses}>
+      <span>{"Terminal " + id}</span>
+      <button type="button" className="close" onClick={this.closeTerminal.bind(this, terminal)}>
+      <span aria-hidden="true">&times;</span>
+      <span className="sr-only">
+      Close
+      </span>
+      </button>
+      </a>
       </li>;
-    }, this);
+    });
   }
 
   renderTerminals() {
-    return _.map(this.state.terminals, function(terminal) {
-      var classes = cx({
+    return _.map(this.state.terminals, (terminal) => {
+      const classes = cx({
         "tab-pane": true,
         "fade active in": terminal.current,
         "terminal-box": true
@@ -69,9 +69,9 @@ class TerminalsBox extends Component<{}, {}, {}> {
 
       return (
         <div className={classes} key={terminal.id}>
-          <Terminal terminal={terminal} />
+        <Terminal terminal={terminal} />
         </div>
-        );
+      );
     });
   }
 
@@ -91,32 +91,32 @@ class TerminalsBox extends Component<{}, {}, {}> {
     });
     return (
       <div className="terminals-box">
-        <ul className="nav nav-tabs" role="tablist">
+      <ul className="nav nav-tabs" role="tablist">
+      { showRunView ?
+        <li key={"run-result"} className={runResultClasses} role="presentation">
+        <a href="#" onClick={this.showRunView} className={runResultClasses}>
+        <span>Output</span>
+        </a>
+        </li>
+        : "" }
+        {this.renderTabHeaders()}
+        <li key="tab_create">
+        <a href="#" onClick={this.createTerminal}>Create terminal</a>
+        </li>
+        { showRunView ?
+          <li className="pull-right">
+          <Toolbar isConnected={isIdeConnected} />
+          </li>
+          : "" }
+          </ul>
+          <div className="tab-content max-height">
           { showRunView ?
-            <li key={"run-result"} className={runResultClasses} role="presentation">
-              <a href="#" onClick={this.showRunView} className={runResultClasses}>
-                <span>Output</span>
-              </a>
-            </li>
+            <RunView className={runViewPaneClasses} />
             : "" }
-            {this.renderTabHeaders()}
-            <li key="tab_create">
-              <a href="#" onClick={this.createTerminal}>Create terminal</a>
-            </li>
-            { showRunView ?
-              <li className="pull-right">
-                <Toolbar isConnected={isIdeConnected} />
-              </li>
-              : "" }
-            </ul>
-            <div className="tab-content max-height">
-              { showRunView ?
-                <RunView className={runViewPaneClasses} />
-                : "" }
-                {this.renderTerminals()}
-              </div>
+            {this.renderTerminals()}
             </div>
-            );
+            </div>
+    );
   }
 
   selectTerminal(terminal, e) {
@@ -142,6 +142,6 @@ class TerminalsBox extends Component<{}, {}, {}> {
     e.preventDefault();
     showRunView();
   }
-  };
+};
 
-  export default Container.create(TerminalsBox, { pure: false });
+export default Container.create(TerminalsBox, { pure: false });

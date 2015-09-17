@@ -1,7 +1,9 @@
-import _ from "lodash";
 import React, { Component } from "react/addons";
 
-var TerminalsActions = require('editor/actions/TerminalsActions');
+import {
+  startUpdateTerminal,
+  resize
+} from "editor/actions/TerminalsActions";
 
 export default class extends Component {
   render() {
@@ -32,21 +34,21 @@ export default class extends Component {
 
     terminal.terminal.on("open", this.terminalResize.bind(this));
     terminal.terminal.on("data", (data) => {
-      TerminalsActions.startUpdateTerminal({
+      startUpdateTerminal({
         id: terminal.id,
         data: data
       });
     });
 
     terminal.terminal.on("resize", (data) => {
-      TerminalsActions.resize({
+      resize({
         id: terminal.id,
         cols: data.cols,
         rows: data.rows
       });
     });
 
-    const node = React.findDOMNode(this.refs.terminal);
+    const node = this.refs.terminal;
     terminal.terminal.open(node);
   }
 }

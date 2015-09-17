@@ -1,14 +1,9 @@
-import _ from "lodash";
 import React, {Component} from "react/addons";
 import {Container} from 'flux/utils';
 
 import ContextMenuStore from "editor/stores/ContextMenuStore";
 
 class ContextMenu extends Component<{}, {}, {}> {
-  static contextTypes = {
-    router: React.PropTypes.func
-  }
-
   static getStores(): Array<Store> {
     return [ContextMenuStore];
   }

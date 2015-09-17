@@ -64,7 +64,7 @@ export function showReadme() {
 export function run() {
   dispatch(ActionTypes.IDE_RUN);
   const editors = EditorsStore.getAllUnsaved();
-  const promises = editors.map(save);
+  const promises = editors.map(save).toArray();
 
   when.all(promises).then((_resp) => {
     return rpc.getClient().run.exec("timeout -s SIGTERM -k 20 15 make test");

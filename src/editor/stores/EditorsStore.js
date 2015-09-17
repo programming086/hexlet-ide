@@ -27,16 +27,16 @@ class EditorsStore extends ReduceStore {
 
   getAllUnsaved() {
     return this.getAll().filter((editor) => {
-      return editor.lastSavingAt < editor.lastModifiedAt;
+      return editor.get("lastSavingAt") < editor.get("lastModifiedAt");
     });
   }
 
   getCurrent() {
-    return this.getAll().find((v) => { return v.get('current') == true });
+    return this.getAll().find(v => v.get('current'));
   }
 
   isRunViewActive() {
-    return !this.getAll().find((v) => { return v.get('current') == true });
+    return !this.getAll().find(v => v.get('current'));
   }
 
   reduce(state, action) {
@@ -82,7 +82,7 @@ class EditorsStore extends ReduceStore {
     },
 
     [ActionTypes.EDITORS_EDIT_CURRENT]: function(state, action) {
-      const idx = this.getAll().findIndex((v) => { return v.get('id') === action.item.id});
+      const idx = this.getAll().findIndex((v) => { return v.get('id') === action.id});
 
       return state.setIn(['editors', idx, "content"], action.content)
       .setIn(['editors', idx, "dirty"], true)
@@ -90,13 +90,13 @@ class EditorsStore extends ReduceStore {
     },
 
     [ActionTypes.EDITORS_SAVING_CURRENT]: function(state, action) {
-      const idx = this.getAll().findIndex((v) => { return v.get('id') === action.item.id});
+      const idx = this.getAll().findIndex((v) => { return v.get('id') === action.id});
 
       return state.setIn(['editors', idx, "lastSavingAt"], new Date());
     },
 
     [ActionTypes.EDITORS_SAVE_CURRENT]: function(state, action) {
-      const idx = this.getAll().findIndex((v) => { return v.get('id') === action.item.id});
+      const idx = this.getAll().findIndex((v) => { return v.get('id') === action.id});
 
       return state.setIn(['editors', idx, "dirty"], false);
     },
@@ -177,7 +177,7 @@ class EditorsStore extends ReduceStore {
       const editors = this.getAll();
       return state.update('editors', (v) => {
         return v.map((s) => {
-          return s.set('current', true);
+          return s.set('current', false);
         })})
     },
 
