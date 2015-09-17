@@ -5,7 +5,7 @@ import {ActionTypes} from  "editor/constants/IdeConstants";
 import IdeStore from "editor/stores/IdeStore";
 import TreeStore from "editor/stores/TreeStore";
 import EditorsStore from "editor/stores/EditorsStore";
-import EditorsActions from "editor/actions/EditorsActions";
+import {save} from "editor/actions/EditorsActions";
 
 import rpc from "editor/lib/RpcClient";
 
@@ -64,7 +64,7 @@ export function showReadme() {
 export function run() {
   dispatch(ActionTypes.IDE_RUN);
   const editors = EditorsStore.getAllUnsaved();
-  const promises = editors.map(EditorsActions.save);
+  const promises = editors.map(save);
 
   when.all(promises).then((_resp) => {
     return rpc.getClient().run.exec("timeout -s SIGTERM -k 20 15 make test");
