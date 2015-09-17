@@ -5,7 +5,11 @@ import Tree from "./Tree";
 import TreeStore from "editor/stores/TreeStore";
 
 import {openPopup} from "editor/actions/PopupActions";
-import {loadTree}  from "editor/actions/TreeActions";
+import {
+  loadTree,
+  openFile,
+  toggleFolderState
+}  from "editor/actions/TreeActions";
 import {
   showContextMenu,
   hideContextMenu
@@ -90,6 +94,16 @@ class TreeBox extends Component<{}, {}, {}> {
     showContextMenu(coords, items);
   }
 
+  handleOpenFile(e, leaf) {
+    e.stopPropagation();
+    openFile(leaf);
+  }
+
+  handleToggleFolderState(e, tree) {
+    e.stopPropagation();
+    toggleFolderState(tree);
+  }
+
   render() {
     return (
       <div className="file-tree-box">
@@ -97,7 +111,11 @@ class TreeBox extends Component<{}, {}, {}> {
         {this.state.tree ?
           <div className="tree">
             <ul role="tree">
-              <Tree key={"tree_" + this.state.tree.id} tree={this.state.tree} handleContextMenu={this.handleContextMenu.bind(this)} />
+              <Tree key={"tree_" + this.state.tree.id}
+                    tree={this.state.tree}
+                    handleContextMenu={this.handleContextMenu.bind(this)}
+                    handleToggleFolderState={this.handleToggleFolderState.bind(this)}
+                    handleOpenFile={this.handleOpenFile.bind(this)}/>
             </ul>
           </div>
           : null}

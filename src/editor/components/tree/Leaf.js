@@ -1,24 +1,16 @@
-import _ from "lodash";
+import React from "react/addons";
 
-import {openFile} from "editor/actions/TreeActions";
+export default (props) => {
+    const leaf = props.leaf;
+    const handleContextMenu = props.handleContextMenu;
+    const handleOpenFile = props.handleOpenFile;
 
-var handleOpenFile = (leaf, e) => {
-  e.stopPropagation();
-  openFile(leaf);
-}
-
-var handleContextMenu = (leaf, props, e) => {
-  props.handleContextMenu(e, leaf);
-}
-
-const Leaf = (props) => {
-    var leaf = props.leaf;
     if (!leaf) return null;
 
     return (
-      <li className="tree-item" data-template="treeitem" role="treeitem"
-          onContextMenu={handleContextMenu.bind(this, leaf, props)}
-          onClick={handleOpenFile.bind(this, leaf)}>
+      <li className="tree-item"
+          onContextMenu={e => handleContextMenu(e, leaf)}
+          onClick={e => handleOpenFile(e, leaf)}>
         <a href="#" className="tree-item-name">
           <span className="glyphicon icon-file glyphicon-file"></span>
           <span className="tree-label">{leaf.name}</span>
@@ -26,5 +18,3 @@ const Leaf = (props) => {
       </li>
     );
 };
-
-export default Leaf;

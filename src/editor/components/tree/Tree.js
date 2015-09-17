@@ -1,30 +1,19 @@
+import React from "react/addons";
 import _ from "lodash";
-
-import {toggleFolderState} from "editor/actions/TreeActions";
-import Leaf from "./Leaf";
-
 import cx from "classnames";
 
-var handleToggleFolderState = (tree, e) => {
-  e.stopPropagation();
-  toggleFolderState(tree);
-}
-
-var handleContextMenu = (tree, props, e) => {
-  props.handleContextMenu(e, tree);
-}
-
-var getChildren = (tree) => {
-  return _.sortBy(tree.children, ["type", "name"]);
-}
+import Leaf from "./Leaf";
 
 const Tree = (props) => {
     const { tree, ...other } = props;
+    const handleContextMenu = props.handleContextMenu;
+    const handleToggleFolderState = props.handleToggleFolderState;
 
     if (undefined === tree) {
       return null;
     }
 
+    const children = _.sortBy(tree.children, ["type", "name"]);
     const isOpened = "opened" == tree.state;
 
     const treeBranchClasses = cx({
@@ -44,9 +33,9 @@ const Tree = (props) => {
     });
 
     return (
-      <li className={treeBranchClasses} data-template="treebranch" data-name={tree.name}
-        onContextMenu={handleContextMenu.bind(this, tree, props)} role="treeitem" aria-expanded="false"
-        onClick={handleToggleFolderState.bind(this, tree)}>
+      <li className={treeBranchClasses} data-name={tree.name}
+        onContextMenu={e => handleContextMenu(e, tree)}
+        onClick={e => handleToggleFolderState(e, tree)}>
         <div className="tree-branch-header">
           <a href="#" className="tree-branch-name" data-name={tree.name}>
             <span className={folderIconClasses} data-name={tree.name}></span>
@@ -54,16 +43,14 @@ const Tree = (props) => {
           </a>
         </div>
 
-        {tree.children !== undefined ?
+        {children !== undefined ?
           <ul className={childrenClasses} role="group">
-            {getChildren(tree).map((item) => {
+            {children.map((item) => {
               switch(item.type) {
                 case "directory":
                   return <Tree {...other} key={"tree_" + item.id} tree={item} />
-                  break;
                 case "file":
                   return <Leaf {...other} key={"leaf_" + item.id} leaf={item} />
-                  break;
                 default:
                   throw "xxx"
               }
