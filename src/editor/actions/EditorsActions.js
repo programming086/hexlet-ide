@@ -1,50 +1,48 @@
 import {dispatch} from "editor/dispatcher/AppDispatcher";
 import {ActionTypes} from  "editor/constants/IdeConstants";
 
-var TreeStore = require("editor/stores/TreeStore");
-var rpc = require("editor/lib/RpcClient");
+import TreeStore from "editor/stores/TreeStore";
+import rpc from "editor/lib/RpcClient";
 
-module.exports = {
-  closeEditor(editor) {
+export function closeEditor(editor) {
+  dispatch({
+    actionType: ActionTypes.EDITORS_CLOSE,
+    id: editor.id
+  });
+}
+
+export function makeCurrent(editor) {
+  dispatch({
+    actionType: ActionTypes.EDITORS_MAKE_CURRENT,
+    id: editor.id
+  });
+}
+
+export function save(editor) {
+  const path = TreeStore.getPathById(editor.id);
+  dispatch({
+    actionType: ActionTypes.EDITORS_SAVING_CURRENT,
+    id: editor.id
+  });
+
+  return rpc.getClient().fs.write(path, editor.content).then(_ => {
     dispatch({
-      actionType: ActionTypes.EDITORS_CLOSE,
+      actionType: ActionTypes.EDITORS_SAVE_CURRENT,
       id: editor.id
     });
-  },
+  });
+}
 
-  makeCurrent(editor) {
-    dispatch({
-      actionType: ActionTypes.EDITORS_MAKE_CURRENT,
-      id: editor.id
-    });
-  },
+export function edit(editor, content) {
+  dispatch({
+    actionType: ActionTypes.EDITORS_EDIT_CURRENT,
+    id: editor.id,
+    content: content
+  });
+}
 
-  save(editor) {
-    const path = TreeStore.getPathById(editor.id);
-    dispatch({
-      actionType: ActionTypes.EDITORS_SAVING_CURRENT,
-      id: editor.id
-    });
-
-    return rpc.getClient().fs.write(path, editor.content).then(_ => {
-      dispatch({
-        actionType: ActionTypes.EDITORS_SAVE_CURRENT,
-        id: editor.id
-      });
-    });
-  },
-
-  edit(editor, content) {
-    dispatch({
-      actionType: ActionTypes.EDITORS_EDIT_CURRENT,
-      id: editor.id,
-      content: content
-    });
-  },
-
-  showRunView() {
-    dispatch({
-      actionType: ActionTypes.EDITORS_SHOW_RUN_VIEW
-    });
-  }
+export function showRunView() {
+  dispatch({
+    actionType: ActionTypes.EDITORS_SHOW_RUN_VIEW
+  });
 };

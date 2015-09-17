@@ -3,10 +3,10 @@ import React, { Component } from "react/addons";
 
 import KeyboardActions from "editor/actions/KeyboardActions";
 
-export default class extends Component {
+class Editor extends Component<{}, {}, {}> {
   componentDidMount() {
     const { initContent, mode, onChangeValue } = this.props;
-    const editorEl = React.findDOMNode(this.refs.editor);
+    const editorEl = this.refs.editor;
 
     const editor = CodeMirror(editorEl, {
       lineNumbers: true,
@@ -45,3 +45,5 @@ export default class extends Component {
     return ( <div className={this.props.className} ref="editor"></div>);
   }
 }
+
+export default Editor;
