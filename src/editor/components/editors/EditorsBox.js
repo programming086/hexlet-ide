@@ -71,16 +71,14 @@ class EditorsBox extends Component<{}, {}, {}> {
     });
 
     const items = editors.map((editor) => {
-      editor = editor.toObject();
-
       const classes = cx({
-        "active": editor.current
+        "active": editor.get('current')
       });
 
-      return (<li key={"editor_" + editor.id} className={classes} role="presentation">
+      return (<li key={"editor_" + editor.get('id')} className={classes} role="presentation">
         <a href="#" onClick={this.selectEditor.bind(this, editor)} className={classes}>
           <span>
-            {editor.name} {editor.dirty ? "*" : ""}
+            {editor.get("name")} {editor.get('dirty') ? "*" : ""}
           </span>
           <button type="button" className="close" onClick={this.handleCloseTab.bind(this, editor)}>
             <span aria-hidden="true">&times;</span>
@@ -116,21 +114,20 @@ class EditorsBox extends Component<{}, {}, {}> {
         <div className="tab-content file-content">
           <RunView className={runViewPaneClasses} />
           {editors.map((editor) => {
-            editor = editor.toObject();
-            const mode = this.getEditorMode(editor.name);
+            const mode = this.getEditorMode(editor.get('name'));
             const classes = cx({
               "tab-pane": true,
-              "fade active in": editor.current,
+              "fade active in": editor.get('current'),
               "editor": true
             });
 
             return (
               <Editor mode={mode}
                 className={classes}
-                key={editor.id}
-                focus={editor.current}
+                key={editor.get('id')}
+                focus={editor.get('current')}
                 onChangeValue={this.handleChangeEditorValue.bind(this, editor)}
-                initContent={editor.content} />
+                initContent={editor.get('content')} />
               );
           }, this)}
         </div>
