@@ -23,7 +23,7 @@ import {
 class EditorsBox extends Component<{}, {}, {}> {
 
   static getStores(): Array<Store> {
-    return [EditorsStore];
+    return [EditorsStore, IdeStore];
   }
 
   static calculateState(prevState) {
