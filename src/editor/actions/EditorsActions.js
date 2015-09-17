@@ -17,7 +17,7 @@ export function save(editor) {
   const path = TreeStore.getPathById(id);
   dispatch(ActionTypes.EDITORS_SAVING_CURRENT, { id: id });
 
-  return rpc.getClient().fs.write(path, editor.content).then(_ => {
+  return rpc.getClient().fs.write(path, editor.get("content")).then(_ => {
     dispatch(ActionTypes.EDITORS_SAVE_CURRENT, { id: id });
   });
 }
