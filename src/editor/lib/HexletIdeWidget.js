@@ -30,7 +30,7 @@ import {
   reconnecting,
   reconnectAttempt,
 } from "editor/actions/IdeActions";
-import EditorsActions from "editor/actions/EditorsActions";
+import {save} from "editor/actions/EditorsActions";
 
 import EditorsStore from "editor/stores/EditorsStore";
 import TreeStore from "editor/stores/TreeStore";
@@ -107,7 +107,7 @@ export default class HexletIdeWidget {
   runAutosave() {
     this.autosaveTimer = setInterval(() => {
       const editors = EditorsStore.getAllUnsaved();
-      editors.forEach(EditorsActions.save);
+      editors.forEach(save);
     }, Config.autosaveInterval);
   }
 
