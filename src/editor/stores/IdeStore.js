@@ -85,7 +85,7 @@ class IdeStore extends ReduceStore {
         return state.set('displayMode', action.displayMode);
 
       case ActionTypes.IDE_INIT:
-        const data = payload.data;
+        const data = action.data;
         state.set('displayMode', data.displayMode)
              .set('readme', data.readme);
 
