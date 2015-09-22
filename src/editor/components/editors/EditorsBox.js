@@ -67,7 +67,6 @@ class EditorsBox extends Component<{}, {}, {}> {
 
     const runResultClasses = cx({
       "active": this.state.isRunViewActive,
-      "run-view-tab": true
     });
 
     const items = editors.map((editor) => {
