@@ -66,7 +66,7 @@ class EditorsBox extends Component<{}, {}, {}> {
     const current = this.state.current;
 
     const runResultClasses = cx({
-      // "active": this.state.isRunViewActive,
+      "active": this.state.isRunViewActive,
       "run-view-tab": true
     });
 
@@ -102,7 +102,7 @@ class EditorsBox extends Component<{}, {}, {}> {
         <ul className="nav nav-tabs" role="tablist">
           <li key={"run-result"} className={runResultClasses} role="presentation">
             <a href="#" onClick={this.showRunView} className={runResultClasses}>
-              <span>Output</span>
+              <span>OUTPUT</span>
             </a>
           </li>
           {items}
