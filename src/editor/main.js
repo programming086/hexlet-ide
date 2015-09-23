@@ -1,11 +1,6 @@
 require("./dependencies");
 
 import HexletIdeWidget from "editor/lib/HexletIdeWidget";
-import key from "keymaster";
-
-key.filter = function() {
-  return true;
-};
 
 const HexletIde = {
   create(domElement: any, options: any) : HexletIdeWidget {

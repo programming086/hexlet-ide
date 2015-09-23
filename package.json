@@ -58,7 +58,6 @@
     "gulp-sass": "*",
     "gulp-util": "*",
     "gulp-watch": "*",
-    "keymaster": "*",
     "main-bower-files": "*",
     "mocha": "*",
     "nightmare": "*",
