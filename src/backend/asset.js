@@ -13,6 +13,8 @@ environment.enable("source_maps");
 environment.appendPath("../editor/assets/stylesheets");
 environment.appendPath("../editor/assets/javascript");
 environment.appendPath("../../node_modules");
+environment.appendPath("../../node_modules/bootstrap-sass/assets/fonts/");
+environment.appendPath("../../node_modules/bootstrap-sass/assets/stylesheets/");
 environment.appendPath("../../bower_components");
 
 if (process.env.NODE_ENV === "production") {
@@ -21,7 +23,8 @@ if (process.env.NODE_ENV === "production") {
   environment = environment.index;
 }
 
-Mincer.MacroProcessor.configure([ ".js", ".css", ".less" ]);
+Mincer.MacroProcessor.configure([ ".js", ".css", ".less", ".woff2", ".woff", ".ttf" ]);
+
 
 var assetPath = function() {
   return function (logicalPath) {
@@ -34,6 +37,16 @@ var assetPath = function() {
     return ASSET_PATH + asset.digestPath;
   }
 }();
+
+environment.ContextClass.defineAssetPath(function(logicalPath) {
+    var asset = this.environment.findAsset(logicalPath);
+
+    if (!asset) {
+      throw new Error("Asset " + logicalPath + " not found");
+    }
+
+    return asset.digestPath;
+});
 
 module.exports.environment = environment;
 
@@ -49,7 +62,7 @@ module.exports.manifestCompiler = function() {
   var manifest = new Mincer.Manifest(environment, path.join(__dirname, ASSET_PATH));
 
   try {
-    manifest.compile([ "application.css", "application.js" ],
+    manifest.compile([ "application.css", "application.js", "bootstrap-sass/assets/fonts/bootstrap/*" ],
                      { compress: true, sourceMaps: true, embedMappingComments: true });
 
                      console.info("\n\nAssets were successfully compiled.\nManifest data (a proper JSON) was written to:\n" +
