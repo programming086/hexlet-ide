@@ -1,5 +1,4 @@
 import _ from "lodash";
-import key from "keymaster";
 import cx from "classnames";
 
 import React, {Component} from "react/addons";
@@ -14,7 +13,6 @@ import EditorsStore from "editor/stores/EditorsStore";
 import IdeStore from "editor/stores/IdeStore";
 import {
   edit,
-  save,
   makeCurrent,
   closeEditor,
   showRunView
@@ -37,10 +35,6 @@ class EditorsBox extends Component<{}, {}, {}> {
 
   handleChangeEditorValue(current, content) {
     edit(current, content);
-  }
-
-  handleSaveFile(e) {
-    save(this.state.current);
   }
 
   selectEditor(editor, e) {
@@ -185,14 +179,6 @@ class EditorsBox extends Component<{}, {}, {}> {
 
     return mode;
   }
+};
 
-  componentWillUpdate(nextProps, nextState) {
-    if (nextState.current === undefined) {
-      key.unbind("ctrl+s");
-    } else {
-      key("ctrl+s", () => { this.handleSaveFile(); return false });
-    }
-  }
-  };
-
-  export default Container.create(EditorsBox);
+export default Container.create(EditorsBox);
