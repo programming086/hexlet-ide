@@ -1,6 +1,9 @@
 .CodeMirror {
-    height: auto;
+    position: absolute;
+    height: 100%;
     width: 100%;
+    left: 0;
+    top: 0;
 }
 
 .editors-box {
@@ -14,6 +17,7 @@
         background: @editor-tab-menu-bg;
         min-height: @editor-tab-menu-height;
         max-height: @editor-tab-menu-height;
+        flex: 1;
         a {
             border: 0;
             border-radius: 0;
@@ -48,6 +52,10 @@
         }
     }
 
+    & .tab-pane {
+      position: relative;
+    }
+
     & .file-content {
         display: flex;
         overflow-y: hidden;
@@ -72,6 +80,9 @@
         width: 100%;
         overflow-y: scroll;
         padding: 10px;
+        position: absolute;
+        left: 0;
+        top: 0;
     }
     .run-result-content {
         background: none;
