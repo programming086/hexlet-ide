@@ -25,6 +25,7 @@ class Editor extends Component<{}, {}, {}> {
 
     editor.on("change", _.throttle((CodeMirror, object) => {
       onChangeValue(editor.getValue());
+      editor.scrollIntoView();
     }, 2000));
 
     this.setState({ editor: editor });
