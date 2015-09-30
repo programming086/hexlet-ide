@@ -12,7 +12,7 @@ export default (props) => {
           onContextMenu={e => handleContextMenu(e, leaf)}
           onClick={e => handleOpenFile(e, leaf)}>
         <a href="#" className="tree-item-name">
-          <span className="glyphicon icon-file glyphicon-file"></span>
+          <span className="fa icon-file fa-file"></span>
           <span className="tree-label">{leaf.name}</span>
         </a>
       </li>

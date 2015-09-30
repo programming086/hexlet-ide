@@ -22,14 +22,15 @@ const Tree = (props) => {
     });
 
     const folderIconClasses = cx({
-      "glyphicon": true,
-      "glyphicon-folder-open": isOpened,
-      "glyphicon-folder-close": !isOpened
+      "fa": true,
+      "fa-folder-open": isOpened,
+      "fa-folder": !isOpened
     });
 
     const childrenClasses = cx({
       "tree-branch-children": true,
-      "hide": !isOpened
+      "hidden-md-up": !isOpened,
+      "hidden-md-down": !isOpened,
     });
 
     return (

@@ -60,11 +60,13 @@ class EditorsBox extends Component<{}, {}, {}> {
     const current = this.state.current;
 
     const runResultClasses = cx({
+      "nav-item": true,
       "active": this.state.isRunViewActive,
     });
 
     const items = editors.map((editor) => {
       const classes = cx({
+        "nav-item": true,
         "active": editor.get('current')
       });
 
@@ -74,10 +76,7 @@ class EditorsBox extends Component<{}, {}, {}> {
             {editor.get("name")} {editor.get('dirty') ? "*" : ""}
           </span>
           <button type="button" className="close" onClick={this.handleCloseTab.bind(this, editor)}>
-            <span aria-hidden="true">&times;</span>
-            <span className="sr-only">
-              Close
-            </span>
+            <i className="fa fa-times"></i>
           </button>
         </a>
       </li>);
