@@ -29,10 +29,10 @@ class Toolbar extends Component<{}, {}, {}> {
 
   getStatusInnerClasses() {
     const glyphiconType = this.props.isConnected ?
-      "glyphicon-record" :
-      "glyphicon-remove-circle";
+      "fa-dot-circle-o" :
+      "fa-times-circle-o";
     const classes = {
-      "glyphicon": true
+      "fa": true
     };
     classes[glyphiconType] = true;
     return cx(classes);

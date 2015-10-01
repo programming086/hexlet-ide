@@ -15,7 +15,7 @@
     "react": "^0.14.0-rc1",
     "es5-shim": "^4.0.3",
     "jquery": "^1.11.3",
-    "bootstrap-sass": "https://github.com/twbs/bootstrap-sass.git#3.3-stable",
+    "bootstrap": "git://github.com/twbs/bootstrap#v4-dev",
     "jquery": "^1.11.3",
     "array.from": "^0.2.0",
     "classnames": "^2.1.3",
@@ -55,7 +55,6 @@
     "gulp-download": "*",
     "gulp-eslint": "*",
     "gulp-nodemon": "*",
-    "gulp-sass": "*",
     "gulp-util": "*",
     "gulp-watch": "*",
     "main-bower-files": "*",
@@ -70,7 +69,7 @@
     "postcss": ">=4.1",
     "csswring": "*",
     "uglify-js": "*",
-    "node-sass": "*",
-    "ejs": "~2.3"
+    "ejs": "~2.3",
+    "font-awesome": "*"
   }
 }

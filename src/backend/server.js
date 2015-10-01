@@ -14,6 +14,7 @@ var routes = require("./routes/index");
 module.exports = function(options) {
   var app = express();
 
+  app.use("/public/fonts", express.static(__dirname + "/public/fonts"));
   app.use(Asset.viewHelper);
   if (process.env.NODE_ENV === "production") {
     app.use("/public/assets", express.static(__dirname + "/public/assets"));

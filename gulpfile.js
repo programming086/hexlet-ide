@@ -12,11 +12,8 @@ var nodemonConfig = require("./nodemon.json");
 // var $ = require("gulp-load-plugins")();
 gulp.task("default", ["develop"]);
 
-gulp.task('bower-copy', function() {
-  gulp.src(mainBowerFiles())
-  .pipe(gulp.dest('src/backend/public/'));
-
-  return gulp.src('./bower_components/bootstrap/dist/fonts/*')
+gulp.task('fa-copy', function() {
+  return gulp.src('./node_modules/font-awesome/fonts/*')
   .pipe(gulp.dest('src/backend/public/fonts'));
 });
 
@@ -26,7 +23,7 @@ gulp.task("webpack", function() {
   .pipe(gulp.dest("src/backend/public/assets"));
 });
 
-gulp.task("assets", function() {
+gulp.task("assets", ["fa-copy"], function() {
   process.env.NODE_ENV = "production";
   require("./src/backend/asset.js").manifestCompiler();
 });
@@ -38,7 +35,7 @@ gulp.task("prepublish", function() {
   .pipe(gulp.dest("src/backend/public/assets"));
 });
 
-gulp.task("develop", function() {
+gulp.task("develop", ["fa-copy"], function() {
   process.env.NODE_ENV = "develop";
   process.env.HEXLET_IDE_PORT = 9000;
   process.env.TEST_DIR = "test/fixtures/project";
