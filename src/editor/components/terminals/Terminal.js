@@ -32,7 +32,6 @@ export default class extends Component {
     terminal.terminal.removeAllListeners("resize");
     terminal.terminal.removeAllListeners("open");
 
-    terminal.terminal.on("open", this.terminalResize.bind(this));
     terminal.terminal.on("data", (data) => {
       startUpdateTerminal({
         id: terminal.id,
