@@ -1,6 +1,6 @@
 //= require jquery/dist/jquery.min.js
 //= require react/dist/react-with-addons.min.js
-//= require react/dist/react-dom.min.js
+//= require react-dom/dist/react-dom.min.js
 //= require es5-shim/es5-shim.min.js
 //= require codemirror/lib/codemirror.js
 //= require codemirror/mode/javascript/javascript.js

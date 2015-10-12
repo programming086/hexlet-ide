@@ -34,6 +34,7 @@ module.exports = function(options) {
 
   var io = socketIOFactory(server);
   // TODO it might make sense to do rpc calls timeouts on the client side
+  io.set("transports", ['websocket']);
   io.set("heartbeat timeout", 5000);
   io.set("heartbeat interval", 3000);
   rpcFactory(io, options);

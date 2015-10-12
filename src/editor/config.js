@@ -13,7 +13,8 @@ const defaultConfig = {
       reconnectionDelay: 2000,
       reconnectionDelayMax: 3000,
       reconnection: true,
-      autoConnect: true
+      autoConnect: true,
+      transports: ["websocket"]
     },
     events: {
       connect: _.noop,
