@@ -37,19 +37,19 @@ class Ide extends Component<{}, {}, {}> {
   }
 
   renderNormalMode() {
-    return <div className="container-flow" onMouseDown={globalClick}>
+    return (<div className="container-flow" onMouseDown={globalClick}>
       <TreeBox />
       <div className="right-container">
         <EditorsBox />
         <TerminalsBox />
       </div>
-    </div>
+    </div>);
   }
 
   renderTerminalMode() {
-    return <div onClick={this.handleGlobalClick}>
-      <TerminalsBox showRunView={true} />
-    </div>
+    return (<div onClick={this.handleGlobalClick}>
+      <TerminalsBox showRunView />
+    </div>);
   }
 
   render() {

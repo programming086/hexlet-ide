@@ -1,7 +1,8 @@
 var Mincer = require("mincer");
 var path = require("path");
 
-var ASSET_PATH = "public/assets/";
+var DIST_ASSET_PATH = "../../dist/assets/";
+var PUBLIC_ASSET_PATH = "/public/assets/";
 
 Mincer.logger.use(console);
 
@@ -10,8 +11,8 @@ var environment = new Mincer.Environment(__dirname);
 environment.enable("autoprefixer");
 environment.enable("source_maps");
 
-environment.appendPath("../editor/assets/stylesheets");
-environment.appendPath("../editor/assets/javascript");
+environment.appendPath("../../src/editor/assets/stylesheets");
+environment.appendPath("../../src/editor/assets/javascript");
 environment.appendPath("../../node_modules");
 environment.appendPath("../../node_modules/bootstrap-sass/assets/fonts/");
 environment.appendPath("../../node_modules/bootstrap-sass/assets/stylesheets/");
@@ -34,7 +35,7 @@ var assetPath = function() {
       throw new Error("Asset " + logicalPath + " not found");
     }
 
-    return ASSET_PATH + asset.digestPath;
+    return PUBLIC_ASSET_PATH + asset.digestPath;
   }
 }();
 
@@ -59,7 +60,7 @@ module.exports.viewHelper = function(req, res, next) {
 };
 
 module.exports.manifestCompiler = function() {
-  var manifest = new Mincer.Manifest(environment, path.join(__dirname, ASSET_PATH));
+  var manifest = new Mincer.Manifest(environment, path.join(__dirname, DIST_ASSET_PATH));
 
   try {
     manifest.compile([ "application.css", "application.js", "bootstrap-sass/assets/fonts/bootstrap/*" ],

@@ -1,15 +1,15 @@
-import marked from "marked";
+// import marked from "marked";
 
-marked.setOptions({
-  renderer: new marked.Renderer(),
-  gfm: true,
-  tables: true,
-  breaks: false,
-  pedantic: false,
-  sanitize: true,
-  smartLists: true,
-  smartypants: false
-});
+// marked.setOptions({
+//   renderer: new marked.Renderer(),
+//   gfm: true,
+//   tables: true,
+//   breaks: false,
+//   pedantic: false,
+//   sanitize: true,
+//   smartLists: true,
+//   smartypants: false
+// });
 
 
 import React, {Component} from "react/addons";
@@ -21,7 +21,8 @@ class MarkdownView extends Component<{}, {}, {}> {
   }
 
   getContent() {
-    return marked( this.props.options.get("content") );
+    return  this.props.options.get("content");
+    // return marked( this.props.options.get("content") );
   }
 
   handleClose() {

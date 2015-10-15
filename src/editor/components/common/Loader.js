@@ -16,9 +16,9 @@ class Loader extends Component {
   }
 
   render() {
-    return <div className="">
+    return (<div className="">
       <div className="loader" data-initialize="loader" data-frame={this.state.frame}></div>
-    </div>;
+    </div>);
   }
 
   componentWillUnmount() {

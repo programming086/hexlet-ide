@@ -45,7 +45,7 @@ class TerminalsBox extends Component<{}, {}, {}> {
         "active": terminal.current
       });
 
-      return <li key={"tab_" + id} className={tabClasses}>
+      return (<li key={"tab_" + id} className={tabClasses}>
       <a href="#" onClick={this.selectTerminal.bind(this, terminal)} className={tabClasses}>
       <span>{"Terminal " + id}</span>
       <button type="button" className="close" onClick={this.closeTerminal.bind(this, terminal)}>
@@ -55,7 +55,7 @@ class TerminalsBox extends Component<{}, {}, {}> {
       </span>
       </button>
       </a>
-      </li>;
+      </li>);
     });
   }
 

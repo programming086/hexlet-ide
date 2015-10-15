@@ -32,7 +32,7 @@ class ReconnectionStatusBar extends Component<{}, {}, {}> {
     classes[this.state.connectionState] = true;
 
     return (
-      <ReactCSSTransitionGroup transitionName="reconnection-status-bar" transitionAppear={true}>
+      <ReactCSSTransitionGroup transitionName="reconnection-status-bar" transitionAppear>
         <div className={cx(classes)}>
           {this.renderText()}
         </div>

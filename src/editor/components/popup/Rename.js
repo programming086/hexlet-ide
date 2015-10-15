@@ -28,7 +28,7 @@ class Rename extends Component<{}, {}, {}> {
            <h4 className="modal-title">Rename "{item.get("name")}"</h4>
          </div>
          <div className="modal-body">
-            <input type="text" className="form-control" name="folderName" ref="nameInput" defaultValue={item.get("name")} autoFocus={true} />
+            <input type="text" className="form-control" name="folderName" ref="nameInput" defaultValue={item.get("name")} autoFocus />
          </div>
          <div className="modal-footer">
            <button data-name="Cancel" type="button" className="btn btn-default" onClick={this.handleClose}>Cancel</button>
