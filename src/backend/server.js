@@ -8,7 +8,6 @@ const setUpStaticAssets = (app) => {
   const Asset = require("../../tools/mincer/asset");
 
   app.use(Asset.viewHelper);
-  console.log("STATIC PATH: " + __dirname + "/../../dist");
   app.use("/public/fonts", express.static(__dirname + "/../../dist/fonts"));
   if (process.env.NODE_ENV === "production") {
     app.use("/public/assets", express.static(__dirname + "/../../dist/assets"));
@@ -67,7 +66,7 @@ module.exports = (options) => {
     setUpDevTools(app, options);
   }
 
-  // app.use(express.static(path.join(__dirname, "public")));
+  app.use("/public/js", express.static(__dirname + "/../../dist/js"));
   app.use("/", require("./routes/index"));
 
   server.listen(options.port);

@@ -6,7 +6,7 @@ module.exports = {
     "./src/editor/main"
   ],
   output: {
-    path: path.join(__dirname, "../../dist"),
+    path: path.join(__dirname, "../../dist/js"),
     filename: "main.js",
     publicPath: "/assets/"
   },

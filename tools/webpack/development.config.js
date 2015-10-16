@@ -13,7 +13,7 @@ module.exports = {
   output: {
     path: path.join(__dirname, "dist"),
     filename: "main.js",
-    publicPath: "/public"
+    publicPath: "/public/js"
   },
 
   plugins: [
