@@ -2,7 +2,7 @@ var Mincer = require("mincer");
 var path = require("path");
 
 var DIST_ASSET_PATH = "../../dist/assets/";
-var PUBLIC_ASSET_PATH = "/public/assets/";
+var PUBLIC_ASSET_PATH = "public/assets/";
 
 Mincer.logger.use(console);
 
