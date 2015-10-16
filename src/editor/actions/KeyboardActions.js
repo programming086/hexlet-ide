@@ -6,6 +6,7 @@ export default {
     dispatch({ actionType: ActionTypes.KEY_ESC });
   },
 
+  /* eslint-disable */
   ctrl_r() {
     dispatch({ actionType: ActionTypes.KEY_CTRL_R });
   },
@@ -17,4 +18,5 @@ export default {
   ctrl_close_square_br() {
     dispatch({ actionType: ActionTypes.KEY_CTRL_CLOSE_SQUARE_BR });
   },
+  /* eslint-enable */
 };

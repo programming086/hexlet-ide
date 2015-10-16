@@ -28,6 +28,9 @@
 //= require codemirror/addon/hint/javascript-hint.js
 //= require codemirror/addon/hint/css-hint.js
 //= require codemirror/addon/hint/anyword-hint.js
+//= require codemirror/addon/search/search.js
+//= require codemirror/addon/search/searchcursor.js
+//= require codemirror/addon/dialog/dialog.js
 
 //= require xterm.js/src/xterm.js
 //= require xterm.js/addons/fit/fit.js

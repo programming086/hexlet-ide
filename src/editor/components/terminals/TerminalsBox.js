@@ -42,7 +42,8 @@ class TerminalsBox extends Component<{}, {}, {}> {
   renderTabHeaders() {
     return _.map(this.state.terminals, (terminal, id) => {
       const tabClasses = cx({
-        "active": terminal.current
+        "active": terminal.current,
+        "nav-item": true
       });
 
       return (<li key={"tab_" + id} className={tabClasses}>
@@ -77,11 +78,12 @@ class TerminalsBox extends Component<{}, {}, {}> {
 
   render() {
     const isIdeConnected = this.state.isIdeConnected;
-    const showRunView = this.state.showRunView;
+    const showRunView = this.props.showRunView;
 
     const runResultClasses = cx({
       // "active": this.state.isRunViewActive,
-      "run-view-tab": true
+      "run-view-tab": true,
+      "nav-item": true
     });
 
     const runViewPaneClasses = cx({
@@ -100,11 +102,11 @@ class TerminalsBox extends Component<{}, {}, {}> {
         </li>
         : "" }
         {this.renderTabHeaders()}
-        <li key="tab_create">
-        <a href="#" onClick={this.createTerminal}>Create terminal</a>
+        <li key="tab_create" className="nav-item">
+        <a href="#" className="nav-item" onClick={this.createTerminal}>Create terminal</a>
         </li>
         { showRunView ?
-          <li className="pull-right">
+          <li className="pull-right nav-item">
           <Toolbar isConnected={isIdeConnected} />
           </li>
           : "" }

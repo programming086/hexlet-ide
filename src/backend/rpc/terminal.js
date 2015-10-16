@@ -4,7 +4,7 @@ var _ = require("lodash");
 
 var terminals = {};
 
-function connectTerminal(socket, id) { "use strict";
+function connectTerminal(socket, id) {
   var terminal = terminals[id];
   terminal.on("data", function(data) {
     //FIXME: хак, пока нет дуплексной связи между сервером и клиентом
@@ -12,15 +12,15 @@ function connectTerminal(socket, id) { "use strict";
   });
 }
 
-function createTerminal(socket, options, params) { "use strict";
+function createTerminal(socket, options, params) {
   var id = params.id;
   var terminal = pty.fork(process.env.SHELL || "bash", [], {
     name: require("fs").existsSync("/usr/share/terminfo/x/xterm-256color")
-      ? "xterm-256color"
-      : "xterm",
-      cols: params.cols,
-      rows: params.rows,
-      cwd: options.rootDir
+    ? "xterm-256color"
+    : "xterm",
+    cols: params.cols,
+    rows: params.rows,
+    cwd: options.rootDir
   });
 
   terminals[id] = terminal;
@@ -29,59 +29,56 @@ function createTerminal(socket, options, params) { "use strict";
   return terminal;
 }
 
-function closeTerminal(id) { "use strict;"
+function closeTerminal(id) {
   var terminal = terminals[id];
   terminal.destroy();
   delete terminals[id];
 }
 
-function cleanup() { "use strict;"
-  _.each(_.keys(terminals), function(id) {
-    closeTerminal(id);
-  });
+function cleanup() {
+  _.each(_.keys(terminals), closeTerminal);
 }
 
-module.exports = function(options) { "use strict";
+module.exports = (options) => {
   return {
-    create: function(params) {
+    create(params) {
       var terminal = createTerminal(this.clientSocket, options, params);
       console.log("Created shell with pty master/slave pair (master: %d, pid: %d)", terminal.fd, terminal.pid);
     },
 
-    update: function(msg) {
+    update(msg) {
       var terminal = terminals[msg.id];
       if (terminal) {
         terminal.write(msg.data);
       }
     },
 
-    destroy: function(msg) {
+    destroy(msg) {
       var id = msg.id;
       var terminal = terminals[id];
 
       if (terminal) {
         closeTerminal(id);
+        console.log("Destroy shell pty with (master: %d, pid: %d)", terminal.fd, terminal.pid);
       }
-      console.log("Destroy shell pty with (master: %d, pid: %d)", terminal.fd, terminal.pid);
     },
 
-    reconnect: function(params) {
+    reconnect(params) {
       var id = params.id;
       if (terminals[id]) {
         connectTerminal(this.clientSocket, id);
       }
     },
 
-    createDefault: function(params) {
+    createDefault(params) {
       cleanup();
 
       var terminal = createTerminal(this.clientSocket, options, params);
       console.log("Created default shell with pty master/slave pair (master: %d, pid: %d)", terminal.fd, terminal.pid);
     },
 
-    resize: function(msg) {
-      var id = msg.id;
-      var terminal = terminals[id];
+    resize(msg) {
+      var terminal = terminals[msg.id];
 
       if (terminal) {
         terminal.resize(msg.cols, msg.rows);

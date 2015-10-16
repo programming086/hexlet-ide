@@ -16,6 +16,7 @@ const defaultConfig = {
       autoConnect: true,
       transports: ["websocket"]
     },
+    /* eslint-disable */
     events: {
       connect: _.noop,
       error: _.noop,
@@ -25,6 +26,7 @@ const defaultConfig = {
       reconnect_error: _.noop,
       reconnect_failed: _.noop
     }
+    /* eslint-enable */
   },
 };
 
