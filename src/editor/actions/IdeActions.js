@@ -67,7 +67,7 @@ export function run() {
   const promises = editors.map(save).toArray();
 
   when.all(promises).then((_resp) => {
-    return rpc.getClient().run.exec("timeout -s SIGTERM -k 20 15 make test");
+    return rpc.getClient().run.exec("timeout -s SIGTERM -k 20 15 make -C /usr/src/app test");
   }).then((response) => {
     const result = {
       cmd: "ide:run_finish",
