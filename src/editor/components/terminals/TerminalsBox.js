@@ -50,10 +50,8 @@ class TerminalsBox extends Component<{}, {}, {}> {
       <a href="#" onClick={this.selectTerminal.bind(this, terminal)} className={tabClasses}>
       <span>{"Terminal " + id}</span>
       <button type="button" className="close" onClick={this.closeTerminal.bind(this, terminal)}>
-      <span aria-hidden="true">&times;</span>
-      <span className="sr-only">
-      Close
-      </span>
+        <span aria-hidden="true">&times;</span>
+        <span className="sr-only"> Close </span>
       </button>
       </a>
       </li>);
