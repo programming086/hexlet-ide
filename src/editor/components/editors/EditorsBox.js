@@ -76,7 +76,8 @@ class EditorsBox extends Component<{}, {}, {}> {
             {editor.get("name")} {editor.get('dirty') ? "*" : ""}
           </span>
           <button type="button" className="close" onClick={this.handleCloseTab.bind(this, editor)}>
-            <i className="fa fa-times"></i>
+            <span aria-hidden="true">&times;</span>
+            <span className="sr-only"> Close </span>
           </button>
         </a>
       </li>);
