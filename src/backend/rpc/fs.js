@@ -8,40 +8,45 @@ var when = require("when");
 var shared = require("../../shared");
 
 module.exports = function(options) {
-  return {
-    tree: function(dirPath) {
-      dirPath = dirPath ? dirPath : options.rootDir;
-      var rootDirName = path.basename(dirPath);
-      var rootItem = {
-        name: rootDirName,
-        path: dirPath,
-        state: "opened",
-        id: fs.statSync(dirPath).ino,
-        type: "directory"
-      };
+  function internalTree(basePath, depth) {
+    const name = path.basename(basePath);
+    const stat = fs.statSync(basePath);
 
-      var children = fs.readdirSync(dirPath);
-      rootItem.children = children.map(function(item) {
-        var itemPath = path.join(dirPath, item);
-        var stat = fs.statSync(itemPath);
-        return {
-          name: item,
-          id: stat.ino,
-          type: stat.isDirectory() ? "directory" : "file",
-          path: itemPath,
-          state: "closed"
-        };
+    const item = {
+      name: name,
+      path: basePath,
+      state: depth > 0 ? "opened" : "closed",
+      id: stat.ino,
+      type: stat.isDirectory() ? "directory" : "file"
+    };
+
+    if (stat.isDirectory() && depth > 0) {
+      const children = fs.readdirSync(basePath);
+      item.children = children.map((item) => {
+        const itemPath = path.join(basePath, item);
+        const itemDepth = depth - 1;
+        return internalTree(itemPath, itemDepth);
       });
+    }
 
+    return item;
+  }
+
+  return {
+    tree(params) {
+      const dirPath = params.path ? params.path : options.rootDir;
+      const depth = params.depth ? params.depth : 1;
+
+      const rootItem = internalTree(dirPath, depth);
       return rootItem;
     },
 
-    read: function(path) {
+    read(path) {
       return fs.readFileSync(path, {encoding: "utf8"});
     },
 
-    touch: function(filepath) {
-      var fullPath = path.join(path.dirname(options.rootDir), filepath);
+    touch(filepath) {
+      const fullPath = path.join(path.dirname(options.rootDir), filepath);
       if (fs.existsSync(fullPath)) {
         return null;
       }

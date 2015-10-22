@@ -7,7 +7,7 @@ import TreeStore from "editor/stores/TreeStore";
 import rpc from "editor/lib/RpcClient";
 
 export function loadTree() {
-  return rpc.getClient().fs.tree().then(function(result) {
+  return rpc.getClient().fs.tree({ depth: 2 }).then(function(result) {
     // FIXME check result
     dispatch(ActionTypes.TREE_LOAD, { item: result });
   });
@@ -26,7 +26,7 @@ export function loadTreeAndOpenFiles(files) {
 
 export function toggleFolderState(tree) {
   if (tree.state === "closed") {
-    rpc.getClient().fs.tree(tree.path).then(function(result) {
+    rpc.getClient().fs.tree({ path: tree.path }).then(function(result) {
       dispatch(ActionTypes.TREE_OPEN_FOLDER, { id: tree.id, item: result });
     });
   } else {
