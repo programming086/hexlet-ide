@@ -31,6 +31,10 @@
                 color: #dadfe6;
                 background: #3B414D;
             }
+            &:focus {
+              text-decoration: none;
+              outline: none;
+            }
 
             & * {
                 cursor: pointer;
@@ -48,6 +52,9 @@
             }
             &:hover .close {
                 opacity: 1;
+                &:focus {
+                  outline: none;
+                }
             }
         }
     }
