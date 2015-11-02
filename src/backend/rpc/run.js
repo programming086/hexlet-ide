@@ -26,8 +26,8 @@ module.exports = function(options) {
         console.log("Kill child with pid: " + currentChild.process.pid);
       }
 
-      console.log("Run command: ", arr.join(" "), { cwd: options.rootDir });
-      var proc = cp.spawn(arr[0], _.tail(arr), { cwd: options.rootDir, detached: true });
+      console.log("Run command: ", arr.join(" "), { cwd: options.appDir });
+      var proc = cp.spawn(arr[0], _.tail(arr), { cwd: options.appDir, detached: true });
 
       var child = {
         state: "started",

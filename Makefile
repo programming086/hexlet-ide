@@ -3,7 +3,7 @@ install:
 	bower install # ?
 
 production:
-	NODE_ENV=production HEXLET_IDE_PORT=8000 TEST_DIR=test/fixtures/project ./bin/hexlet-ide.js
+	NODE_ENV=production HEXLET_IDE_PORT=8000  ./bin/hexlet-ide.js -r test/fixtures/project -a test/fixtures/project
 
 develop:
 	./node_modules/gulp/bin/gulp.js fa-copy;
@@ -17,9 +17,6 @@ assets:
 
 test:
 	npm test
-
-publish:
-	npm publish
 
 docker_build:
 	docker build -t hexlet/hexlet-ide:$(TAG) .

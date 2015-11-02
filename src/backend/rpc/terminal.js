@@ -20,7 +20,7 @@ function createTerminal(socket, options, params) {
     : "xterm",
     cols: params.cols,
     rows: params.rows,
-    cwd: options.rootDir
+    cwd: options.appDir
   });
 
   terminals[id] = terminal;
