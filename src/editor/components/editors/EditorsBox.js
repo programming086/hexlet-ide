@@ -72,9 +72,9 @@ class EditorsBox extends Component<{}, {}, {}> {
 
       return (<li key={"editor_" + editor.get('id')} className={classes} role="presentation">
         <a href="#" onClick={this.selectEditor.bind(this, editor)} className={classes}>
-          <span>
-            {editor.get("name")} {editor.get('dirty') ? "*" : ""}
-          </span>
+          <span>{editor.get("name")}</span>
+          &nbsp;
+          <span className={editor.get('dirty') ? "" : "invisible"}>*</span>
           <button type="button" className="close" onClick={this.handleCloseTab.bind(this, editor)}>
             <span aria-hidden="true">&times;</span>
             <span className="sr-only"> Close </span>
