@@ -7,6 +7,7 @@ var MarkdownEditor = React.createClass({
   handleChange: function() {
     this.setState({value: this.refs.textarea.value});
   },
+  
   rawMarkup: function() {
     return { __html: marked(this.state.value, {sanitize: true}) };
   },
