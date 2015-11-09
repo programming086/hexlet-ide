@@ -140,7 +140,7 @@ class EditorsBox extends Component<{}, {}, {}> {
       "clj": "clojure",
       "erl": "erlang",
       "make": {name: "text/x-cmake", indentUnit: 4, indentWithTabs: true },
-      "html": "htmlmixed",
+      "html": "jsx",
       "xml": "xml",
       "css": "css",
       "rkt": "scheme",

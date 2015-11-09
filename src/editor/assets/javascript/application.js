@@ -34,3 +34,5 @@
 
 //= require xterm.js/src/xterm.js
 //= require xterm.js/addons/fit/fit.js
+
+//= require ./CodemirrorJSX.js
