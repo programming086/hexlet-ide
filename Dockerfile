@@ -1,4 +1,4 @@
-FROM node:4.0.0-onbuild
+FROM node:5.0.0-onbuild
 
 ENV DEBIAN_FRONTEND noninteractive
 

@@ -33,11 +33,11 @@ class ContextMenu extends Component<{}, {}, {}> {
       const boundedGroup = group.map(function(item) {
         const title = item.get('title');
         const onClick = item.get('onClick');
-        return <li key={title}><a href="#" data-name={title} onClick={this.clickHandler(onClick)}>{title}</a></li>;
+        return <li key={title}><a href="#" data-name={title} className="dropdown-item" onClick={this.clickHandler(onClick)}>{title}</a></li>;
       }, this);
 
       const boundedGroup1 = array.count() != index + 1
-      ? boundedGroup.push(<li key={"divider_" + index} className="divider"></li>)
+      ? boundedGroup.push(<li key={"divider_" + index} className="divider dropdown-item"></li>)
       : boundedGroup;
 
       return acc.concat(boundedGroup);
@@ -45,7 +45,7 @@ class ContextMenu extends Component<{}, {}, {}> {
 
 
     return (
-      <div style={menuStyle} className="open context-menu">
+      <div style={menuStyle} className="dropdown open context-menu">
         <ul className="dropdown-menu" role="menu">
           {optionsItems}
         </ul>
