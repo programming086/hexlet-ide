@@ -46,7 +46,7 @@
     "babel-plugin-react-transform": "^1.1.1",
     "babel-runtime": "^5.8.20",
     "chai": "*",
-    "codemirror": "^5.6.0",
+    "codemirror": "^5.9.0",
     "csswring": "*",
     "debug": "*",
     "ejs": "~2.3",

@@ -3,16 +3,16 @@ var _ = require("lodash");
 var cp = require("child_process");
 var when = require("when");
 
-module.exports = function(options) {
+module.exports = (options) => {
   var childs = {};
 
   return {
-    exec: function(command) {
-      var socket = this.clientSocket;
-      var arr = command.split(" ");
-      var deferred = when.defer();
+    exec(command) {
+      const socket = this.clientSocket;
+      const arr = command.split(" ");
+      const deferred = when.defer();
 
-      var currentChild = _.find(childs, { current: true });
+      const currentChild = _.find(childs, { current: true });
 
       if (currentChild) {
         currentChild.state = "killed_manually";
@@ -27,9 +27,9 @@ module.exports = function(options) {
       }
 
       console.log("Run command: ", arr.join(" "), { cwd: options.appDir });
-      var proc = cp.spawn(arr[0], _.tail(arr), { cwd: options.appDir, detached: true });
+      const proc = cp.spawn(arr[0], _.tail(arr), { cwd: options.appDir, detached: true });
 
-      var child = {
+      const child = {
         state: "started",
         process: proc,
         current: true
@@ -37,7 +37,7 @@ module.exports = function(options) {
 
       proc.on("exit", function(code, signal) {
         if (child.state !== "killed_manually") {
-          var data = {
+          const data = {
             code: code,
             signal: signal
           };

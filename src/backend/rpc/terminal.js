@@ -1,20 +1,20 @@
 /* global require process module console */
-var pty = require("pty.js");
-var _ = require("lodash");
+const pty = require("pty.js");
+const _ = require("lodash");
 
-var terminals = {};
+const terminals = {};
 
 function connectTerminal(socket, id) {
-  var terminal = terminals[id];
-  terminal.on("data", function(data) {
+  const terminal = terminals[id];
+  terminal.on("data", (data) => {
     //FIXME: хак, пока нет дуплексной связи между сервером и клиентом
     socket.emit("terminalUpdated", { id: id, data: data });
   });
 }
 
 function createTerminal(socket, options, params) {
-  var id = params.id;
-  var terminal = pty.fork(process.env.SHELL || "bash", [], {
+  const id = params.id;
+  const terminal = pty.fork(process.env.SHELL || "bash", [], {
     name: require("fs").existsSync("/usr/share/terminfo/x/xterm-256color")
     ? "xterm-256color"
     : "xterm",
@@ -30,7 +30,7 @@ function createTerminal(socket, options, params) {
 }
 
 function closeTerminal(id) {
-  var terminal = terminals[id];
+  const terminal = terminals[id];
   terminal.destroy();
   delete terminals[id];
 }
@@ -42,20 +42,20 @@ function cleanup() {
 module.exports = (options) => {
   return {
     create(params) {
-      var terminal = createTerminal(this.clientSocket, options, params);
+      const terminal = createTerminal(this.clientSocket, options, params);
       console.log("Created shell with pty master/slave pair (master: %d, pid: %d)", terminal.fd, terminal.pid);
     },
 
     update(msg) {
-      var terminal = terminals[msg.id];
+      const terminal = terminals[msg.id];
       if (terminal) {
         terminal.write(msg.data);
       }
     },
 
     destroy(msg) {
-      var id = msg.id;
-      var terminal = terminals[id];
+      const id = msg.id;
+      const terminal = terminals[id];
 
       if (terminal) {
         closeTerminal(id);
@@ -64,7 +64,7 @@ module.exports = (options) => {
     },
 
     reconnect(params) {
-      var id = params.id;
+      const id = params.id;
       if (terminals[id]) {
         connectTerminal(this.clientSocket, id);
       }
@@ -73,12 +73,12 @@ module.exports = (options) => {
     createDefault(params) {
       cleanup();
 
-      var terminal = createTerminal(this.clientSocket, options, params);
+      const terminal = createTerminal(this.clientSocket, options, params);
       console.log("Created default shell with pty master/slave pair (master: %d, pid: %d)", terminal.fd, terminal.pid);
     },
 
     resize(msg) {
-      var terminal = terminals[msg.id];
+      const terminal = terminals[msg.id];
 
       if (terminal) {
         terminal.resize(msg.cols, msg.rows);

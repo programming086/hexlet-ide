@@ -2,8 +2,8 @@ var path = require("path");
 var webpack = require("webpack");
 
 module.exports = {
-  debug: false,
-  devtool: "eval",
+  debug: true,
+  devtool: "inline-source-map",
 
   entry: [
     "webpack-hot-middleware/client",

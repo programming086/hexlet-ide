@@ -11,8 +11,8 @@ module.exports = {
     publicPath: "/assets/"
   },
 
+  debug: false,
   devtool: false,
-  target: "web",
 
   plugins: [
     new webpack.optimize.OccurrenceOrderPlugin(),
