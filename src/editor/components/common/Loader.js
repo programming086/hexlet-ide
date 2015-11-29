@@ -1,30 +1,29 @@
-var React = require("react/addons");
+import React, {Component} from "react/addons";
 
-var Loader = React.createClass({
-  getInitialState: function() {
-    return { frame: 0 };
-  },
+class Loader extends Component {
+  state = { frame: 0,
+            timer: undefined }
 
-  componentDidMount: function() {
+  componentDidMount() {
     this.tick();
-  },
+  }
 
-  tick: function() {
+  tick() {
     var frame = this.state.frame;
     var newFrame = frame > 7 ? 1 : frame + 1;
     this.setState({ frame: newFrame });
-    this.setState({ timer: setTimeout(this.tick, 300) });
-  },
+    this.setState({ timer: setTimeout(this.tick.bind(this), 300) });
+  }
 
-  render: function() {
-    return <div className="fuelux">
+  render() {
+    return (<div className="">
       <div className="loader" data-initialize="loader" data-frame={this.state.frame}></div>
-    </div>;
-  },
+    </div>);
+  }
 
-  componentWillUnmount: function() {
+  componentWillUnmount() {
     clearTimeout(this.state.timer);
   }
-});
+};
 
-module.exports = Loader;
+export default Loader;

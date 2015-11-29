@@ -1,9 +1,12 @@
 {
-    "verbose": false,
+    "verbose": true,
     "script": "bin/hexlet-ide.js",
     "ignore": [
         "bower_components/*",
         "node_modules/*",
         "test/*"
+    ],
+    "watch": [
+      "src/backend"
     ]
 }

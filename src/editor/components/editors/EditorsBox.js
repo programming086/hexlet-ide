@@ -1,124 +1,146 @@
-var _ = require("lodash");
-var React = require("react/addons");
-var key = require("keymaster");
+import _ from "lodash";
+import cx from "classnames";
 
-var WatchStoreMixin = require("editor/mixins/WatchStore");
+import React, {Component} from "react/addons";
+import {Container} from 'flux/utils';
 
-var Editor = require("./Editor");
+import Editor from "./Editor";
+import RunView from "editor/components/common/tab/RunView";
+import Toolbar from "editor/components/common/Toolbar";
+import ReconnectionStatusBar from "editor/components/ReconnectionStatusBar";
 
-var EditorsStore = require("editor/stores/EditorsStore");
-var EditorsActions = require("editor/actions/EditorsActions");
-var ModalActions = require("editor/actions/ModalActions");
+import EditorsStore from "editor/stores/EditorsStore";
+import IdeStore from "editor/stores/IdeStore";
+import {
+  edit,
+  makeCurrent,
+  closeEditor,
+  showRunView
+} from "editor/actions/EditorsActions";
 
-var EditorsBox = React.createClass({
-  mixins: [ WatchStoreMixin(EditorsStore) ],
+class EditorsBox extends Component<{}, {}, {}> {
 
-  getFluxState: function() {
+  static getStores(): Array<Store> {
+    return [EditorsStore, IdeStore];
+  }
+
+  static calculateState(prevState) {
     return {
       editors: EditorsStore.getAll(),
-      current: EditorsStore.getCurrent()
-    }
-  },
+      current: EditorsStore.getCurrent(),
+      isRunViewActive: EditorsStore.isRunViewActive(),
+      ideIsConnected: IdeStore.isConnected()
+    };
+  }
 
-  handleChangeEditorValue: function(current, content) {
-    EditorsActions.edit(current, content);
-  },
+  handleChangeEditorValue(current, content) {
+    edit(current, content);
+  }
 
-  handleSaveFile: function(e) {
-    EditorsActions.save(this.state.current);
-  },
-
-  selectEditor: function(editor, e) {
+  selectEditor(editor, e) {
     e.stopPropagation();
     e.preventDefault();
-    EditorsActions.makeCurrent(editor);
-  },
+    makeCurrent(editor);
+  }
 
-  handleCloseTab: function(editor, e) {
+  handleCloseTab(editor, e) {
     e.stopPropagation();
     e.preventDefault();
-    if (editor.dirty) {
-      ModalActions.showModal({
-        title: "Close unsaved tab",
-        onApply: function() {
-          EditorsActions.closeEditor(editor);
-        },
-        content: function() {
-          return <p>are you sure? (unsaved data will be lost)</p>;
-        }
-      });
-    } else {
-      EditorsActions.closeEditor(editor);
-    }
-  },
+    closeEditor(editor);
+  }
 
-  render: function() {
-    var cx = React.addons.classSet;
+  showRunView(e) {
+    e.stopPropagation();
+    e.preventDefault();
+    showRunView();
+  }
 
-    var editors = this.state.editors;
-    var current = this.state.current;
+  render() {
+    const editors = this.state.editors;
+    const current = this.state.current;
 
-    var items = editors.map(function(editor) {
-      var classes = cx({
-        "active": editor.current,
+    const runResultClasses = cx({
+      "nav-item": true,
+      "active": this.state.isRunViewActive,
+    });
+
+    const items = editors.map((editor) => {
+      const classes = cx({
+        "nav-item": true,
+        "active": editor.get('current')
       });
 
-      return (<li key={"editor_" + editor.id} className={classes} role="presentation">
-        <a href="#" onClick={this.selectEditor.bind(this, editor)}>
-          <span>
-            {editor.name} {editor.dirty ? "*" : ""}
-          </span>
+      return (<li key={"editor_" + editor.get('id')} className={classes} role="presentation">
+        <a href="#" onClick={this.selectEditor.bind(this, editor)} className={classes}>
+          <span>{editor.get("name")}</span>
+          &nbsp;
+          <span className={editor.get('dirty') ? "" : "invisible"}>*</span>
           <button type="button" className="close" onClick={this.handleCloseTab.bind(this, editor)}>
             <span aria-hidden="true">&times;</span>
-            <span className="sr-only">
-              Close
-            </span>
+            <span className="sr-only"> Close </span>
           </button>
         </a>
       </li>);
     }, this);
 
+
+    var runViewPaneClasses = cx({
+      "tab-pane": true,
+      "fade active in": this.state.isRunViewActive,
+      "run-view": true
+    });
+
     return (
       <div className="editors-box">
-          <ul className="nav nav-tabs" role="tablist">
-            {items}
-          </ul>
-          <div className="tab-content max-height file-content">
-            {editors.map(function(editor) {
-              var mode = this.getEditorMode(editor.name);
-              var classes = cx({
-                "tab-pane": true,
-                "fade active in": editor.current,
-                "max-height": true
-              });
+        <ul className="nav nav-tabs" role="tablist">
+          <li key={"run-result"} className={runResultClasses} role="presentation">
+            <a href="#" onClick={this.showRunView} className={runResultClasses}>
+              <span>OUTPUT</span>
+            </a>
+          </li>
+          {items}
+          <li className="pull-right">
+            <Toolbar isConnected={this.state.ideIsConnected} />
+          </li>
+        </ul>
+        <ReconnectionStatusBar />
+        <div className="tab-content file-content">
+          <RunView className={runViewPaneClasses} />
+          {editors.map((editor) => {
+            const mode = this.getEditorMode(editor.get('name'));
+            const classes = cx({
+              "tab-pane": true,
+              "fade active in": editor.get('current'),
+              "editor": true
+            });
 
-              return (
-                <div className={classes} key={editor.id}>
-                  <Editor mode={mode}
-                    focus={editor.current}
-                    onChangeValue={this.handleChangeEditorValue.bind(this, editor)}
-                    initContent={editor.content} />
-                </div>
-                );
-            }, this)}
-          </div>
+            return (
+              <Editor mode={mode}
+                className={classes}
+                key={editor.get('id')}
+                focus={editor.get('current')}
+                onChangeValue={this.handleChangeEditorValue.bind(this, editor)}
+                initContent={editor.get('content')} />
+              );
+          }, this)}
         </div>
-    );
-  },
+      </div>
+      );
+  }
 
-  getEditorMode: function(fileName) {
-    var modes = {
+  getEditorMode(fileName) {
+    const modes = {
       "js": "javascript",
       "go": "go",
       "rs": "rust",
       "json": {name: "javascript", mode: "json"},
-      "java": "java",
-      "class": "clike",
-      "jar": "clike",
-      "go": "go",
+      "java": {name: "text/x-java", indentUnit: 4, indentWithTabs: true },
+      "class": "text/x-java",
+      "jar": "text/x-java",
       "clj": "clojure",
       "erl": "erlang",
-      "html": "htmlmixed",
+      "make": {name: "text/x-cmake", indentUnit: 4, indentWithTabs: true },
+      "html": {name: "jsx", indentUnit: 2, indentWithTabs: false },
       "xml": "xml",
       "css": "css",
       "rkt": "scheme",
@@ -128,35 +150,35 @@ var EditorsBox = React.createClass({
       "jade": "jade",
       "py": "python",
       "rb": "ruby",
-      "c": "clike",
-      "c++": "clike",
-      "java": "clike",
+      "c": "text/x-csrc",
+      "c++": "text/x-c++src",
       "txt": "text",
       "yml": "yaml",
       "yaml": "yaml",
+      "hs": "haskell",
+      "lhs": "haskell",
+      "pl": "perl",
+      "php": {name: "php", indentUnit: 4, indentWithTabs: false },
+      "scala": "text/x-scala",
+      "sql": "text/x-sql",
       "": "text"
     };
 
-    var fNameStruct = fileName.split(".");
-    var extension = fNameStruct.length > 1 ? _.last(fNameStruct) : "";
-    var mode = modes[extension];
+    if (fileName === "Makefile") {
+      return modes["make"];
+    }
+
+    const fNameStruct = fileName.split(".");
+    const extension = fNameStruct.length > 1 ? _.last(fNameStruct) : "";
+
+    const mode = modes[extension];
     if (!mode) {
       console.warn("Mode for file: ",  fileName, " is not defined");
       return "javascript";
     }
 
     return mode;
-  },
-
-  componentWillUpdate: function(nextProps, nextState) {
-    var $this = this;
-
-    if (nextState.current === undefined) {
-      key.unbind("ctrl+s");
-    } else {
-      key("ctrl+s", function(){ $this.handleSaveFile(); return false });
-    }
   }
-});
+};
 
-module.exports = EditorsBox;
+export default Container.create(EditorsBox);

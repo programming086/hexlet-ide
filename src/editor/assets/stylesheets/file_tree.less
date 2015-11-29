@@ -1,0 +1,64 @@
+.file-tree-box {
+    user-select: none;
+    background: #222830;
+    width: 20%;
+    display: inline-block;
+
+    h3 {
+        margin: 2px;
+        color: #dadfe6;
+        font-size: 18px;
+        margin-left: 10px;
+        padding-top: 10px;
+    }
+
+    ul {
+        list-style: none;
+        padding-left: 10px;
+    }
+
+    .tree {
+        height: 100%;
+        overflow-y: scroll;
+        color: #dadfe6;
+
+        -webkit-touch-callout: none;
+
+        .fa {
+            margin-right: 0.6em;
+        }
+
+
+        .tree-branch-header, .tree-item {
+            padding: 2px 0 2px 10px;
+            cursor: pointer;
+            border-radius: 0;
+            &:hover {
+                background: #dadfe6;
+                .tree-branch-name, .tree-item-name {
+                    text-decoration: none;
+                    .fa {
+                        color: #000000;
+                    }
+                    .tree-label {
+                        color: #000000;
+                    }
+                }
+            }
+
+            .tree-branch-name, .tree-item-name {
+                color: #dadfe6;
+            }
+        }
+
+        .tree-branch, .tree-item {
+            margin-left: 0;
+        }
+    }
+}
+
+.file-tree-box > .row {
+    display: table;
+}
+.file-tree-box > .row > div {
+}

@@ -1,19 +1,22 @@
-/* global module require window */
+import _ from "lodash";
 
-var _ = require("lodash");
-
-var defaultConfig = {
+const defaultConfig = {
   terminal: {
     cols: 110,
-    rows: 18
+    rows: 8
   },
-  autosaveInterval: 1000,
+  autosaveInterval: 3000,
   rpc: {
     url: "",
     options: {
-      reconnectionDelay: 10000,
-      reconnectionDelayMax: 10000
+      path: "socket.io",
+      reconnectionDelay: 2000,
+      reconnectionDelayMax: 3000,
+      reconnection: true,
+      autoConnect: true,
+      transports: ["websocket"]
     },
+    /* eslint-disable */
     events: {
       connect: _.noop,
       error: _.noop,
@@ -23,12 +26,13 @@ var defaultConfig = {
       reconnect_error: _.noop,
       reconnect_failed: _.noop
     }
+    /* eslint-enable */
   },
 };
 
 
-module.exports = {
-  extend: function(config) {
+export default {
+  extend(config) {
      _.extend(this, _.merge(defaultConfig, config));
   }
 };

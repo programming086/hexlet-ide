@@ -1,0 +1,67 @@
+//= require bootstrap/dist/css/bootstrap.min
+//= require codemirror/lib/codemirror
+//= require codemirror/theme/solarized
+//= require codemirror/addon/dialog/dialog
+//= require xterm.js/src/xterm
+//= require escaper.js/src/escaper
+//= require font-awesome/less/font-awesome
+
+@import "variables.less";
+@import "terminals.less";
+@import "toolbar.less";
+@import "file_tree.less";
+@import "editors.less";
+@import "modal.less";
+@import "right_container.less";
+
+* {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+:root {
+  font-size: @base-font-size;
+}
+
+.max-height {
+    height: 100%;
+}
+
+.hexlet-ide {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 3000;
+    background: #222830;
+}
+
+.width-90-pcnt {
+    width: 90%;
+}
+
+.width-900 {
+    width: 900px;
+}
+
+.width-700 {
+    width: 700px;
+}
+
+.width-500 {
+    width: 500px;
+}
+
+.loader {
+    margin: auto;
+}
+
+.nav-tabs a:hover {
+  text-decoration: none;
+}
+
+.invisible {
+    visibility: hidden;
+}

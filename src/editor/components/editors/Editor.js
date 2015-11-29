@@ -1,44 +1,50 @@
-var React = require("react/addons");
-var CodeMirror = require("codemirror");
+import _ from "lodash";
+import React, { Component } from "react/addons";
 
-var Editor = React.createClass({
-  render: function() {
-    return (
-      <div className="row max-height">
-        <div className="col-md-12 max-height">
-          <div className="max-height" ref="editor"></div>
-        </div>
-      </div>
-    );
-  },
+import KeyboardActions from "editor/actions/KeyboardActions";
 
-  componentDidMount: function() {
-    var $this = this;
-    var element = this.refs.editor;
-    var myCodeMirror = CodeMirror(element.getDOMNode(), {
+class Editor extends Component<{}, {}, {}> {
+  componentDidMount() {
+    const { initContent, mode, onChangeValue } = this.props;
+    const editorEl = this.refs.editor;
+
+    const editor = CodeMirror(editorEl, {
       lineNumbers: true,
-      tabSize: 2,
       extraKeys: {
-        Tab: function(cm) {
-          var spaces = Array(cm.getOption("indentUnit") + 1).join(" ");
-          cm.replaceSelection(spaces);
-        },
+        "Ctrl-[": KeyboardActions.ctrl_open_square_br,
+        "Ctrl-]": KeyboardActions.ctrl_close_square_br,
         "Shift-Tab": "autocomplete"
       },
-      value: this.props.initContent,
-      mode: this.props.mode,
+      value: initContent,
+      mode: mode,
+      indentUnit: mode.indentUnit || 2,
       theme: "solarized dark",
-      indentWithTabs: false
+      indentWithTabs: mode.indentWithTabs || false,
+      viewportMargin: Infinity
     });
 
-    console.log(CodeMirror.mimeModes);
+    editor.on("change", _.throttle((CodeMirror, object) => {
+      onChangeValue(editor.getValue());
+      editor.scrollIntoView();
+    }, 2000));
 
-    myCodeMirror.on("change", function(CodeMirror, object) {
-      $this.props.onChangeValue(myCodeMirror.getValue());
-    });
-
-    this.setState({myCodeMirror: myCodeMirror});
+    this.setState({ editor: editor });
   }
-});
 
-module.exports = Editor;
+  componentDidUpdate(oldProps) {
+    if (this.props.focus) {
+      this.state.editor.refresh();
+
+      if (!oldProps.focus) {
+        this.state.editor.focus();
+      }
+    }
+
+  }
+
+  render() {
+    return ( <div className={this.props.className} ref="editor"></div>);
+  }
+}
+
+export default Editor;

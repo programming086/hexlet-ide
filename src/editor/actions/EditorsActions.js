@@ -1,59 +1,31 @@
-/* global require module */
+import {dispatch} from "editor/dispatcher/AppDispatcher";
+import {ActionTypes} from  "editor/constants/IdeConstants";
 
-var AppDispatcher = require("editor/dispatcher/AppDispatcher");
-var IdeConstants = require("editor/constants/IdeConstants");
-var ActionTypes = IdeConstants.ActionTypes;
-var TreeStore = require("editor/stores/TreeStore");
-var rpc = require("editor/rpc");
+import TreeStore from "editor/stores/TreeStore";
+import rpc from "editor/lib/RpcClient";
 
-module.exports = {
-  // flushTabContent: function(id, content) {
-  //     "use strict";
-  //     AppDispatcher.dispatch({
-  //         actionType: ActionTypes.TABS_FLUSH_CONTENT,
-  //         id: id,
-  //         content: content
-  //     });
-  // },
+export function closeEditor(editor) {
+  dispatch(ActionTypes.EDITORS_CLOSE, { id: editor.get('id')});
+}
 
-  closeEditor: function(editor) {
-    "use strict";
-    AppDispatcher.dispatch({
-      actionType: ActionTypes.EDITORS_CLOSE,
-      id: editor.id
-    });
-  },
+export function makeCurrent(editor) {
+  dispatch(ActionTypes.EDITORS_MAKE_CURRENT, { id: editor.get('id')});
+}
 
-  makeCurrent: function(editor) {
-    "use strict";
-    AppDispatcher.dispatch({
-      actionType: ActionTypes.EDITORS_MAKE_CURRENT,
-      id: editor.id
-    });
-  },
+export function save(editor) {
+  const id = editor.get("id");
+  const path = TreeStore.getPathById(id);
+  dispatch(ActionTypes.EDITORS_SAVING_CURRENT, { id: id });
 
-  save: function(editor) {
-    "use strict";
-    var path = TreeStore.getPathById(editor.id);
-    AppDispatcher.dispatch({
-      actionType: ActionTypes.EDITORS_SAVING_CURRENT,
-      id: editor.id
-    });
+  return rpc.getClient().fs.write(path, editor.get("content")).then(_ => {
+    dispatch(ActionTypes.EDITORS_SAVE_CURRENT, { id: id });
+  });
+}
 
-    rpc.fs.write(path, editor.content).then(function() {
-      AppDispatcher.dispatch({
-        actionType: ActionTypes.EDITORS_SAVE_CURRENT,
-        id: editor.id
-      });
-    });
-  },
+export function edit(editor, content) {
+  dispatch(ActionTypes.EDITORS_EDIT_CURRENT, { id: editor.get('id'), content: content });
+}
 
-  edit: function(editor, content) {
-    "use strict";
-    AppDispatcher.dispatch({
-      actionType: ActionTypes.EDITORS_EDIT_CURRENT,
-      id: editor.id,
-      content: content
-    });
-  }
+export function showRunView() {
+  dispatch(ActionTypes.EDITORS_SHOW_RUN_VIEW);
 };

@@ -1,33 +1,20 @@
-var _ = require("lodash");
-var React = require("react/addons");
+import React from "react/addons";
 
-var TreeActions = require("editor/actions/TreeActions");
+export default (props) => {
+    const leaf = props.leaf;
+    const handleContextMenu = props.handleContextMenu;
+    const handleOpenFile = props.handleOpenFile;
 
-var Leaf = React.createClass({
-  handleOpenFile: function(leaf, e) {
-    TreeActions.openFile(leaf);
-  },
-
-  handleContextMenu: function(leaf, e) {
-    this.props.handleContextMenu(e, leaf);
-  },
-
-  render: function() {
-    var leaf = this.props.leaf;
     if (!leaf) return null;
 
     return (
-      <li className="tree-item" data-template="treeitem" role="treeitem">
-        <button className="tree-item-name"
-          onContextMenu={this.handleContextMenu.bind(this, leaf)}
-          onClick={this.handleOpenFile.bind(this, leaf)}>
-
-          <span className="glyphicon icon-file glyphicon-file"></span>
+      <li className="tree-item"
+          onContextMenu={e => handleContextMenu(e, leaf)}
+          onClick={e => handleOpenFile(e, leaf)}>
+        <a href="#" className="tree-item-name">
+          <span className="fa icon-file fa-file"></span>
           <span className="tree-label">{leaf.name}</span>
-        </button>
+        </a>
       </li>
     );
-  }
-});
-
-module.exports = Leaf;
+};

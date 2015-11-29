@@ -1,117 +1,205 @@
 /* global require module */
-var _ = require("lodash");
-var moment = require("moment");
+import _ from "lodash";
 
-var AppDispatcher = require("editor/dispatcher/AppDispatcher");
-var BaseStore = require("./BaseStore");
-var ActionTypes = require("editor/constants/IdeConstants").ActionTypes;
+import dispatcher from "editor/dispatcher/AppDispatcher";
+import {ActionTypes} from "editor/constants/IdeConstants";
 
-var editors = [];
+import {ReduceStore} from 'flux/utils';
 
-var EditorsStore = BaseStore.extend({
-  getAll: function() {
-    return editors;
-  },
+import Immutable from 'immutable';
 
-  getAllUnsaved: function() {
-    "use strict";
-    return _.filter(editors, function(editor) {
-      return editor.lastSavingAt < editor.lastModifiedAt;
+import BaseStore from "./BaseStore";
+
+class EditorsStore extends ReduceStore {
+  getInitialState() {
+    return Immutable.fromJS({
+      editors: []
     });
-  },
+  }
 
-  getAllUnsaved: function() {
-    "use strict";
-    return _.filter(editors, function(editor) {
-      return editor.lastSavingAt < editor.lastModifiedAt;
+  areEqual() {
+    return false;
+  }
+
+  getAll() {
+    return this.getState().get('editors');
+  }
+
+  getAllUnsaved() {
+    return this.getAll().filter((editor) => {
+      return editor.get("lastSavingAt") < editor.get("lastModifiedAt");
     });
-  },
-
-  getCurrent: function() {
-    return _.find(editors, { current: true });
-  }
-});
-
-AppDispatcher.registerHandler(ActionTypes.TREE_OPEN_FILE, function(payload) {
-  editors.map(function(t) { t.current = false; });
-
-  var item = payload.item;
-  var content = payload.content;
-
-  var editor = _.find(editors, {id: item.id});
-  if (!editor) {
-    editors.push({id: item.id, dirty: false, name: item.name, current: true, content: content, lastEditedAt: +moment(), lastSavingAt: +moment()});
-  } else {
-    editor.current = true;
   }
 
-  EditorsStore.emitChange();
-});
-
-AppDispatcher.registerHandler(ActionTypes.EDITORS_EDIT_CURRENT, function(payload) {
-  var editor = _.find(editors, {id: payload.id});
-  editor.content = payload.content;
-  editor.dirty = true;
-  editor.lastModifiedAt = +moment();
-
-  EditorsStore.emitChange();
-});
-
-AppDispatcher.registerHandler(ActionTypes.EDITORS_SAVING_CURRENT, function(payload) {
-  var editor = _.find(editors, {id: payload.id});
-  editor.lastSavingAt = +moment();
-
-  EditorsStore.emitChange();
-});
-
-AppDispatcher.registerHandler(ActionTypes.EDITORS_SAVE_CURRENT, function(payload) {
-  var editor = _.find(editors, {id: payload.id});
-  editor.dirty = false;
-
-  EditorsStore.emitChange();
-});
-
-AppDispatcher.registerHandler(ActionTypes.EDITORS_MAKE_CURRENT, function(payload) {
-  editors.map(function(t) { t.current = false; });
-
-  var editor = _.find(editors, {id: payload.id});
-  editor.current = true;
-
-  EditorsStore.emitChange();
-});
-
-AppDispatcher.registerHandler(ActionTypes.EDITORS_CLOSE, function(payload) {
-  editors = _.filter(editors, function(t) { return t.id !== payload.id; });
-
-  if (editors.length > 0) {
-    var editor = _.last(editors);
-    editor.current = true;
+  getCurrent() {
+    return this.getAll().find(v => v.get('current'));
   }
 
-  EditorsStore.emitChange();
-});
-
-AppDispatcher.registerHandler(ActionTypes.TREE_REMOVE, function(payload) {
-  var currentEditor = EditorsStore.getCurrent();
-
-  var removedFiles = payload.removedFiles;
-  editors = _.filter(editors, function(t) { return !_.contains(removedFiles, t.id); });
-
-  var needSelectNewEditor = !_.contains(editors, currentEditor) && editors.length > 0;
-
-  if (needSelectNewEditor) {
-    var editor = _.last(editors);
-    editor.current = true;
+  isRunViewActive() {
+    return !this.getAll().find(v => v.get('current'));
   }
 
-  EditorsStore.emitChange();
-});
+  reduce(state, action) {
+    return this.handleAction(state, action);
+  }
 
-// AppDispatcher.registerHandler(ActionTypes.TABS_FLUSH_CONTENT, function(payload) {
-//   tab = tabs[payload.id];
-//   if (tab !== undefined) {
-//     tabs[payload.id].content = payload.content;
-//   }
-// });
+  handleAction(state, action) {
+    const handler = EditorsStore.handlers[action.actionType];
+    if (handler) {
+      return handler.call(this, state, action);
+    }
+    return state;
+  }
 
-module.exports = EditorsStore;
+  static handlers = {
+    [ActionTypes.TREE_OPEN_FILE]: function(state, action) {
+      const item = action.item;
+      const content = action.content;
+      const editor = this.getAll().find((v) => { return v.get('id') == item.id});
+
+      if (!editor) {
+        return state.update('editors', (v) => {
+          return v.map((s) => {
+            return s.set('current', false);
+          })
+          .push(Immutable.fromJS({
+            id: item.id,
+            dirty: false,
+            name: item.name,
+            current: true,
+            content: content,
+            lastEditedAt: new Date(),
+            lastSavingAt: new Date()
+          }))})
+      } else {
+        const idx = this.getAll().indexOf(editor);
+
+        return state.update('editors', (v) => {
+          return v.map((s) => {
+            return s.set('current', false);
+          })}).setIn(['editors', idx, "current"], true)
+      };
+    },
+
+    [ActionTypes.EDITORS_EDIT_CURRENT]: function(state, action) {
+      const idx = this.getAll().findIndex((v) => { return v.get('id') === action.id});
+
+      return state.setIn(['editors', idx, "content"], action.content)
+      .setIn(['editors', idx, "dirty"], true)
+      .setIn(['editors', idx, "lastModifiedAt"], new Date());
+    },
+
+    [ActionTypes.EDITORS_SAVING_CURRENT]: function(state, action) {
+      const idx = this.getAll().findIndex((v) => { return v.get('id') === action.id});
+
+      return state.setIn(['editors', idx, "lastSavingAt"], new Date());
+    },
+
+    [ActionTypes.EDITORS_SAVE_CURRENT]: function(state, action) {
+      const idx = this.getAll().findIndex((v) => { return v.get('id') === action.id});
+
+      return state.setIn(['editors', idx, "dirty"], false);
+    },
+
+    [ActionTypes.EDITORS_MAKE_CURRENT]: function(state, action) {
+      const idx = this.getAll().findIndex((v) => { return v.get('id') === action.id});
+
+      return state.update('editors', (v) => {
+        return v.map((s) => {
+          return s.set('current', false);
+        })
+      }).setIn(['editors', idx, "current"], true);
+    },
+
+    [ActionTypes.KEY_CTRL_OPEN_SQUARE_BR]: function(state, action) {
+      const editors = this.getAll();
+      if (editors.size === 0) return;
+
+      const idx = editors.indexOf(this.getCurrent());
+      var newIdx = idx;
+      if (idx == 0) {
+        newIdx = editors.size - 1;
+      } else {
+        newIdx = idx - 1;
+      }
+
+      return state.update('editors', (v) => {
+        return v.map((s) => {
+          return s.set('current', false);
+        })
+      }).setIn(['editors', newIdx, "current"], true);
+    },
+
+    [ActionTypes.KEY_CTRL_CLOSE_SQUARE_BR]: function(state, action) {
+      const editors = this.getAll();
+      if (editors.size === 0) return;
+
+      const idx = editors.indexOf(this.getCurrent());
+      var newIdx = idx;
+      if (idx == editors.size - 1) {
+        newIdx = 0;
+      } else {
+        newIdx = idx + 1;
+      }
+
+      return state.update('editors', (v) => {
+        return v.map((s) => {
+          return s.set('current', false);
+        })
+      }).setIn(['editors', newIdx, "current"], true);
+    },
+
+    [ActionTypes.EDITORS_CLOSE]: function(state, action) {
+      const editors = this.getAll();
+      const removedEditor = editors.find((v) => { return v.get('id') == action.id});
+      const otherEditors = editors.filter((t) => { return t.get('id') !== action.id; });
+
+      if (removedEditor.get('current') && otherEditors.size > 0) {
+        const idx = otherEditors.findLastIndex(() => {return true})
+        return state.update('editors', (v) => {
+          return v.filter((t) => { return t.get('id') !== action.id })})
+          .setIn(['editors', idx, "current"], true);
+      } else {
+        return state.update('editors', (v) => {
+          return v.filter((t) => { return t.get('id') !== action.id })})
+      }
+    },
+
+    [ActionTypes.EDITORS_SHOW_RUN_VIEW]: function(state, action) {
+      const editors = this.getAll();
+      return state.update('editors', (v) => {
+        return v.map((s) => {
+          return s.set('current', false);
+        })})
+    },
+
+    [ActionTypes.IDE_RUN]: function(state, action) {
+      const editors = this.getAll();
+      return state.update('editors', (v) => {
+        return v.map((s) => {
+          return s.set('current', false);
+        })})
+    },
+
+    [ActionTypes.TREE_REMOVE]: function(state, action) {
+      const currentEditor = this.getCurrent();
+      const editors = this.getAll();
+      const removedFiles = action.removedFiles;
+
+      const removedEditors = editors.filter((t) => { return !_.contains(removedFiles, t.get('id')); });
+      const needSelectNewEditor = removedEditors.contains(currentEditor) && removedEditors.size > 0;
+      var idx = -1;
+
+      if (needSelectNewEditor) {
+        const editor = removedEditors.last();
+        idx = editors.indexOf(editor);
+      }
+
+      return state.update('editors', (v) => {
+        return v.filter((t) => { return t.get('id') !== action.id })})
+        .setIn(['editors', idx, "current"], true);
+    }
+  }
+}
+
+export default new EditorsStore(dispatcher);

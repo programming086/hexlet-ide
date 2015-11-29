@@ -1,13 +1,18 @@
 html
   head
     title!= title
-    script(src="https://cdnjs.cloudflare.com/ajax/libs/es5-shim/4.0.3/es5-shim.js")
-    script(type='text/javascript' src="assets/main.js")
+    link(rel="stylesheet" href=assetPath("application.css"))
+    script(src=assetPath("application.js"))
+    script(src="public/js/main.js")
+
   body
-    .container
-      #hexlet-ide.hexlet-ide
+    #hexlet-ide.hexlet-ide
 
     script.
+        var path = window.location.pathname;
+        if (path[path.length - 1] == "/") {
+            path = path.slice(0, path.length - 1);
+        }
         var widget = HexletIde.create(document.getElementById("hexlet-ide"), {
           rpc: {
               url: window.location.host,
@@ -15,22 +20,12 @@ html
                 reconnect: console.log.bind(console, "reconnect"),
                 reconnect_error: console.log.bind(console, "reconnect_error"),
                 reconnect_failed: console.log.bind(console, "reconnect_failed"),
+              },
+              options: {
+                path: path + "/socket.io"
               }
           },
           cmd: "make test"
         });
 
-        window.addEventListener("message", function(event) {
-          var data = event.data;
-          var cmd = data.cmd;
-
-          if (cmd == "ideMakeTest") {
-            widget.exec("make test").done(function(response) {
-              var result = {
-                cmd: cmd,
-                response: response
-              };
-              event.source.postMessage(result, event.origin);
-            });
-          }
-        });
+        window.addEventListener("message", widget.handleWindowMessage.bind(widget));

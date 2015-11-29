@@ -1,56 +1,53 @@
-var React = require("react/addons");
-var TerminalsActions = require('editor/actions/TerminalsActions');
+import React, { Component } from "react/addons";
 
-var Terminal = React.createClass({
-  render: function() {
-    return (
-      <div className="row max-height">
-        <div className="col-xs-12 max-height">
-          <iframe className="terminal-frame" name="terminalFrame"/>
-          <div className="max-height" ref="terminal"></div>
-        </div>
-      </div>
-    );
-  },
+import {
+  startUpdateTerminal,
+  resize
+} from "editor/actions/TerminalsActions";
 
-  terminalResize: function () {
-    var terminal = this.props.terminal;
+export default class extends Component {
+  render() {
+    return <div className="terminal" ref="terminal"></div>;
+  }
+
+  terminalResize() {
+    const {terminal} = this.props;
     terminal.terminal.fit();
-  },
+  }
 
-  shouldComponentUpdate: function() {
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.terminal.current) {
+      this.terminalResize();
+    }
+  }
+
+  shouldComponentUpdate() {
     return false;
-  },
+  }
 
-  componentDidMount: function() {
-    var terminal = this.props.terminal;
+  componentDidMount() {
+    const {terminal} = this.props;
 
-    terminal.terminal.on("data", function(data) {
-      TerminalsActions.startUpdateTerminal({
+    terminal.terminal.removeAllListeners("data");
+    terminal.terminal.removeAllListeners("resize");
+    terminal.terminal.removeAllListeners("open");
+
+    terminal.terminal.on("data", (data) => {
+      startUpdateTerminal({
         id: terminal.id,
         data: data
       });
     });
 
-    terminal.terminal.on("open", function() {
-      this.terminalResize();
-    }.bind(this));
-
-    terminal.terminal.on("resize", function(data) {
-      TerminalsActions.resize({
+    terminal.terminal.on("resize", (data) => {
+      resize({
         id: terminal.id,
         cols: data.cols,
         rows: data.rows
       });
     });
 
-    terminal.terminal.open(this.refs.terminal.getDOMNode());
-
-    terminalFrame.onresize = function(){
-      this.terminalResize();
-    }.bind(this);
+    const node = this.refs.terminal;
+    terminal.terminal.open(node);
   }
-});
-
-
-module.exports = Terminal;
+}

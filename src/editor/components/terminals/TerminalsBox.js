@@ -1,93 +1,147 @@
-var _ = require("lodash");
-var React = require("react/addons");
+import _ from "lodash";
+import React, {Component} from "react/addons";
+import {Container} from 'flux/utils';
 
-var Config = require("editor/config");
+import Config from "editor/config";
 
-var TerminalsActions = require("editor/actions/TerminalsActions");
-var TerminalsStore = require("editor/stores/TerminalsStore");
+import {
+  createDefaultTerminal,
+  selectTerminal,
+  createTerminal,
+  closeTerminal,
+  showRunView
+} from "editor/actions/TerminalsActions";
 
-var Terminal = require("./Terminal");
+import TerminalsStore from "editor/stores/TerminalsStore";
+import IdeStore from "editor/stores/IdeStore";
 
-var WatchStoreMixin = require("editor/mixins/WatchStore");
+import Terminal from "./Terminal";
+import RunView from "editor/components/common/tab/RunView";
+import Toolbar from "editor/components/common/Toolbar";
 
-var TerminalsBox = React.createClass({
-  mixins: [WatchStoreMixin(TerminalsStore)],
+import cx from "classnames";
 
-  getFluxState: function() {
+class TerminalsBox extends Component<{}, {}, {}> {
+
+  static getStores(): Array<Store> {
+    return [TerminalsStore, IdeStore];
+  }
+
+  static calculateState(prevState) {
     return {
-      terminals: TerminalsStore.getAll()
-    };
-  },
+      terminals: TerminalsStore.getTerminals(),
+      isRunViewActive: TerminalsStore.isRunViewActive(),
+      isIdeConnected: IdeStore.isConnected()
+    }
+  };
 
-  renderTabHeaders: function() {
-    return _.map(this.state.terminals, function(terminal, id) {
-      var tabClasses = React.addons.classSet({
-        "active": terminal.current
+  componentDidMount() {
+    setTimeout(() => createDefaultTerminal(Config.terminal), 0);
+  }
+
+  renderTabHeaders() {
+    return _.map(this.state.terminals, (terminal, id) => {
+      const tabClasses = cx({
+        "active": terminal.current,
+        "nav-item": true
       });
 
-      return <li key={"tab_" + id} className={tabClasses}>
-        <a href="#" onClick={this.selectTerminal.bind(this, terminal)}>
-          <span>{"Terminal " + id}</span>
-          <button type="button" className="close" onClick={this.closeTerminal.bind(this, terminal)}>
-            <span aria-hidden="true">&times;</span>
-            <span className="sr-only">
-              Close
-            </span>
-          </button>
-        </a>
-      </li>;
-    }, this);
-  },
+      return (<li key={"tab_" + id} className={tabClasses}>
+      <a href="#" onClick={this.selectTerminal.bind(this, terminal)} className={tabClasses}>
+      <span>{"Terminal " + id}</span>
+      <button type="button" className="close" onClick={this.closeTerminal.bind(this, terminal)}>
+        <span aria-hidden="true">&times;</span>
+        <span className="sr-only"> Close </span>
+      </button>
+      </a>
+      </li>);
+    });
+  }
 
-  renderTerminals: function() {
-    return _.map(this.state.terminals, function(terminal) {
-      var classes = React.addons.classSet({
+  renderTerminals() {
+    return _.map(this.state.terminals, (terminal) => {
+      const classes = cx({
         "tab-pane": true,
         "fade active in": terminal.current,
-        "max-height": true
+        "terminal-box": true
       });
 
       return (
         <div className={classes} key={terminal.id}>
-          <Terminal terminal={terminal} />
+        <Terminal terminal={terminal} />
         </div>
       );
     });
-  },
+  }
 
-  render: function() {
+  render() {
+    const isIdeConnected = this.state.isIdeConnected;
+    const showRunView = this.props.showRunView;
+
+    const runResultClasses = cx({
+      // "active": this.state.isRunViewActive,
+      "run-view-tab": true,
+      "nav-item": true
+    });
+
+    const runViewPaneClasses = cx({
+      "tab-pane": true,
+      "fade active in": this.state.isRunViewActive,
+      "run-view": true
+    });
     return (
       <div className="terminals-box">
-        <ul className="nav nav-tabs" role="tablist">
-          {this.renderTabHeaders()}
-          <li key="tab_create">
-            <a onClick={this.createTerminal}>Create terminal</a>
+      <ul className="nav nav-tabs" role="tablist">
+      { showRunView ?
+        <li key={"run-result"} className={runResultClasses} role="presentation">
+        <a href="#" onClick={this.showRunView} className={runResultClasses}>
+        <span>Output</span>
+        </a>
+        </li>
+        : "" }
+        {this.renderTabHeaders()}
+        <li key="tab_create" className="nav-item">
+        <a href="#" className="nav-item" onClick={this.createTerminal}>Create terminal</a>
+        </li>
+        { showRunView ?
+          <li className="pull-right nav-item">
+          <Toolbar isConnected={isIdeConnected} />
           </li>
-        </ul>
-        <div className="tab-content max-height">
-          {this.renderTerminals()}
-        </div>
-      </div>
+          : "" }
+          </ul>
+          <div className="tab-content max-height">
+          { showRunView ?
+            <RunView className={runViewPaneClasses} />
+            : "" }
+            {this.renderTerminals()}
+            </div>
+            </div>
     );
-  },
+  }
 
-  selectTerminal: function(terminal, e) {
+  selectTerminal(terminal, e) {
     e.preventDefault();
     e.stopPropagation();
-    TerminalsActions.selectTerminal(terminal);
-  },
+    selectTerminal(terminal);
+  }
 
-  createTerminal: function(e) {
+  createTerminal(e) {
     e.preventDefault();
     e.stopPropagation();
-    TerminalsActions.createTerminal(Config.terminal);
-  },
+    createTerminal(Config.terminal);
+  }
 
-  closeTerminal: function(terminal, e) {
+  closeTerminal(terminal, e) {
     e.preventDefault();
     e.stopPropagation();
-    TerminalsActions.closeTerminal(terminal);
-  },
-});
+    closeTerminal(terminal);
+  }
 
-module.exports = TerminalsBox;
+  showRunView(e) {
+    e.stopPropagation();
+    e.preventDefault();
+    showRunView();
+  }
+};
+
+export default Container.create(TerminalsBox, { pure: false });

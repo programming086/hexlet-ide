@@ -1,66 +1,74 @@
-var React = require("react/addons");
+import React, {Component} from "react/addons";
+import {Container} from 'flux/utils';
 
-var TreeBox = require("editor/components/tree/TreeBox");
-var EditorsBox = require("editor/components/editors/EditorsBox");
-var TerminalsBox = require("editor/components/terminals/TerminalsBox");
-var ContextMenu = require("editor/components/common/ContextMenu");
-var Modal = require("editor/components/common/Modal");
-var Loader = require("editor/components/common/Loader");
-var RunnerBox = require("editor/components/RunnerBox");
-var ActionsBox = require("editor/components/ActionsBox");
-var StatusBox = require("editor/components/StatusBox");
+import TreeBox from "editor/components/tree/TreeBox";
+import EditorsBox from "editor/components/editors/EditorsBox";
+import TerminalsBox from "editor/components/terminals/TerminalsBox";
+import ContextMenu from "editor/components/common/ContextMenu";
+import Loader from "editor/components/common/Loader";
+import PopupBox from "editor/components/PopupBox";
 
-var IdeActions = require("editor/actions/IdeActions");
-var WatchStoreMixin = require("editor/mixins/WatchStore");
-var IdeStore = require("editor/stores/IdeStore");
+import IdeActions from "editor/actions/IdeActions";
+import IdeStore from "editor/stores/IdeStore";
 
-var Ide = React.createClass({
-  mixins: [WatchStoreMixin(IdeStore)],
-  getFluxState: function() {
-    return IdeStore.getState();
-  },
 
-  handleGlobalClick: function() {
-    IdeActions.globalClick();
-  },
+import {globalClick} from "editor/actions/IdeActions"
 
-  render: function() {
-    if (!this.state.loaded) {
+class Ide extends Component<{}, {}, {}> {
+
+  static getStores(): Array<Store> {
+    return [IdeStore];
+  }
+
+  static calculateState(prevState) {
+    return {
+      isLoaded: IdeStore.isLoaded(),
+      displayMode: IdeStore.getDisplayMode()
+    };
+  }
+
+  renderDisplayMode(mode) {
+    switch(mode) {
+      case "normal":
+        return this.renderNormalMode();
+      case "terminal":
+        return this.renderTerminalMode();
+    }
+  }
+
+  renderNormalMode() {
+    return (<div className="container-flow" onMouseDown={globalClick}>
+      <TreeBox />
+      <div className="right-container">
+        <EditorsBox />
+        <TerminalsBox />
+      </div>
+    </div>);
+  }
+
+  renderTerminalMode() {
+    return (<div onClick={this.handleGlobalClick}>
+      <TerminalsBox showRunView />
+    </div>);
+  }
+
+  render() {
+    const isLoaded = this.state.isLoaded;
+
+    if (!isLoaded) {
       return <Loader />;
     }
 
+    const displayMode = this.state.displayMode;
+
     return (
       <div className="ide-inner">
+        <PopupBox />
         <ContextMenu />
-        <Modal />
-        <div className="well well-sm max-height" onClick={this.handleGlobalClick}>
-          <div className="max-height row">
-            <div className="col-xs-3 max-height nopadding">
-              <div className="row">
-                <div className="col-xs-2">
-                  <ActionsBox />
-                  <StatusBox />
-                </div>
-                <div className="col-xs-10">
-                  <div className="row">
-                    <div className="col-xs-12 file-tree-box">
-                      <RunnerBox cmd={this.props.cmd}/>
-                    </div>
-                  </div>
-                  <TreeBox />
-                </div>
-              </div>
-            </div>
-            <div className="col-xs-9 max-height nopadding nooverflow">
-              <EditorsBox />
-              <TerminalsBox />
-            </div>
-
-          </div>
-        </div>
+        {this.renderDisplayMode(displayMode)}
       </div>
     );
   }
-});
+};
 
-module.exports = Ide;
+export default Container.create(Ide);
